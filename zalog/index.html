@@ -1,1 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>ZA-LOG</title>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <div id="tabBar">
+        <div class="tab-item active" onclick="switchTab('form')">Nhập Dữ Liệu</div>
+        <div class="tab-item" onclick="switchTab('log')">Xem Log</div>
+    </div>
+
+    <div id="tabContent">
+        
+        <div id="formContent">
+            <div class="excel-grid">
+                <div class="excel-cell header-cell">ID Chuyến</div>
+                <div class="excel-cell header-cell">Ngày</div>
+                <div class="excel-cell header-cell">Khách Hàng</div>
+                <div class="excel-cell header-cell">Số Lượng</div>
+                <div class="excel-cell header-cell">Ca</div>
+                <div class="excel-cell header-cell">Ghi chú</div>
+                <div class="excel-cell header-cell">Hành động</div>
+
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell"><input type="text"></div>
+                <div class="excel-cell action-cell">
+                    <button onclick="editRow(this)">✏️</button>
+                    <button onclick="deleteRow(this)">🗑️</button>
+                    <button onclick="splitRow(this)">⚙️</button>
+                </div>
+            </div>
+
+            <button id="addRowBtn" type="button">➕ Thêm dòng</button>
+            <button id="logBtn" type="button">📝 Ghi Log</button>
+        </div>
+        
+        <div id="logContent" style="display: none;">
+            📜 Đang ở tab Xem Log
+        </div>
+        
+        <div id="logArea">
+            <div>[LOG] Hệ thống sẵn sàng.</div>
+            <div id="logTableContainer"></div>
+        </div>
+
+    </div>
+
+    <script src="giaodien/resize-columns.js"></script> 
+    <script src="giaodien/chiachuyen.js"></script>
+    <script src="giaodien/giaodien.js"></script>
+    
+    <datalist id="ca-list">
+        <option value="ngày"></option>
+        <option value="đêm"></option>
+    </datalist>
+
+</body>
+</html>
