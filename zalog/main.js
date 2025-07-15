@@ -260,10 +260,9 @@ async function initApp() {
     for (let i = 0; i < allExistingInputs.length; i += FORM_COLUMN_COUNT) {
         attachEventListenersToRow(allExistingInputs.slice(i, i + FORM_COLUMN_COUNT));
     }
+    document.getElementById('logBtn')?.addEventListener('click', ghiLogData); // gắn nút ghi log
     
     console.log("✅ Ứng dụng đã sẵn sàng!");
-    // Gắn nút Ghi Log
-document.getElementById('logBtn')?.addEventListener('click', ghiLogData);
 }
 
 // Chạy hàm khởi tạo chính
