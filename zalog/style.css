@@ -198,3 +198,60 @@ body {
     position: sticky; /* ✅ Giữ tiêu đề khi cuộn dọc */
     top: -1px; /* Căn cho dính sát top */
 }
+/* === CSS CHO BẢNG LOG VÀ HỘP GỢI Ý (THÊM MỚI) === */
+
+/* Vỏ bọc cho bảng log để cuộn được */
+.log-table-wrapper {
+    overflow: auto;
+    max-height: 400px; /* Chiều cao tối đa của khu vực cuộn */
+    border: 1px solid var(--mau-vien-xam);
+    background: var(--nen-trang);
+}
+
+/* Bảng hiển thị log */
+.log-table {
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: max-content; /* Đảm bảo bảng luôn đủ rộng để hiển thị các cột */
+}
+
+/* Các ô trong bảng log */
+.log-table th,
+.log-table td {
+    border: 1px solid var(--mau-vien-xam);
+    padding: 6px 10px;
+    min-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Tiêu đề bảng log */
+.log-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+    position: sticky; /* Giữ tiêu đề khi cuộn */
+    top: 0;
+    z-index: 1; /* Nổi lên trên nội dung khác */
+    text-align: center;
+}
+
+/* Hộp chứa các gợi ý khách hàng */
+.suggestions-container {
+    position: absolute;
+    z-index: 100; /* Nổi lên trên tất cả */
+    border: 1px solid var(--mau-vien-xam);
+    background: var(--nen-trang);
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Mỗi dòng gợi ý */
+.suggestion-item {
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
