@@ -233,6 +233,45 @@ function attachEventListenersToRow(inputs) {
 /**
  * Hàm khởi tạo chính, chạy khi trang đã tải xong.
  */
+function ghiLogData() {
+    console.log("✅ [DEBUG] Hàm ghiLogData được gọi");
+
+    const grid = document.querySelector('.excel-grid');
+    const inputs = Array.from(grid.querySelectorAll('input'));
+    const rows = [];
+
+    for (let i = 0; i < inputs.length; i += FORM_COLUMN_COUNT) {
+        const rowData = inputs.slice(i, i + FORM_COLUMN_COUNT).map(input => input.value.trim());
+        if (!rowData.every(val => val === '')) {
+            rows.push(rowData);
+        }
+    }
+
+    if (rows.length === 0) {
+        alert('⚠️ Không có dòng dữ liệu để ghi log.');
+        return;
+    }
+
+    fetch(GHI_LOG_PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rows })
+    })
+    .then(res => res.ok ? res.json() : Promise.reject(new Error(`Lỗi ${res.status}`)))
+    .then(data => {
+        if (data.status === 'success') {
+            alert(`✅ ${data.message || 'Ghi log thành công!'}`);
+            console.log('[Ghi Log]', rows);
+        } else {
+            throw new Error(data.message || 'Server trả về lỗi không xác định.');
+        }
+    })
+    .catch(err => {
+        console.error('❌ Lỗi khi ghi log:', err);
+        alert('❌ Lỗi khi ghi log:\n' + err.message);
+    });
+}
+
 async function initApp() {
     console.log("🚀 Ứng dụng đang khởi chạy...");
     
