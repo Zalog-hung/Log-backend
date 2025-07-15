@@ -1,0 +1,28 @@
+<!DOCTYPE html> <!-- Khai báo đây là tài liệu HTML5 -->
+
+<html lang="vi"> <!-- Ngôn ngữ chính của trang là tiếng Việt -->
+
+<head>
+    <meta charset="UTF-8"> <!-- Dùng bảng mã UTF-8 để hỗ trợ tiếng Việt -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Đảm bảo giao diện hiển thị tốt trên thiết bị di động -->
+
+    <title>Tên trang web của bạn</title> <!-- Tiêu đề hiển thị trên tab trình duyệt -->
+
+    <link rel="stylesheet" href="style.css">
+    <!-- Liên kết tới file CSS để định dạng giao diện -->
+</head>
+<!--thẻ Body Gọi file JS-->
+<body>
+
+    <h1>Nội dung chính của trang</h1> <!-- Tiêu đề lớn trên trang -->
+
+    <p>Một đoạn văn bản ví dụ.</p> <!-- Nội dung mẫu để hiển thị trên trang -->
+    <script src="module/nhaplieu/nhaplieu.js"></script>
+    <script src="module/Log/Log.js"></script>
+    <!-- Nhúng file JavaScript để xử lý các chức năng ghi log -->
+
+</body>
+
+</html>
