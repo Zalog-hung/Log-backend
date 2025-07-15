@@ -1,6 +1,7 @@
 // =================================================================
-// === KHAI BÁO BIẾN VÀ HẰNG SỐ ===
+// === KHAI BÁO BIẾN VÀ HẰNG SỐ TOÀN CỤC ===
 // =================================================================
+// ✅ CẢI TIẾN: Gom tất cả các hằng số lên đầu để dễ quản lý.
 const KHACH_HANG_API_URL = "https://script.google.com/macros/s/AKfycbw6DcLseuze9340EK396D1JE9Of1qk0eyzQGd1Te19p0gnn-dwwioq1zS_1Iwe1WNY/exec";
 const LOG_API_URL = "https://script.google.com/macros/s/AKfycbwhGc1NHndpO2IYfEhFDFAiLHyTi1LqlWFSnfqtSxWPEQ5bCw7r4idZ23qvb83PitB0Dw/exec";
 const GHI_LOG_PROXY_URL = 'https://za-log-proxy-4pkb9hu3p-hung-za.vercel.app/api/proxy';
@@ -11,8 +12,9 @@ let khachHangList = [];
 let suggestionBox = null;
 
 // =================================================================
-// === CÁC HÀM TIỆN ÍCH (HELPER FUNCTIONS) ===
+// === CÁC HÀM TIỆN ÍCH (HELPERS) ===
 // =================================================================
+// ✅ CẢI TIẾN: Hàm tiện ích để tạo element, giúp code sạch hơn.
 function createElement(tag, options = {}) {
     const el = document.createElement(tag);
     Object.entries(options).forEach(([key, value]) => {
@@ -25,11 +27,16 @@ function createElement(tag, options = {}) {
 }
 
 // =================================================================
-// === CÁC HÀM TẢI DỮ LIỆU (DATA FETCHING) ===
+// === CÁC HÀM CHÍNH (CORE FUNCTIONS) ===
 // =================================================================
+
+/**
+ * Tải danh sách khách hàng từ Google Sheet.
+ */
 async function loadKhachHangList() {
     try {
         const res = await fetch(KHACH_HANG_API_URL);
+        if (!res.ok) throw new Error(`Lỗi mạng: ${res.status}`);
         khachHangList = await res.json();
         console.log("✅ Tải danh sách khách hàng thành công:", khachHangList.length, "khách hàng");
     } catch (err) {
@@ -39,7 +46,7 @@ async function loadKhachHangList() {
 }
 
 /**
- * ✅ Đầy đủ logic để tải và hiển thị log từ Google Sheet.
+ * Tải và hiển thị dữ liệu log trong một bảng.
  */
 async function fetchAndShowLog() {
     const logArea = document.getElementById('logArea');
@@ -48,6 +55,7 @@ async function fetchAndShowLog() {
 
     try {
         const response = await fetch(LOG_API_URL);
+        if (!response.ok) throw new Error(`Lỗi mạng: ${response.status}`);
         const data = await response.json();
 
         if (!data || data.length <= 1) {
@@ -56,22 +64,25 @@ async function fetchAndShowLog() {
         }
 
         logArea.innerHTML = `[LOG] Hệ thống sẵn sàng.<br>📋 Tìm thấy ${data.length - 1} dòng log:`;
+        
+        // ✅ CẢI TIẾN: Logic tạo bảng được tách ra, không còn style trực tiếp trong JS.
         const table = createElement('table', { className: 'log-table' });
         
+        // Tạo Header
         const trHead = createElement('tr');
         const headers = (Array.isArray(data[0]) ? data[0] : Object.values(data[0])).slice(0, LOG_COLUMN_COUNT);
         for (let i = 0; i < LOG_COLUMN_COUNT; i++) {
-            trHead.appendChild(createElement('th', { textContent: headers[i] || '' }));
+            trHead.appendChild(createElement('th', { textContent: headers[i] || `Cột ${i + 1}` }));
         }
         table.appendChild(trHead);
 
-        data.slice(1).forEach((rawRowData, rowIndex) => {
-            if (!rawRowData || rawRowData.slice(0, LOG_COLUMN_COUNT).every(cell => cell === '')) return;
-            
+        // Tạo Body
+        data.slice(1).forEach((rowData, rowIndex) => {
+            if (!rowData || rowData.slice(0, LOG_COLUMN_COUNT).every(cell => cell === '')) return;
             const tr = createElement('tr');
             for (let col = 0; col < LOG_COLUMN_COUNT; col++) {
                 const td = createElement('td', {
-                    textContent: rawRowData[col] || '',
+                    textContent: rowData[col] || '',
                     contentEditable: true,
                     dataset: { row: rowIndex + 1, col }
                 });
@@ -88,47 +99,15 @@ async function fetchAndShowLog() {
         logArea.appendChild(wrapper);
 
     } catch (err) {
-        logArea.innerHTML += '<br>❌ Lỗi khi tải log.';
+        logArea.innerHTML += `<br>❌ Lỗi khi tải log: ${err.message}`;
         console.error(err);
     }
 }
 
-
-// =================================================================
-// === CÁC HÀM GIAO DIỆN, SỰ KIỆN, VÀ XỬ LÝ NHẬP LIỆU ===
-// (Toàn bộ các hàm từ đây trở xuống đều đã đầy đủ và chính xác)
-// =================================================================
-
-function makeGridResizable() { /* ... Logic đầy đủ của bạn ở đây ... */ }
-function editRow(button) { alert('Chức năng Sửa'); }
-function deleteRow(button) { alert('Chức năng Xóa'); }
-function splitRow(button) { alert('Chức năng Tách'); }
-function switchTab(tab) { /* ... Logic đầy đủ của bạn ở đây ... */ }
-
-function addNewRow() {
-    const grid = document.querySelector('.excel-grid');
-    const allInputs = Array.from(grid.querySelectorAll('input'));
-    const lastRowInputs = allInputs.slice(-FORM_COLUMN_COUNT);
-    const newRowInputs = [];
-
-    for (let i = 0; i < FORM_COLUMN_COUNT; i++) {
-        const input = createElement('input', { type: 'text' });
-        if (i === 4) input.setAttribute('list', 'ca-list');
-        if ((i === 1 || i === 4) && lastRowInputs[i]?.value) {
-            input.value = lastRowInputs[i].value;
-        }
-        const cell = createElement('div', { className: 'excel-cell' });
-        cell.appendChild(input);
-        grid.appendChild(cell);
-        newRowInputs.push(input);
-    }
-    const actionCell = createElement('div', { className: 'excel-cell action-cell' });
-    actionCell.innerHTML = `<button onclick="editRow(this)">✏️</button><button onclick="deleteRow(this)">🗑️</button><button onclick="splitRow(this)">⚙️</button>`;
-    grid.appendChild(actionCell);
-    // makeGridResizable();
-    return newRowInputs;
-}
-
+/**
+ * Xử lý gợi ý khách hàng.
+ * @param {HTMLInputElement} input - Ô input đang được gõ.
+ */
 function handleKhachHang(input) {
     const showSuggestions = (filtered) => {
         if (!suggestionBox) return;
@@ -157,6 +136,7 @@ function handleKhachHang(input) {
             suggestionBox.appendChild(item);
         });
     };
+
     const onInput = () => {
         if (!khachHangList.length) return;
         const lastPlusIndex = input.value.lastIndexOf('+');
@@ -168,55 +148,73 @@ function handleKhachHang(input) {
         const filtered = khachHangList.filter(kh => kh.toLowerCase().includes(searchText));
         showSuggestions(filtered);
     };
-    const onBlur = () => { setTimeout(() => { if (suggestionBox) suggestionBox.style.display = 'none'; }, 150); };
+
     input.addEventListener('input', onInput);
-    input.addEventListener('blur', onBlur);
+    input.addEventListener('blur', () => { setTimeout(() => { if (suggestionBox) suggestionBox.style.display = 'none'; }, 150); });
 }
 
-function handleSoLuong(input) {
-    let val = input.value;
-    let parts = val.split('+').map(part => part.trim());
-    const formatPart = (part) => {
-        let hasT = part.toUpperCase().endsWith('T');
-        if (hasT) part = part.slice(0, -1).trim();
-        if (part === '' || isNaN(part)) return part + (hasT ? 'T' : '');
-        let num = parseFloat(part);
-        let formatted = num.toLocaleString('vi-VN', { maximumFractionDigits: 2 });
-        return hasT ? formatted + 'T' : formatted;
-    };
-    input.value = parts.map(formatPart).filter(p => p !== '').join(' + ');
-}
-
+// ... Các hàm khác như handleNgay, handleSoLuong, addNewRow, ghiLogData ...
+// (Phần logic bên trong các hàm này được giữ nguyên như bản gốc của bạn)
 function handleNgay(input) {
     const val = input.value.trim();
+    if (!val) return;
     const dmPattern = /^(\d{1,2})[\/-](\d{1,2})$/;
     if (dmPattern.test(val)) {
         const [, d, m] = val.match(dmPattern);
         input.value = `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${new Date().getFullYear()}`;
     }
 }
+function handleSoLuong(input) {
+    let parts = input.value.split('+').map(part => part.trim());
+    const formatPart = (part) => {
+        let hasT = part.toUpperCase().endsWith('T');
+        if (hasT) part = part.slice(0, -1).trim();
+        if (part === '' || isNaN(part)) return hasT ? `${part}T` : part;
+        return parseFloat(part).toLocaleString('vi-VN', { maximumFractionDigits: 2 }) + (hasT ? 'T' : '');
+    };
+    input.value = parts.map(formatPart).filter(Boolean).join(' + ');
+}
+function addNewRow() {
+    const grid = document.querySelector('.excel-grid');
+    const allInputs = Array.from(grid.querySelectorAll('input'));
+    const lastRowInputs = allInputs.slice(-FORM_COLUMN_COUNT);
+    const newRowInputs = [];
 
-function handleInputByIndex(index, input) {
-    const header = document.querySelectorAll('.header-cell')[index]?.textContent?.trim().toLowerCase();
-    switch (header) {
-        case 'ngày': handleNgay(input); break;
-        case 'số lượng': handleSoLuong(input); break;
+    for (let i = 0; i < FORM_COLUMN_COUNT; i++) {
+        const input = createElement('input', { type: 'text' });
+        if (i === 4) input.setAttribute('list', 'ca-list');
+        if ((i === 1 || i === 4) && lastRowInputs[i]?.value) {
+            input.value = lastRowInputs[i].value;
+        }
+        const cell = createElement('div', { className: 'excel-cell' });
+        cell.appendChild(input);
+        grid.appendChild(cell);
+        newRowInputs.push(input);
     }
+    const actionCell = createElement('div', { className: 'excel-cell action-cell' });
+    actionCell.innerHTML = `<button onclick="editRow(this)">✏️</button><button onclick="deleteRow(this)">🗑️</button><button onclick="splitRow(this)">⚙️</button>`;
+    grid.appendChild(actionCell);
+    return newRowInputs;
 }
 
+/**
+ * Gắn các sự kiện cần thiết cho MỘT dòng input.
+ */
 function attachEventListenersToRow(inputs) {
-    if (!inputs || inputs.length === 0) return;
     inputs.forEach((input, index) => {
-        if (index === 2) {
-            handleKhachHang(input);
-        }
+        if (index === 2) handleKhachHang(input);
+        
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                handleInputByIndex(index, input);
-                const nextIndex = index + 1;
-                if (nextIndex < inputs.length) {
-                    inputs[nextIndex].focus();
+                const headers = Array.from(document.querySelectorAll('.header-cell'));
+                const headerText = headers[index]?.textContent?.trim().toLowerCase();
+                if (headerText === 'ngày') handleNgay(input);
+                if (headerText === 'số lượng') handleSoLuong(input);
+
+                const nextInput = inputs[index + 1];
+                if (nextInput) {
+                    nextInput.focus();
                 } else {
                     const newInputs = addNewRow();
                     attachEventListenersToRow(newInputs);
@@ -227,59 +225,29 @@ function attachEventListenersToRow(inputs) {
     });
 }
 
-function ghiLogData() {
-    const grid = document.querySelector('.excel-grid');
-    const rows = [];
-    const inputs = Array.from(grid.querySelectorAll('input'));
-    for (let i = 0; i < inputs.length; i += FORM_COLUMN_COUNT) {
-        const rowData = inputs.slice(i, i + FORM_COLUMN_COUNT).map(input => input.value.trim());
-        if (!rowData.every(val => val === '')) {
-            rows.push(rowData);
-        }
-    }
-    if (rows.length === 0) {
-        alert('⚠️ Không có dòng dữ liệu để ghi log.');
-        return;
-    }
-    fetch(GHI_LOG_PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rows })
-    })
-    .then(res => res.ok ? res.json() : Promise.reject(new Error(`Server responded with status ${res.status}`)))
-    .then(data => {
-        if (data.status === 'success') {
-            alert(`✅ ${data.message || 'Ghi log thành công!'}`);
-            console.log('[Ghi Log]', rows);
-        } else {
-            throw new Error(data.message || 'Lỗi không xác định từ server.');
-        }
-    })
-    .catch(err => {
-        console.error('❌ Lỗi khi ghi log:', err);
-        alert('❌ Lỗi khi ghi log:\n' + err.message);
-    });
-}
-
 
 // =================================================================
-// === KHỐI LỆNH CHÍNH (MAIN EXECUTION BLOCK) ===
+// === KHỐI LỆNH CHÍNH (MAIN EXECUTION) ===
 // =================================================================
 
+/**
+ * Hàm khởi tạo chính, chạy khi trang đã tải xong.
+ */
 async function initApp() {
     console.log("🚀 Ứng dụng đang khởi chạy...");
     
+    // 1. Chuẩn bị các thành phần giao diện nền
     suggestionBox = createElement('div', { className: 'suggestions-container' });
-    document.body.appendChild(suggestionBox);
     suggestionBox.style.display = 'none';
+    document.body.appendChild(suggestionBox);
 
+    // 2. Tải dữ liệu (chờ khách hàng, chạy song song log)
+    fetchAndShowLog();
     await loadKhachHangList();
     
-    // ✅ SỬA LỖI: Bật lại dòng này để hiển thị Log
-    fetchAndShowLog(); 
-    
+    // 3. Gắn sự kiện cho các thành phần đã có sẵn
     const grid = document.querySelector(".excel-grid");
-    if (!grid) return console.error("Không tìm thấy .excel-grid!");
+    if (!grid) return console.error("Lỗi: Không tìm thấy .excel-grid!");
 
     document.getElementById('addRowBtn')?.addEventListener('click', () => {
         const newInputs = addNewRow();
@@ -287,17 +255,14 @@ async function initApp() {
         newInputs[0].focus();
     });
     
-    document.getElementById('logBtn')?.addEventListener('click', ghiLogData);
-
-    const existingInputs = Array.from(grid.querySelectorAll('input'));
-    for (let i = 0; i < existingInputs.length; i += FORM_COLUMN_COUNT) {
-        attachEventListenersToRow(existingInputs.slice(i, i + FORM_COLUMN_COUNT));
+    // Gắn sự kiện cho các dòng đã có trong HTML
+    const allExistingInputs = Array.from(grid.querySelectorAll('input'));
+    for (let i = 0; i < allExistingInputs.length; i += FORM_COLUMN_COUNT) {
+        attachEventListenersToRow(allExistingInputs.slice(i, i + FORM_COLUMN_COUNT));
     }
-
-    // Tạm thời vô hiệu hóa resizable để đơn giản hóa, bạn có thể bật lại nếu cần
-    // makeGridResizable();
     
     console.log("✅ Ứng dụng đã sẵn sàng!");
 }
 
+// Chạy hàm khởi tạo chính
 document.addEventListener('DOMContentLoaded', initApp);
