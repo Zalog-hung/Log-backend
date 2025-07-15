@@ -7,7 +7,7 @@ const GHI_LOG_PROXY_URL = 'https://za-log-proxy-4pkb9hu3p-hung-za.vercel.app/api
 const FORM_COLUMN_COUNT = 6;
 
 let khachHangList = [];
-let suggestionBox = null; // ✅ SỬA LỖI: Chỉ dùng một hộp gợi ý duy nhất cho toàn bộ ứng dụng
+let suggestionBox = null; // ✅ Chỉ dùng một hộp gợi ý duy nhất cho toàn bộ ứng dụng
 
 // =================================================================
 // === CÁC HÀM TIỆN ÍCH (HELPER FUNCTIONS) ===
@@ -37,37 +37,60 @@ async function loadKhachHangList() {
     }
 }
 
-// Hàm fetchAndShowLog giữ nguyên, không thay đổi
-
 // =================================================================
 // === CÁC HÀM GIAO DIỆN VÀ SỰ KIỆN (UI & EVENTS) ===
 // =================================================================
-function makeGridResizable() { /* Logic giữ nguyên */ }
-function addNewRow() { /* Logic giữ nguyên */ }
+/**
+ * ✅ Đầy đủ logic để thêm dòng mới
+ */
+function addNewRow() {
+    const grid = document.querySelector('.excel-grid');
+    const allInputs = Array.from(grid.querySelectorAll('input'));
+    const lastRowInputs = allInputs.slice(-FORM_COLUMN_COUNT);
+    const newRowInputs = [];
+
+    for (let i = 0; i < FORM_COLUMN_COUNT; i++) {
+        const input = createElement('input', { type: 'text' });
+        if (i === 4) input.setAttribute('list', 'ca-list');
+
+        if ((i === 1 || i === 4) && lastRowInputs[i]?.value) {
+            input.value = lastRowInputs[i].value;
+        }
+        const cell = createElement('div', { className: 'excel-cell' });
+        cell.appendChild(input);
+        grid.appendChild(cell);
+        newRowInputs.push(input);
+    }
+    const actionCell = createElement('div', { className: 'excel-cell action-cell' });
+    actionCell.innerHTML = `<button onclick="editRow(this)">✏️</button><button onclick="deleteRow(this)">🗑️</button><button onclick="splitRow(this)">⚙️</button>`;
+    grid.appendChild(actionCell);
+    // makeGridResizable(); // Sẽ được gọi sau khi gắn sự kiện
+    return newRowInputs;
+}
 
 /**
- * ✅ SỬA LỖI: Tái cấu trúc lại toàn bộ hàm xử lý gợi ý
- * @param {HTMLInputElement} input - Ô input đang được gõ.
+ * ✅ Đầy đủ logic để xử lý gợi ý khách hàng
+ * @param {HTMLInputElement} input
  */
 function handleKhachHang(input) {
-    // Hiện hộp gợi ý với danh sách đã lọc
     const showSuggestions = (filtered) => {
-        if (!suggestionBox) return; // Nếu hộp chưa được tạo thì thoát
-
+        if (!suggestionBox) return;
         const rect = input.getBoundingClientRect();
-        suggestionBox.style.left = `${rect.left + window.scrollX}px`;
-        suggestionBox.style.top = `${rect.bottom + window.scrollY}px`;
-        suggestionBox.style.width = `${rect.width}px`;
-        suggestionBox.innerHTML = ''; // Xóa các gợi ý cũ
-        
+        Object.assign(suggestionBox.style, {
+            left: `${rect.left + window.scrollX}px`,
+            top: `${rect.bottom + window.scrollY}px`,
+            width: `${rect.width}px`,
+            display: 'block'
+        });
+        suggestionBox.innerHTML = '';
+
         if (!filtered.length) {
             suggestionBox.style.display = 'none';
             return;
         }
-
         filtered.forEach(name => {
             const item = createElement('div', { className: 'suggestion-item', textContent: name });
-            item.addEventListener('mousedown', (e) => { // Dùng mousedown để sự kiện blur không kịp chạy trước
+            item.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 const lastPlusIndex = input.value.lastIndexOf('+');
                 const base = lastPlusIndex === -1 ? '' : input.value.slice(0, lastPlusIndex + 1).trim() + ' ';
@@ -77,15 +100,11 @@ function handleKhachHang(input) {
             });
             suggestionBox.appendChild(item);
         });
-        suggestionBox.style.display = 'block';
     };
-    
-    // Cập nhật danh sách gợi ý mỗi khi người dùng gõ
     const onInput = () => {
-        if (!khachHangList.length) return; // Nếu danh sách khách hàng rỗng thì không làm gì
+        if (!khachHangList.length) return;
         const lastPlusIndex = input.value.lastIndexOf('+');
         const searchText = (lastPlusIndex === -1 ? input.value : input.value.slice(lastPlusIndex + 1)).trim().toLowerCase();
-        
         if (!searchText) {
             if (suggestionBox) suggestionBox.style.display = 'none';
             return;
@@ -93,24 +112,54 @@ function handleKhachHang(input) {
         const filtered = khachHangList.filter(kh => kh.toLowerCase().includes(searchText));
         showSuggestions(filtered);
     };
-    
-    // Ẩn hộp gợi ý khi người dùng click ra ngoài
     const onBlur = () => {
         setTimeout(() => {
             if (suggestionBox) suggestionBox.style.display = 'none';
-        }, 150); // Delay một chút để sự kiện click vào gợi ý kịp chạy
+        }, 150);
     };
-
-    // Gắn sự kiện
     input.addEventListener('input', onInput);
     input.addEventListener('blur', onBlur);
 }
 
-// Các hàm handleSoLuong, handleNgay, handleInputByIndex, ghiLogData giữ nguyên
-function handleSoLuong(input) { /* Logic giữ nguyên */ }
-function handleNgay(input) { /* Logic giữ nguyên */ }
-function handleInputByIndex(index, input) { /* Logic giữ nguyên */ }
-function ghiLogData() { /* Logic giữ nguyên */ }
+/**
+ * ✅ Đầy đủ logic để định dạng ô Số Lượng
+ */
+function handleSoLuong(input) {
+    let val = input.value;
+    let parts = val.split('+').map(part => part.trim());
+    const formatPart = (part) => {
+        let hasT = part.toUpperCase().endsWith('T');
+        if (hasT) part = part.slice(0, -1).trim();
+        if (part === '' || isNaN(part)) return part + (hasT ? 'T' : '');
+        let num = parseFloat(part);
+        let formatted = num.toLocaleString('vi-VN', { maximumFractionDigits: 2 });
+        return hasT ? formatted + 'T' : formatted;
+    };
+    input.value = parts.map(formatPart).filter(p => p !== '').join(' + ');
+}
+
+/**
+ * ✅ Đầy đủ logic để định dạng ô Ngày
+ */
+function handleNgay(input) {
+    const val = input.value.trim();
+    const dmPattern = /^(\d{1,2})[\/-](\d{1,2})$/;
+    if (dmPattern.test(val)) {
+        const [, d, m] = val.match(dmPattern);
+        input.value = `${d.padStart(2, '0')}/${m.padStart(2, '0')}/${new Date().getFullYear()}`;
+    }
+}
+
+/**
+ * ✅ Đầy đủ logic để điều hướng xử lý
+ */
+function handleInputByIndex(index, input) {
+    const header = document.querySelectorAll('.header-cell')[index]?.textContent?.trim().toLowerCase();
+    switch (header) {
+        case 'ngày': handleNgay(input); break;
+        case 'số lượng': handleSoLuong(input); break;
+    }
+}
 
 /**
  * Gắn các sự kiện cần thiết cho một dòng input.
@@ -118,26 +167,21 @@ function ghiLogData() { /* Logic giữ nguyên */ }
  */
 function attachEventListenersToRow(inputs) {
     if (!inputs || inputs.length === 0) return;
-
     inputs.forEach((input, index) => {
-        // Chỉ gắn xử lý gợi ý cho ô khách hàng (cột thứ 3, index = 2)
         if (index === 2) {
             handleKhachHang(input);
         }
-
-        // Điều hướng bằng phím Enter
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                handleInputByIndex(index, input); // Xử lý dữ liệu khi Enter
-
+                handleInputByIndex(index, input);
                 const nextIndex = index + 1;
                 if (nextIndex < inputs.length) {
-                    inputs[nextIndex].focus(); // Chuyển sang ô kế tiếp
+                    inputs[nextIndex].focus();
                 } else {
-                    const newInputs = addNewRow(); // Hết dòng thì thêm dòng mới
-                    attachEventListenersToRow(newInputs); // Gắn sự kiện cho dòng mới đó
-                    newInputs[0].focus(); // Focus vào ô đầu tiên của dòng mới
+                    const newInputs = addNewRow();
+                    attachEventListenersToRow(newInputs);
+                    newInputs[0].focus();
                 }
             }
         });
@@ -150,26 +194,22 @@ function attachEventListenersToRow(inputs) {
 // =================================================================
 
 /**
- * ✅ SỬA LỖI: Tạo một hàm `init` bất đồng bộ để đảm bảo thứ tự thực thi
+ * Hàm khởi tạo chính, đảm bảo mọi thứ chạy đúng thứ tự.
  */
 async function initApp() {
     console.log("🚀 Ứng dụng đang khởi chạy...");
     
-    // Bước 1: Tạo các thành phần giao diện chung
+    // 1. Tạo các thành phần giao diện chung
     suggestionBox = createElement('div', { className: 'suggestions-container' });
-    document.body.appendChild(suggestionBox); // Tạo hộp gợi ý và ẩn nó đi
+    document.body.appendChild(suggestionBox);
     suggestionBox.style.display = 'none';
 
-    // Bước 2: Tải các dữ liệu nền. Dùng `await` để chờ tải xong danh sách khách hàng.
+    // 2. Tải dữ liệu nền (CHỜ cho xong)
     await loadKhachHangList();
-    // fetchAndShowLog(); // Có thể chạy song song không cần await nếu muốn
-
-    // Bước 3: Sau khi đã có dữ liệu, bắt đầu gắn các sự kiện
+    
+    // 3. Gắn các sự kiện sau khi đã có dữ liệu
     const grid = document.querySelector(".excel-grid");
-    if (!grid) {
-        console.error("Không tìm thấy .excel-grid!");
-        return;
-    }
+    if (!grid) return console.error("Không tìm thấy .excel-grid!");
 
     document.getElementById('addRowBtn')?.addEventListener('click', () => {
         const newInputs = addNewRow();
@@ -177,18 +217,13 @@ async function initApp() {
         newInputs[0].focus();
     });
     
-    document.getElementById('logBtn')?.addEventListener('click', ghiLogData);
-
     const existingInputs = Array.from(grid.querySelectorAll('input'));
     for (let i = 0; i < existingInputs.length; i += FORM_COLUMN_COUNT) {
         attachEventListenersToRow(existingInputs.slice(i, i + FORM_COLUMN_COUNT));
     }
 
-    makeGridResizable();
-    
     console.log("✅ Ứng dụng đã sẵn sàng!");
 }
-
 
 // Chạy hàm khởi tạo chính khi trang đã tải xong
 document.addEventListener('DOMContentLoaded', initApp);
