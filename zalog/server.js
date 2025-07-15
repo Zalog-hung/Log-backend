@@ -5,10 +5,10 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Phục vụ tất cả các file tĩnh từ thư mục hiện tại (nơi chứa index.html, style.css,...)
+// Phục vụ file tĩnh như index.html, style.css, js...
 app.use(express.static(__dirname));
 
-// Khi truy cập '/', trả về index.html
+// Khi truy cập "/", trả về file index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
