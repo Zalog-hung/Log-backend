@@ -262,6 +262,8 @@ async function initApp() {
     }
     
     console.log("✅ Ứng dụng đã sẵn sàng!");
+    // Gắn nút Ghi Log
+document.getElementById('logBtn')?.addEventListener('click', ghiLogData);
 }
 
 // Chạy hàm khởi tạo chính
