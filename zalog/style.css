@@ -150,4 +150,76 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: backgro
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#addRowBtn:hover {
+  background-color: #1669c1;
+}
+
+/* === NÚT GHI LOG === */
+#logBtn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #2ca01c;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#logBtn:hover {
+  background-color: #228a14;
+}
+
+/* === KHU VỰC LOG === */
+#logArea {
+  font-family: Arial, sans-serif;
+  background: white;
+  color: black;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  max-height: 400px;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+.log-table-wrapper {
+  width: 100%;
+  overflow: auto;
+}
+
+.log-table {
+  border-collapse: collapse;
+  min-width: max-content;
+  font-size: 14px;
+}
+
+.log-table th,
+.log-table td {
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.log-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.log-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* === GỢI Ý INPUT === */
+.suggestions-container > div:hover {
+  background-color: #f0f0f0;
+}
