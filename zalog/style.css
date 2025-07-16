@@ -2,7 +2,8 @@
 :root {
     --mau-xanh-chu-dao: #1a73e8;
     --mau-vien-xam: #ccc;
-    --nen-tieu-de: #aad0f6;
+    /* Thay đổi: Bỏ --nen-tieu-de vì giờ dùng chung màu nền của log */
+    --nen-tieu-de-log: #f0f0f0;
     --nen-trang: #fff;
     --nen-than-trang: #f0f4ee;
     --nen-focus: #fffbe6;
@@ -42,10 +43,11 @@ body {
     font-size: 12px;
 }
 
-/* === BẢNG NHẬP LIỆU EXCEL === */
+/* === BẢNG NHẬP LIỆU EXCEL (ĐÃ ĐỒNG BỘ VỚI LOG) === */
 .excel-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 2fr 1fr 1fr 2fr auto;
+    /* Thay đổi: Đồng bộ kích thước cột với log, sử dụng minmax */
+    grid-template-columns: repeat(2, minmax(100px, 1fr)) minmax(150px, 2fr) repeat(2, minmax(100px, 1fr)) minmax(150px, 2fr) auto;
     border-top: 1px solid var(--mau-vien-xam);
     border-left: 1px solid var(--mau-vien-xam);
 }
@@ -56,16 +58,22 @@ body {
     position: relative;
     border-right: 1px solid var(--mau-vien-xam);
     border-bottom: 1px solid var(--mau-vien-xam);
-    min-height: 20px;
-    overflow: hidden;
+    overflow: hidden; /* Cần để sticky hoạt động đúng */
 }
 
 .header-cell {
     justify-content: center;
     font-weight: bold;
-    padding: 5px;
-    background-color: var(--nen-tieu-de);
     font-size: 12px;
+    /* --- Các thay đổi để giống log th --- */
+    padding: 4px 6px;
+    background-color: var(--nen-tieu-de-log); /* Dùng chung màu nền */
+    position: sticky; /* Dính khi cuộn */
+    top: 0;
+    z-index: 2; /* Cao hơn log để không bị đè */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .action-cell {
@@ -79,7 +87,7 @@ body {
     width: 100%;
     height: 100%;
     min-height: 24px;
-    padding: 4px 6px;
+    padding: 4px 6px; /* Padding này đã giống log td */
     border: none;
     outline: none;
     box-sizing: border-box;
@@ -127,7 +135,7 @@ body {
     background-color: #1669c1;
 }
 
-/* === KHU VỰC LOG (ĐÃ CẬP NHẬT) === */
+/* === KHU VỰC LOG === */
 #logArea {
     background: var(--nen-trang);
     color: #333;
@@ -151,23 +159,23 @@ body {
 
 .log-table th,
 .log-table td {
-    border: 1px solid var(--mau-vien-xam); 
-    padding: 4px 6px;                  
-    min-width: 100px;                  
-    max-width: 200px;                  
-    white-space: nowrap;               
-    overflow: hidden;                  
-    text-overflow: ellipsis;           
+    border: 1px solid var(--mau-vien-xam);
+    padding: 4px 6px;
+    min-width: 100px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: left;
 }
 
 .log-table th {
-    background-color: #f0f0f0;         
-    font-weight: bold;                 
-    position: sticky;                  
-    top: 0;                            
-    z-index: 1;                        
-    text-align: center;                
+    background-color: var(--nen-tieu-de-log);
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    text-align: center;
     font-size: 12px;
 }
 
