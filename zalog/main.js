@@ -33,7 +33,14 @@ function addNewRow() {
         if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
             newInput.value = lastInput.value.trim();
         } else {
-            newInput.value = '';
+            newInput.value = '';}
+          // ✅ Sao chép địn dạng
+if (i === 0) index0(newInput);
+if (i === 1) index1(newInput);
+if (i === 2) index2(newInput);
+if (i === 3) index3(newInput);
+if (i === 4) index4(newInput);
+if (i === 5) index5(newInput);
         }
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
