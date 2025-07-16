@@ -17,14 +17,33 @@
         
         <div id="formContent">
             <div class="excel-grid">
-                <div class="excel-cell"><input type="text" data-col="0"></div>
-<div class="excel-cell header-cell">ID Chuyến</div>
-  <div class="excel-cell header-cell">Ngày</div>
-  <div class="excel-cell header-cell">Khách Hàng</div>
-  <div class="excel-cell header-cell">Số Lượng</div>
-  <div class="excel-cell header-cell">Ca</div>
-  <div class="excel-cell header-cell">Ghi chú</div>
-  <div class="excel-cell header-cell">Hành động</div>
+<div id="gridElement">
+    <!-- Dòng tiêu đề (chỉ một lần) -->
+    <div class="excel-cell header-cell">ID chuyến</div>
+    <div class="excel-cell header-cell">Ngày</div>
+    <div class="excel-cell header-cell">Khách hàng</div>
+    <div class="excel-cell header-cell">Số lượng</div>
+    <div class="excel-cell header-cell">Ca</div>
+    <div class="excel-cell header-cell">Tài xế</div>
+    <div class="excel-cell header-cell">#</div> <!-- Cột hành động -->
+<!-- index 1: Ngày -->
+<div class="excel-cell"><input type="text" data-col="1"></div>
+
+<!-- index 2–5 -->
+<div class="excel-cell"><input type="text" data-col="2"></div>
+<div class="excel-cell"><input type="text" data-col="3"></div>
+<div class="excel-cell"><input type="text" data-col="4"></div>
+<div class="excel-cell"><input type="text" data-col="5"></div>
+
+<!-- index 6: Hành động -->
+<div class="excel-cell action-cell">
+  <button onclick="editRow(this)">✏️</button>
+  <button onclick="deleteRow(this)">🗑️</button>
+  <button onclick="splitRow(this)">⚙️</button>
+</div>             
+                
+ <div class="excel-cell"><input type="text" data-col="0"></div>
+
 <!-- index 1: Ngày -->
 <div class="excel-cell"><input type="text" data-col="1"></div>
 
