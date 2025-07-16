@@ -22,7 +22,7 @@ async function fetchAndShowLog() {
         }
 
         fullLogData = data;
-        currentRenderIndex = 1;
+        currentRenderIndex = PAGE_SIZE;
 
         logTableContainer.innerHTML = `<div>📋 Tìm thấy ${data.length - 1} dòng log có dữ liệu:</div>`;
         const tableWrapper = renderLogTable(data, currentRenderIndex);
