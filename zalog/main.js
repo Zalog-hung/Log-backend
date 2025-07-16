@@ -11,7 +11,7 @@ const formConfig = {
 const gridElement = document.querySelector('.excel-grid');
 
 let khachHangList = [];
-//GÁN SỰ KIỆN; HÀM VÀO NÚT
+//............................GÁN SỰ KIỆN; HÀM VÀO NÚT.....................................................
 document.getElementById('addnewrow').addEventListener('click', addNewRow);//.................GẮN HÀM THÊM DÒNG VÀO NÚT THÊM DÒNG
 document.querySelectorAll('.action-cell button').forEach(button => {
     if (button.textContent.includes('🗑️')) {
@@ -19,7 +19,7 @@ document.querySelectorAll('.action-cell button').forEach(button => {
             deleteRow(this);
         }); } });// ..........................................................................GÁN HÀM XÓA DÒNG VÀO NÚT XÓA
 
- //..............................................SỰ KIỆN THÊM DÒNG
+ //..............................................HÀM THÊM DÒNG........................................................
 function addNewRow() {
     const allCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
     const lastRowCells = allCells.slice(-formConfig.TOTAL_COLUMN_COUNT);
@@ -56,6 +56,12 @@ function addNewRow() {
     gridElement.appendChild(newActionCell);
     return newInputs;
 }
+//............................HÀM XÓA DÒNG.......................
+function deleteRow(button) {
+    const actionCell = button.closest('.excel-cell');
+    const rowStartIndex = Array.from(gridElement.children).indexOf(actionCell) - formConfig.FORM_COLUMN_COUNT;
 
-
-
+    if (rowStartIndex >= 0) {
+        for (let i = formConfig.TOTAL_COLUMN_COUNT - 1; i >= 0; i--) {
+            gridElement.children[rowStartIndex + i].remove();}}}
+//................................................................
