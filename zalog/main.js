@@ -99,41 +99,30 @@ function index0(input) {
 //✅...........CỘT 2 (INDEX1) NGÀY..............
 function index1(input) {
     input.addEventListener('blur', () => {
-        let [d, m, y] = input.value.trim().split('/');
-        const now = new Date(), cy = now.getFullYear();
-        if (!d || !m) return;
-
-        d = d.padStart(2, '0');
-        m = m.padStart(2, '0');
-
-        if (!y) y = cy;
-        else if (y.length === 1) y = '200' + y;
-        else if (y.length === 2) y = (parseInt(y) >= 50 ? '19' : '20') + y;
-
-        input.value = `${d}/${m}/${y}`;
-    });
-}
-
-//✅...........CỘT 2 (INDEX1) NGÀY..............
-function index1(input) {
-    input.addEventListener('blur', () => {
         let value = input.value.trim();
         if (!value) return;
 
-        let [day, month, year] = value.split('/');
+        let parts = value.split('/');
+        if (parts.length < 2) return; // Cần ít nhất ngày và tháng
+
+        let [day, month, year] = parts;
         const currentYear = new Date().getFullYear();
 
-        // Bổ sung số 0 nếu thiếu
-        if (day && day.length === 1) day = '0' + day;
-        if (month && month.length === 1) month = '0' + month;
+        day = day.padStart(2, '0');
+        month = month.padStart(2, '0');
 
-        // Nếu thiếu năm → dùng năm hiện tại
         if (!year) {
             year = currentYear;
+        } else if (year.length === 1) {
+            year = '200' + year;
         } else if (year.length === 2) {
-            year = '20' + year;
+            year = (+year >= 50 ? '19' : '20') + year;
         }
 
         input.value = `${day}/${month}/${year}`;
     });
 }
+
+// 👉 Gán sự kiện cho tất cả input có data-col="1" (cột Ngày)
+document.querySelectorAll('input[data-col="1"]').forEach(index1);
+</script>
