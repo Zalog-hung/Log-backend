@@ -16,63 +16,96 @@ const ExcelGrid = {
     _inputCache: [],
     FORM_COLUMN_COUNT: 6,
     TOTAL_COLUMN_COUNT: 7,
-    FIELDS_TO_KEEP_VALUE: [1, 5], // Giữ giá trị ở cột Loại (index 1) và Đơn vị (index 5)
+    FIELDS_TO_KEEP_VALUE: [1, 5],
+
+    // --- CÁC HÀM TIỆN ÍCH & "PRIVATE" ---
+
+    /**
+     * Hàm tiện ích để tạo phần tử HTML.
+     */
+    createElement: function(tag, options = {}) {
+        const el = document.createElement(tag);
+        Object.entries(options).forEach(([key, value]) => {
+            if (key === 'className') el.className = value;
+            else if (key === 'textContent') el.textContent = value;
+            else if (key === 'dataset') Object.assign(el.dataset, value);
+            else el.setAttribute(key, value);
+        });
+        return el;
+    },
+
+    /**
+     * ✅ CẢI TIẾN 3: Đảm bảo cache chỉ chứa các input trong vùng dữ liệu.
+     * Bằng cách query các phần tử trong cell có class '.data-cell'.
+     */
+    _updateInputCache: function() {
+        this._inputCache = Array.from(this.gridElement.querySelectorAll(".data-cell input, .data-cell select"));
+    },
+
+    /**
+     * ✅ CẢI TIẾN 4: Tách logic clone ô dữ liệu thành hàm riêng.
+     * Hàm này chịu trách nhiệm tạo ra một ô nhập liệu mới dựa trên ô cũ.
+     * @param {HTMLElement} lastInput - Phần tử input/select của dòng trước.
+     * @returns {HTMLElement} - Thẻ input/select mới.
+     */
+    _cloneInputElement: function(lastInput) {
+        let newInput;
+        
+        /**
+         * ✅ CẢI TIẾN 1: Clone đúng loại phần tử (input hoặc select).
+         * Kiểm tra tagName để quyết định tạo 'select' hay 'input'.
+         */
+        if (lastInput?.tagName === 'SELECT') {
+            newInput = this.createElement('select');
+            // Sao chép tất cả các <option> bên trong.
+            newInput.innerHTML = lastInput.innerHTML; 
+        } else {
+            // Lấy đúng 'type' của input cũ (text, number, date...) hoặc mặc định là 'text'.
+            const inputType = lastInput?.type || 'text';
+            newInput = this.createElement('input', { type: inputType });
+        }
+        
+        // Sao chép các thuộc tính cần thiết, bỏ qua value và id.
+        if (lastInput) {
+            for (const attr of lastInput.attributes) {
+                if (attr.name !== 'value' && attr.name !== 'id') {
+                    newInput.setAttribute(attr.name, attr.value);
+                }
+            }
+        }
+        return newInput;
+    },
 
     // --- CÁC HÀM CHÍNH ---
 
     /**
-     * Hàm thêm một dòng mới vào bảng tính.
-     * Toàn bộ logic được đặt trong hàm này để dễ theo dõi tuần tự.
+     * ✅ CẢI TIẾN 4: Hàm thêm dòng mới được cấu trúc lại cho dễ đọc.
+     * Sử dụng các hàm helper để thực hiện các tác vụ con.
      */
     addNewRow: function() {
-        // Lấy các ô của dòng cuối cùng làm mẫu.
         const lastCells = Array.from(this.gridElement.querySelectorAll('.excel-cell')).slice(-this.TOTAL_COLUMN_COUNT);
         const newInputs = [];
 
-        // ----- Vòng lặp tạo các ô nhập liệu mới -----
+        // 1. Tạo các ô nhập liệu mới.
         for (let i = 0; i < this.FORM_COLUMN_COUNT; i++) {
             const lastInput = lastCells[i]?.querySelector('input, select');
-            let newInput;
+            const newInput = this._cloneInputElement(lastInput);
 
-            // 1. TẠO Ô NHẬP LIỆU MỚI
-            // Logic xác định và tạo đúng loại phần tử (input/select) được đặt ngay tại đây.
-            if (lastInput?.tagName === 'SELECT') {
-                newInput = document.createElement('select');
-                newInput.innerHTML = lastInput.innerHTML; // Sao chép các <option>.
-            } else {
-                const inputType = lastInput?.type || 'text';
-                newInput = document.createElement('input');
-                newInput.type = inputType;
-            }
-
-            // Sao chép các thuộc tính từ ô mẫu (class, placeholder, etc.), trừ value và id.
-            if (lastInput) {
-                for (const attr of lastInput.attributes) {
-                    if (attr.name !== 'value' && attr.name !== 'id') {
-                        newInput.setAttribute(attr.name, attr.value);
-                    }
-                }
-            }
-
-            // Giữ lại giá trị ở các cột đã được cấu hình trong FIELDS_TO_KEEP_VALUE.
+            // Giữ lại giá trị nếu cột được cấu hình.
             if (lastInput && this.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput.value.trim() !== '') {
                 newInput.value = lastInput.value;
             }
-
-            // Tạo ô chứa (cell) và thêm class 'data-cell' để phân biệt với ô hành động.
-            const newCell = document.createElement('div');
-            newCell.className = 'excel-cell data-cell';
+            
+            // ✅ CẢI TIẾN 3: Thêm class 'data-cell' để phân biệt với 'action-cell'.
+            const newCell = this.createElement('div', { className: 'excel-cell data-cell' });
             newCell.appendChild(newInput);
             this.gridElement.appendChild(newCell);
             newInputs.push(newInput);
         }
 
-        // ----- 2. TẠO Ô HÀNH ĐỘNG MỚI -----
+        // 2. Tạo ô hành động mới.
         const lastActionCell = lastCells[this.FORM_COLUMN_COUNT];
-        const newActionCell = document.createElement('div');
-        newActionCell.className = 'excel-cell action-cell';
-
-        // Dùng cloneNode(true) để sao chép các nút một cách an toàn, giữ event listener.
+        const newActionCell = this.createElement('div', { className: 'excel-cell action-cell' });
         if (lastActionCell) {
             Array.from(lastActionCell.childNodes).forEach(childNode => {
                 newActionCell.appendChild(childNode.cloneNode(true));
@@ -80,16 +113,14 @@ const ExcelGrid = {
         }
         this.gridElement.appendChild(newActionCell);
 
-        // ----- 3. CẬP NHẬT CACHE VÀ TRẢ VỀ KẾT QUẢ -----
         this._updateInputCache();
         return newInputs;
     },
 
     /**
-     * Hàm xử lý sự kiện nhấn phím Enter để điều hướng hoặc thêm dòng mới.
+     * Hàm xử lý sự kiện nhấn phím Enter.
      */
     handleKeyDown: function(e) {
-        // Chỉ hoạt động khi nhấn Enter bên trong một ô dữ liệu.
         if (e.key !== "Enter" || !e.target.closest('.data-cell')) return;
         
         e.preventDefault();
@@ -102,22 +133,16 @@ const ExcelGrid = {
 
         if (isLastInRow) {
             const newInputs = this.addNewRow();
-            newInputs[0]?.focus(); // Focus vào ô đầu tiên của dòng mới.
+            
+            // ✅ CẢI TIẾN 2: Tinh giản logic focus, không cần tìm kiếm lại.
+            newInputs[0]?.focus();
         } else {
             allInputs[currentIndex + 1]?.focus();
         }
     },
     
     /**
-     * Hàm tiện ích cập nhật cache chứa danh sách các input.
-     * Tối ưu hiệu suất bằng cách tránh query DOM nhiều lần.
-     */
-    _updateInputCache: function() {
-        this._inputCache = Array.from(this.gridElement.querySelectorAll(".data-cell input, .data-cell select"));
-    },
-
-    /**
-     * Hàm khởi tạo module: tìm phần tử và gắn sự kiện.
+     * Hàm khởi tạo module.
      */
     init: function() {
         this.gridElement = document.querySelector('.excel-grid');
@@ -126,43 +151,17 @@ const ExcelGrid = {
             return;
         }
 
-        // Thêm một dòng đầu tiên để người dùng nhập liệu
-        this.addNewRow();
-
-        // Gắn một listener duy nhất cho toàn bộ bảng.
         this.gridElement.addEventListener('keydown', this.handleKeyDown.bind(this));
-        
-        // Cấu hình mẫu cho một số ô
-        const firstRowInputs = this.gridElement.querySelectorAll('.data-cell > *');
-        if (firstRowInputs.length >= this.FORM_COLUMN_COUNT) {
-            // Thay thế ô thứ 2 (index 1) bằng thẻ select
-            const selectCell = firstRowInputs[1].parentElement;
-            selectCell.innerHTML = `
-                <select>
-                    <option value="A">Loại A</option>
-                    <option value="B">Loại B</option>
-                    <option value="C">Loại C</option>
-                </select>
-            `;
-            // Ô số lượng (index 3) là kiểu number
-            firstRowInputs[3].type = 'number';
-            firstRowInputs[3].placeholder = '0';
-             // Ô đơn vị (index 5) là thẻ select
-            const unitCell = firstRowInputs[5].parentElement;
-            unitCell.innerHTML = `
-                <select>
-                    <option value="Cái">Cái</option>
-                    <option value="Hộp">Hộp</option>
-                    <option value="Thùng">Thùng</option>
-                </select>
-            `;
-            // Cập nhật lại cache sau khi thay đổi cấu trúc
+
+        if (this.gridElement.querySelectorAll(".data-cell input, .data-cell select").length === 0) {
+            this.addNewRow();
+        } else {
             this._updateInputCache();
         }
     }
 };
 
-// Chạy hàm khởi tạo sau khi trang đã tải xong.
+// Chạy hàm khởi tạo.
 document.addEventListener('DOMContentLoaded', () => {
     ExcelGrid.init();
 });
