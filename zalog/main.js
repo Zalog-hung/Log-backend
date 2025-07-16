@@ -27,27 +27,21 @@ function addNewRow() {
 
     for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
         const lastInput = lastRowCells[i]?.querySelector('input, select');
-        const newInput = document.createElement('input');
+        const newInput = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
 
-        // Copy kiểu input nếu cần
-        newInput.type = lastInput?.type || 'text';
-        newInput.className = lastInput?.className || '';
-
-        // Giữ lại giá trị nếu cột thuộc danh sách giữ
+        // Giữ lại giá trị nếu cột là "Khách Hàng" (2) hoặc "Ca" (4)
         if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
             newInput.value = lastInput.value.trim();
         } else {
-            newInput.value = '';
+            newInput.value = '';}
+          // ✅ Sao chép địn dạng
+if (i === 0) index0(newInput);
+if (i === 1) index1(newInput);
+if (i === 2) index2(newInput);
+if (i === 3) index3(newInput);
+if (i === 4) index4(newInput);
+if (i === 5) index5(newInput);
         }
-
-        //  Gán định dạng tương ứng với từng cột
-        if (i === 0) index0(newInput);
-        if (i === 1) index1(newInput);
-        if (i === 2) index2(newInput);
-        if (i === 3) index3(newInput);
-        if (i === 4) index4(newInput);
-        if (i === 5) index5(newInput);
-
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
         newCell.appendChild(newInput);
@@ -55,7 +49,7 @@ function addNewRow() {
         newInputs.push(newInput);
     }
 
-    // Thêm ô hành động (sửa, xóa, tách)
+    // Thêm ô hành động (nút sửa, xóa, tách)
     const lastActionCell = lastRowCells[formConfig.FORM_COLUMN_COUNT];
     const newActionCell = document.createElement('div');
     newActionCell.className = 'excel-cell action-cell';
@@ -69,7 +63,6 @@ function addNewRow() {
     gridElement.appendChild(newActionCell);
     return newInputs;
 }
-
 //✅............................HÀM XÓA DÒNG.......................
 function deleteRow(button) {
     const actionCell = button.closest('.excel-cell');
