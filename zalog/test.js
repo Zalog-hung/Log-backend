@@ -35,3 +35,5 @@ function addNewRow() {
     gridElement.appendChild(newActionCell);
     return newInputs;
 }
+document.getElementById('addnewrow').addEventListener('click', addNewRow);//gán Hàm vao nút thêm dòng
+
