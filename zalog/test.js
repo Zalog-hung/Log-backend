@@ -28,7 +28,7 @@ async function fetchAndShowLog() {
         const tableWrapper = renderLogTable(data, currentRenderIndex);
         logTableContainer.appendChild(tableWrapper);
 
-        if (data.length - 1 > PAGE_SIZE) {
+        if (data.length - 500 > PAGE_SIZE) {
             const loadMoreBtn = document.createElement('button');
             loadMoreBtn.textContent = '⬇ Tải thêm';
             loadMoreBtn.className = 'load-more-btn';
