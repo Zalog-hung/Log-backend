@@ -65,11 +65,26 @@ function deleteRow(button) {
         for (let i = formConfig.TOTAL_COLUMN_COUNT - 1; i >= 0; i--) {
             gridElement.children[rowStartIndex + i].remove();}}}
 //................................................................
-// ....................CỘT 1 (INDEX0) ID CHUYẾN.........
-if (index === 0) {
-    newInput.addEventListener('blur', () => {
-        newInput.value = newInput.value.trim();});}
-//...........CỘT 2 (INDEX1) NGÀY..............
+// ✅.....................CỘT 0.........
+function index0(input) {
+    input.addEventListener('blur', () => {
+        input.value = input.value.trim();
+    });
+}
+
+document.querySelectorAll('.excel-cell input').forEach((input) => {
+    const cell = input.closest('.excel-cell');
+    if (!cell) return;
+
+    const allCells = Array.from(cell.parentNode.children);
+    const cellIndex = allCells.indexOf(cell);
+
+    if (cellIndex % formConfig.TOTAL_COLUMN_COUNT === 0) {
+        index0(input);
+    }
+});
+
+//✅...........CỘT 2 (INDEX1) NGÀY..............
 function index1(input) {
     input.addEventListener('blur', () => {
         let value = input.value.trim();
@@ -93,7 +108,6 @@ function index1(input) {
     });
 }
 
-// GÁN CHO TẤT CẢ INPUT Ở CỘT INDEX = 1
 document.querySelectorAll('.excel-cell').forEach((cell, i) => {
     if (i % 7 === 1) { // Cột "Ngày"
         const input = cell.querySelector('input[type="text"]');
