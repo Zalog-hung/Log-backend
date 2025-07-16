@@ -12,3 +12,4 @@ const formConfig = {
     FIELDS_TO_KEEP_VALUE: [2, 4], // Giữ lại giá trị "Khách Hàng" và "Ca"
 };
 const gridElement = document.querySelector('.excel-grid');
+document.getElementById('addnewrow').addEventListener('click', addNewRow);
