@@ -11,7 +11,7 @@ const formConfig = {
 const gridElement = document.querySelector('.excel-grid');
 
 let khachHangList = [];
-//............................GÁN SỰ KIỆN; HÀM VÀO NÚT.....................................................
+//✅............................GÁN SỰ KIỆN; HÀM VÀO NÚT.....................................................
 document.getElementById('addnewrow').addEventListener('click', addNewRow);//.................GẮN HÀM THÊM DÒNG VÀO NÚT THÊM DÒNG
 document.querySelectorAll('.action-cell button').forEach(button => {
     if (button.textContent.includes('🗑️')) {
@@ -19,7 +19,7 @@ document.querySelectorAll('.action-cell button').forEach(button => {
             deleteRow(this);
         }); } });// ..........................................................................GÁN HÀM XÓA DÒNG VÀO NÚT XÓA
 
- //..............................................HÀM THÊM DÒNG........................................................
+ //✅..............................................HÀM THÊM DÒNG........................................................
 function addNewRow() {
     const allCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
     const lastRowCells = allCells.slice(-formConfig.TOTAL_COLUMN_COUNT);
@@ -27,21 +27,27 @@ function addNewRow() {
 
     for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
         const lastInput = lastRowCells[i]?.querySelector('input, select');
-        const newInput = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
+        const newInput = document.createElement('input');
 
-        // Giữ lại giá trị nếu cột là "Khách Hàng" (2) hoặc "Ca" (4)
+        // Copy kiểu input nếu cần
+        newInput.type = lastInput?.type || 'text';
+        newInput.className = lastInput?.className || '';
+
+        // Giữ lại giá trị nếu cột thuộc danh sách giữ
         if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
             newInput.value = lastInput.value.trim();
         } else {
-            newInput.value = '';}
-          // ✅ Sao chép địn dạng
-if (i === 0) index0(newInput);
-if (i === 1) index1(newInput);
-if (i === 2) index2(newInput);
-if (i === 3) index3(newInput);
-if (i === 4) index4(newInput);
-if (i === 5) index5(newInput);
+            newInput.value = '';
         }
+
+        //  Gán định dạng tương ứng với từng cột
+        if (i === 0) index0(newInput);
+        if (i === 1) index1(newInput);
+        if (i === 2) index2(newInput);
+        if (i === 3) index3(newInput);
+        if (i === 4) index4(newInput);
+        if (i === 5) index5(newInput);
+
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
         newCell.appendChild(newInput);
@@ -49,7 +55,7 @@ if (i === 5) index5(newInput);
         newInputs.push(newInput);
     }
 
-    // Thêm ô hành động (nút sửa, xóa, tách)
+    // Thêm ô hành động (sửa, xóa, tách)
     const lastActionCell = lastRowCells[formConfig.FORM_COLUMN_COUNT];
     const newActionCell = document.createElement('div');
     newActionCell.className = 'excel-cell action-cell';
@@ -63,7 +69,8 @@ if (i === 5) index5(newInput);
     gridElement.appendChild(newActionCell);
     return newInputs;
 }
-//............................HÀM XÓA DÒNG.......................
+
+//✅............................HÀM XÓA DÒNG.......................
 function deleteRow(button) {
     const actionCell = button.closest('.excel-cell');
     const rowStartIndex = Array.from(gridElement.children).indexOf(actionCell) - formConfig.FORM_COLUMN_COUNT;
