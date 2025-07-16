@@ -11,8 +11,9 @@ function attachHandlersByDataCol() {
     }
   });
 }
-
-attachHandlersByDataCol();
+window.addEventListener('DOMContentLoaded', () => {
+  attachHandlersByDataCol();
+});
 
 function index1(input) {
   input.addEventListener('blur', () => {
