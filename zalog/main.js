@@ -109,6 +109,8 @@ const ExcelGrid = {
         if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
 
         e.preventDefault();
+        const inputValue = e.target.value.trim(); // ✅ Ghi nhận dữ liệu người dùng nhập
+        const inputIndex = e.target.dataset?.index; // (nếu cần phân loại sau này)
         const allInputs = this._inputCache;
         const currentIndex = allInputs.indexOf(e.target);
 
