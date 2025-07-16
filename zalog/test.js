@@ -1,3 +1,4 @@
+// log.js
 window.addEventListener('DOMContentLoaded', fetchAndShowLog);
 
 let fullLogData = [];
@@ -30,7 +31,7 @@ async function fetchAndShowLog() {
         if (data.length - 1 > PAGE_SIZE) {
             const loadMoreBtn = document.createElement('button');
             loadMoreBtn.textContent = '⬇ Tải thêm';
-            loadMoreBtn.style.margin = '10px 0';
+            loadMoreBtn.className = 'load-more-btn';
             loadMoreBtn.addEventListener('click', () => {
                 currentRenderIndex += PAGE_SIZE;
                 const newTbody = renderLogRows(data, currentRenderIndex - PAGE_SIZE + 1, currentRenderIndex);
@@ -50,25 +51,23 @@ async function fetchAndShowLog() {
 
 function renderLogTable(data, limit) {
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'overflow:auto; max-height:400px; max-width:100%; border:1px solid #ccc; background:#fff; margin-top:10px;';
+    wrapper.className = 'log-wrapper';
 
     const table = document.createElement('table');
-    table.style.cssText = 'border-collapse:collapse; font-size:14px; min-width:max-content; width:100%;';
+    table.className = 'log-table';
 
-    // Header
     const headers = Array.isArray(data[0]) ? data[0] : Object.values(data[0]);
     const thead = document.createElement('thead');
     const trHead = document.createElement('tr');
     headers.slice(0, 26).forEach(text => {
         const th = document.createElement('th');
         th.textContent = text;
-        styleCell(th, true);
+        th.className = 'log-th';
         trHead.appendChild(th);
     });
     thead.appendChild(trHead);
     table.appendChild(thead);
 
-    // Body
     const tbody = renderLogRows(data, 1, limit);
     table.appendChild(tbody);
     wrapper.appendChild(table);
@@ -88,30 +87,13 @@ function renderLogRows(data, fromIndex, toIndex) {
             td.contentEditable = true;
             td.dataset.row = i;
             td.dataset.col = j;
+            td.className = 'log-td';
             td.addEventListener('blur', handleCellEdit);
-            styleCell(td);
             tr.appendChild(td);
         }
         tbody.appendChild(tr);
     }
     return tbody;
-}
-
-function styleCell(cell, isHeader = false) {
-    cell.style.border = '1px solid #ccc';
-    cell.style.padding = '4px 6px';
-    cell.style.minWidth = '100px';
-    cell.style.maxWidth = '200px';
-    cell.style.whiteSpace = 'nowrap';
-    cell.style.overflow = 'hidden';
-    if (isHeader) {
-        cell.style.background = '#f0f0f0';
-        cell.style.fontWeight = 'bold';
-        cell.style.position = 'sticky';
-        cell.style.top = '0';
-        cell.style.zIndex = '1';
-        cell.style.textAlign = 'center';
-    }
 }
 
 function handleCellEdit(event) {
@@ -142,23 +124,10 @@ async function sendLogUpdate(update) {
     }
 }
 
-// Thêm toast đơn giản
 function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.textContent = message;
-    toast.style.position = 'fixed';
-    toast.style.bottom = '20px';
-    toast.style.right = '20px';
-    toast.style.padding = '10px 16px';
-    toast.style.background = type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#333';
-    toast.style.color = '#fff';
-    toast.style.borderRadius = '6px';
-    toast.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
-    toast.style.zIndex = '9999';
-    toast.style.opacity = '0.95';
+    toast.className = `toast ${type}`;
     document.body.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+    setTimeout(() => toast.remove(), 3000);
 }
