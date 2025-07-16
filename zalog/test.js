@@ -19,3 +19,4 @@ function enter(input) {
 
 // ✅ Gắn sự kiện cho các input đã có trên giao diện
 document.querySelectorAll(".excel-grid input").forEach(enter);
+console.log("✅ test.js đã chạy!"); //Kiểm tra hoạt động
