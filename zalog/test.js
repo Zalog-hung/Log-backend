@@ -1,14 +1,14 @@
-addNewRow() {
-    const allCells = Array.from(this.gridElement.querySelectorAll('.excel-cell'));
-    const lastRowCells = allCells.slice(-this.TOTAL_COLUMN_COUNT);
+function addNewRow() {
+    const allCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
+    const lastRowCells = allCells.slice(-formConfig.TOTAL_COLUMN_COUNT);
     const newInputs = [];
 
-    for (let i = 0; i < this.FORM_COLUMN_COUNT; i++) {
+    for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
         const lastInput = lastRowCells[i]?.querySelector('input, select');
         const newInput = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
 
-        // Giữ lại giá trị nếu index là 2 (Khách Hàng) hoặc 4 (Ca)
-        if ([2, 4].includes(i) && lastInput) {
+        // Giữ lại giá trị nếu cột là "Khách Hàng" (2) hoặc "Ca" (4)
+        if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
             newInput.value = lastInput.value.trim();
         } else {
             newInput.value = '';
@@ -17,12 +17,12 @@ addNewRow() {
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
         newCell.appendChild(newInput);
-        this.gridElement.appendChild(newCell);
+        gridElement.appendChild(newCell);
         newInputs.push(newInput);
     }
 
-    // Thêm ô hành động (clone từ dòng cuối)
-    const lastActionCell = lastRowCells[this.FORM_COLUMN_COUNT];
+    // Thêm ô hành động (nút sửa, xóa, tách)
+    const lastActionCell = lastRowCells[formConfig.FORM_COLUMN_COUNT];
     const newActionCell = document.createElement('div');
     newActionCell.className = 'excel-cell action-cell';
 
@@ -32,9 +32,6 @@ addNewRow() {
         });
     }
 
-    this.gridElement.appendChild(newActionCell);
-
-    this._updateInputCache?.(); // nếu có hàm này để quản lý cache nội bộ
+    gridElement.appendChild(newActionCell);
     return newInputs;
 }
-
