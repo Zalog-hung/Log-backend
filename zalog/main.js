@@ -8,6 +8,7 @@ const LOG_COLUMN_COUNT = 26;
 let khachHangList = [];
 let suggestionBox = null;
 // ✅ Ghi chú: Toàn bộ code đã được sửa lỗi cú pháp.
+// ✅ Ghi chú: Toàn bộ code đã được sửa lỗi cú pháp.
 
 const ExcelGrid = {
     // --- CẤU HÌNH ---
