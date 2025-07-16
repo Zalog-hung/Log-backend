@@ -26,6 +26,10 @@ function enter(input) {
             newInputs[0].focus();     // Focus ô đầu tiên dòng mới
         } else {
             all[i + 1]?.focus(); // Focus ô kế tiếp
+             // ✅ Nếu là ô cuối dòng (index 5), thì thêm dòng mới
+                    const newInputs = addRow();
+                    attachEventListenersToRow(newInputs); // Gắn lại sự kiện
+                    newInputs[0].focus();
         }
     });
 }
