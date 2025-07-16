@@ -10,11 +10,11 @@
 
 /* === CÀI ĐẶT CHUNG CHO CẢ TRANG === */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 11px;
     background-color: var(--nen-than-trang);
     margin: 0;
-    padding: 15px 25px; /* Thay đổi: Giảm padding tổng thể */
-    font-size: 13px; /* Thay đổi: Đặt cỡ chữ cơ bản nhỏ hơn */
+    padding: 15px 20px;
 }
 
 /* === THANH CHUYỂN TAB === */
@@ -25,7 +25,7 @@ body {
 }
 
 .tab-item {
-    padding: 6px 14px; /* Thay đổi: Giảm padding */
+    padding: 5px 10px;
     margin-right: 8px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
@@ -39,6 +39,7 @@ body {
     border-bottom-color: var(--mau-xanh-chu-dao);
     font-weight: bold;
     color: var(--mau-xanh-chu-dao);
+    font-size: 12px;
 }
 
 /* === BẢNG NHẬP LIỆU EXCEL === */
@@ -62,8 +63,9 @@ body {
 .header-cell {
     justify-content: center;
     font-weight: bold;
-    padding: 6px; /* Thay đổi: Giảm padding */
+    padding: 5px;
     background-color: var(--nen-tieu-de);
+    font-size: 12px;
 }
 
 .action-cell {
@@ -76,13 +78,14 @@ body {
 .excel-cell select {
     width: 100%;
     height: 100%;
-    min-height: 28px; /* Thay đổi: Giảm chiều cao tối thiểu */
-    padding: 5px 7px; /* Thay đổi: Giảm padding */
+    min-height: 24px;
+    padding: 4px 6px;
     border: none;
     outline: none;
     box-sizing: border-box;
     background-color: transparent;
-    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
+    font-size: 11px;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .excel-cell input:focus {
@@ -94,9 +97,10 @@ body {
     background: #eee;
     border: 1px solid var(--mau-vien-xam);
     border-radius: 4px;
-    font-size: 11px; /* Thay đổi: Giảm cỡ chữ */
+    font-size: 10px;
     cursor: pointer;
-    padding: 2px 5px; /* Thay đổi: Giảm padding */
+    padding: 2px 4px;
+    font-family: Arial, sans-serif;
 }
 
 .action-cell button:hover {
@@ -107,8 +111,8 @@ body {
 #addRowBtn, #logBtn {
     margin-top: 12px;
     margin-right: 8px;
-    padding: 6px 12px; /* Thay đổi: Giảm padding */
-    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
+    padding: 5px 10px;
+    font-size: 12px;
     font-weight: bold;
     color: #fff;
     background-color: var(--mau-xanh-chu-dao);
@@ -123,9 +127,8 @@ body {
     background-color: #1669c1;
 }
 
-/* === KHU VỰC LOG === */
+/* === KHU VỰC LOG (ĐÃ CẬP NHẬT) === */
 #logArea {
-    font-family: Arial, sans-serif;
     background: var(--nen-trang);
     color: #333;
     padding: 10px;
@@ -143,24 +146,29 @@ body {
 .log-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
+    font-size: 11px;
 }
 
 .log-table th,
 .log-table td {
-    border: 1px solid var(--mau-vien-xam);
-    padding: 6px 10px; /* Thay đổi: Giảm padding */
+    border: 1px solid var(--mau-vien-xam); 
+    padding: 4px 6px;                  
+    min-width: 100px;                  
+    max-width: 200px;                  
+    white-space: nowrap;               
+    overflow: hidden;                  
+    text-overflow: ellipsis;           
     text-align: left;
-    white-space: nowrap;
 }
 
 .log-table th {
-    background-color: #f0f0f0;
-    font-weight: bold;
-    position: sticky;
-    top: -1px;
-    z-index: 1;
-    text-align: center;
+    background-color: #f0f0f0;         
+    font-weight: bold;                 
+    position: sticky;                  
+    top: 0;                            
+    z-index: 1;                        
+    text-align: center;                
+    font-size: 12px;
 }
 
 /* === HỘP GỢI Ý KHÁCH HÀNG === */
@@ -175,9 +183,9 @@ body {
 }
 
 .suggestion-item {
-    padding: 6px 10px; /* Thay đổi: Giảm padding */
+    padding: 5px 8px;
     cursor: pointer;
-    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
+    font-size: 11px;
 }
 
 .suggestion-item:hover {
