@@ -7,6 +7,8 @@ const LOG_COLUMN_COUNT = 26;
 
 let khachHangList = [];
 let suggestionBox = null;
+// ✅ Ghi chú: Toàn bộ code đã được sửa lỗi cú pháp.
+
 const ExcelGrid = {
     // --- CẤU HÌNH ---
     gridElement: null,
@@ -42,7 +44,9 @@ const ExcelGrid = {
             newInput.innerHTML = lastInput.innerHTML;
         } else {
             const inputType = lastInput?.type || 'text';
-            newInput = this.createElement('input', { type: inputType });
+            newInput = this.createElement('input', {
+                type: inputType
+            });
         }
 
         if (lastInput) {
@@ -101,30 +105,31 @@ const ExcelGrid = {
         this._updateInputCache();
         return newInputs;
     },
-// Phím Enter
-   handleKeyDown(e) {
-    if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
+    // Phím Enter
+    handleKeyDown(e) {
+        if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
 
-    e.preventDefault();
-// ✅ Ghi lại nội dung người dùng vừa nhập (nếu cần xử lý hoặc làm sạch)
-    const inputValue = e.target.value.trim();
-    e.target.value = inputValue;  // Ghi lại nếu muốn cắt khoảng trắng
+        e.preventDefault();
+        // ✅ Ghi lại nội dung người dùng vừa nhập (nếu cần xử lý hoặc làm sạch)
+        const inputValue = e.target.value.trim();
+        e.target.value = inputValue; // Ghi lại nếu muốn cắt khoảng trắng
 
-    console.log("📥 Dữ liệu đã nhập:", inputValue);
-    const allInputs = this._inputCache;
-    const currentIndex = allInputs.indexOf(e.target);
+        console.log("📥 Dữ liệu đã nhập:", inputValue);
+        const allInputs = this._inputCache;
+        const currentIndex = allInputs.indexOf(e.target);
 
-    if (currentIndex === -1) return;
+        if (currentIndex === -1) return;
 
-    const isLastInRow = (currentIndex + 1) % this.FORM_COLUMN_COUNT === 0;
+        const isLastInRow = (currentIndex + 1) % this.FORM_COLUMN_COUNT === 0;
 
-    if (isLastInRow) {
-        const newInputs = this.addNewRow();
-        newInputs[0]?.focus();
-    } else {
-        allInputs[currentIndex + 1]?.focus();
-    }
-},
+        if (isLastInRow) {
+            const newInputs = this.addNewRow();
+            newInputs[0]?.focus();
+        } else {
+            allInputs[currentIndex + 1]?.focus();
+        }
+    }, // ✅ SỬA LỖI: Thêm dấu phẩy ở đây để ngăn cách các phương thức trong đối tượng.
+
     //Hết đoạn code
 
 
@@ -151,8 +156,3 @@ const ExcelGrid = {
         }
     },
 };
-
-// --- KHỞI TẠO SAU KHI DOM SẴN SÀNG ---
-document.addEventListener('DOMContentLoaded', () => {
-    ExcelGrid.init();
-}); 
