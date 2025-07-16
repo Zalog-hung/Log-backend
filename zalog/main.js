@@ -4,11 +4,14 @@ const LOG_API_URL = "https://script.google.com/macros/s/AKfycbwhGc1NHndpO2IYfEhF
 const GHI_LOG_PROXY_URL = 'https://za-log-proxy-4pkb9hu3p-hung-za.vercel.app/api/proxy';
 const FORM_COLUMN_COUNT = 6;
 const LOG_COLUMN_COUNT = 26;
+cont TOTAL_COLUMN_COUNT: 7;
+cont FORM_COLUMN_COUNT: 6;
+cont FIELDS_TO_KEEP_VALUE: [1, 4]; // Giữ lại giá trị "Khách Hàng" và "Ca"
+const gridElement = document.querySelector('.excel-grid');
 
 let khachHangList = [];
-const formConfig = {
-    TOTAL_COLUMN_COUNT: 7,
-    FORM_COLUMN_COUNT: 6,
-    FIELDS_TO_KEEP_VALUE: [1, 4], // Giữ lại giá trị "Khách Hàng" và "Ca"
-};
-const gridElement = document.querySelector('.excel-grid');
+ gridElement: null;
+ 
+
+
+
