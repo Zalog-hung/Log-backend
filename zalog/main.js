@@ -107,19 +107,6 @@ function index1(input) {
     input.value = `${day}/${month}/${year}`;
   });
 }
-function attachHandlersByDataCol() {
-  document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
-    const col = parseInt(input.dataset.col);
-    switch (col) {
-      case 0: index0(input); break;
-      case 1: index1(input); break;
-    }
-  });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  attachHandlersByDataCol();
-});
 //✅          Gắn Hàm DataCol để gán vào form từng ô
 
 function attachHandlersByDataCol() {
