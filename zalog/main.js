@@ -10,6 +10,21 @@ const LOG_COLUMN_COUNT = 26;
 
 let khachHangList = [];
 let suggestionBox = null;
+// KHAI BÁO PHẦN TỬ
+// 1. Khai báo hằng số
+const FORM_COLUMN_COUNT = 6;
+
+// 2. Hàm tạo phần tử HTML
+function createElement(tag, options = {}) {
+    const el = document.createElement(tag);
+    Object.entries(options).forEach(([key, value]) => {
+        if (key === 'className') el.className = value;
+        else if (key === 'textContent') el.textContent = value;
+        else if (key === 'dataset') Object.assign(el.dataset, value);
+        else el.setAttribute(key, value);
+    });
+    return el;
+}
 //THÊM DÒNG
 function addRow() {
     const grid = document.querySelector('.excel-grid');
