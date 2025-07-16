@@ -6,23 +6,25 @@ window.addEventListener('DOMContentLoaded', fetchAndShowLog);
 // HÀM CHÍNH
 async function fetchAndShowLog() {
     const logArea = document.getElementById('logArea');
-    if (!logArea) return;
-    logArea.innerHTML = '[LOG] Hệ thống sẵn sàng.<br>⏳ Đang tải log...';
+    const logTableContainer = document.getElementById('logTableContainer');
+
+    if (!logArea || !logTableContainer) return;
+    logTableContainer.innerHTML = '<div>⏳ Đang tải log...</div>';
 
     try {
         const response = await fetch('https://script.google.com/macros/s/AKfycbwhGc1NHndpO2IYfEhFDFAiLHyTi1LqlWFSnfqtSxWPEQ5bCw7r4idZ23qvb83PitB0Dw/exec');
         const data = await response.json();
 
         if (!data || data.length <= 1) {
-            logArea.innerHTML = '[LOG] Không có dữ liệu log.';
+            logTableContainer.innerHTML = '<div>[LOG] Không có dữ liệu log.</div>';
             return;
         }
 
         const logTable = renderLogTable(data);
-        logArea.innerHTML = `<div>📋 Tìm thấy ${data.length - 1} dòng log có dữ liệu:</div>`;
-        logArea.appendChild(logTable);
+        logTableContainer.innerHTML = `<div>📋 Tìm thấy ${data.length - 1} dòng log có dữ liệu:</div>`;
+        logTableContainer.appendChild(logTable);
     } catch (err) {
-        logArea.innerHTML += '<br>❌ Lỗi khi tải log.';
+        logTableContainer.innerHTML += '<div>❌ Lỗi khi tải log.</div>';
         console.error(err);
     }
 }
@@ -30,12 +32,12 @@ async function fetchAndShowLog() {
 // TẠO BẢNG LOG
 function renderLogTable(data) {
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'overflow:auto; max-height:400px; max-width:100%; border:1px solid #ccc; background:#fff;';
+    wrapper.style.cssText = 'overflow:auto; max-height:400px; max-width:100%; border:1px solid #ccc; background:#fff; margin-top:10px;';
 
     const table = document.createElement('table');
     table.style.cssText = 'border-collapse:collapse; font-size:14px; min-width:max-content; width:100%;';
 
-    // Tạo header
+    // Header
     const headers = Array.isArray(data[0]) ? data[0] : Object.values(data[0]);
     const thead = document.createElement('thead');
     const trHead = document.createElement('tr');
@@ -48,7 +50,7 @@ function renderLogTable(data) {
     thead.appendChild(trHead);
     table.appendChild(thead);
 
-    // Tạo body
+    // Body
     const tbody = document.createElement('tbody');
     for (let i = 1; i < data.length; i++) {
         const row = data[i];
@@ -100,7 +102,7 @@ function handleCellEdit(event) {
 
     console.log(`📝 Sửa log: dòng ${parseInt(row) + 1}, cột ${colLabel} → "${newValue}"`);
 
-    // TODO: Gửi dữ liệu lên server (ví dụ minh họa):
+    // Gửi dữ liệu lên server (ví dụ)
     sendLogUpdate({ row, col, value: newValue });
 }
 
@@ -119,4 +121,3 @@ async function sendLogUpdate(update) {
         console.error('❌ Lỗi khi gửi cập nhật:', err);
     }
 }
-
