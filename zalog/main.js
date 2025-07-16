@@ -73,22 +73,7 @@ function deleteRow(button) {
         for (let i = formConfig.TOTAL_COLUMN_COUNT - 1; i >= 0; i--) {
             gridElement.children[rowStartIndex + i].remove();}}}
 //................................................................
-//✅          Gắn Hàm DataCol để gán vào form từng ô
 
-function attachHandlersByDataCol() {
-  document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
-    const col = parseInt(input.dataset.col);
-
-    switch (col) {
-      case 0: index0(input); break;
-      case 1: index1(input); break;
-      // các cột khác sẽ thêm sau: index2(input), ...
-    }
-  });
-}
-window.addEventListener('DOMContentLoaded', () => {
-  attachHandlersByDataCol();
-});
 
 // ✅.....................CỘT 0.........
 function index0(input) {
@@ -124,3 +109,19 @@ function index1(input) {
     input.value = `${day}/${month}/${year}`;
   });
 }
+//✅          Gắn Hàm DataCol để gán vào form từng ô
+
+function attachHandlersByDataCol() {
+  document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
+    const col = parseInt(input.dataset.col);
+
+    switch (col) {
+      case 0: index0(input); break;
+      case 1: index1(input); break;
+      // các cột khác sẽ thêm sau: index2(input), ...
+    }
+  });
+}
+window.addEventListener('DOMContentLoaded', () => {
+  attachHandlersByDataCol();
+});
