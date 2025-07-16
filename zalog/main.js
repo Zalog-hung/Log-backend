@@ -110,8 +110,8 @@ const ExcelGrid = {
 
     e.preventDefault();
 
-    const inputValue = e.target.value.trim(); // ✅ Ghi nhận dữ liệu người dùng nhập
-    console.log("📥 Dữ liệu đã nhập:", inputValue); // ✅ In ra console
+    const inputValue = e.target.value.trim();
+    console.log("📥 Dữ liệu đã nhập:", inputValue); // ✅ Dòng bạn cần
 
     const allInputs = this._inputCache;
     const currentIndex = allInputs.indexOf(e.target);
@@ -126,7 +126,8 @@ const ExcelGrid = {
     } else {
         allInputs[currentIndex + 1]?.focus();
     }
-},//Hết đoạn code
+}
+    //Hết đoạn code
 
 
     init() {
