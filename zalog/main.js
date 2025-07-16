@@ -99,35 +99,18 @@ function index0(input) {
 //✅...........CỘT 2 (INDEX1) NGÀY..............
 function index1(input) {
     input.addEventListener('blur', () => {
-        let value = input.value.trim();
-        if (!value) return;
+        let [d, m, y] = input.value.trim().split('/');
+        const now = new Date(), cy = now.getFullYear();
+        if (!d || !m) return;
 
-        let parts = value.split('/').map(p => p.trim());
-        const currentYear = new Date().getFullYear();
-        let day = parts[0] || '';
-        let month = parts[1] || '';
-        let year = parts[2] || '';
+        d = d.padStart(2, '0');
+        m = m.padStart(2, '0');
 
-        // Bổ sung số 0 nếu thiếu
-        if (day.length === 1) day = '0' + day;
-        if (month.length === 1) month = '0' + month;
+        if (!y) y = cy;
+        else if (y.length === 1) y = '200' + y;
+        else if (y.length === 2) y = (parseInt(y) >= 50 ? '19' : '20') + y;
 
-        // Xử lý năm
-        if (!year) {
-            year = currentYear;
-        } else if (year.length === 2) {
-            year = parseInt(year) >= 50 ? '19' + year : '20' + year;
-        } else if (year.length === 1) {
-            year = '200' + year;
-        }
-
-        // Kiểm tra định dạng hợp lệ
-        if (!/^\d{2}$/.test(day) || !/^\d{2}$/.test(month) || !/^\d{4}$/.test(year)) {
-            input.value = ''; // hoặc báo lỗi tuỳ nhu cầu
-            return;
-        }
-
-        input.value = `${day}/${month}/${year}`;
+        input.value = `${d}/${m}/${y}`;
     });
 }
 
