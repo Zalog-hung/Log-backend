@@ -7,13 +7,19 @@ const LOG_COLUMN_COUNT = 26;
 const formConfig = {
   TOTAL_COLUMN_COUNT: 7,
   FORM_COLUMN_COUNT: 6,
-  FIELDS_TO_KEEP_VALUE: [1, 4],}; // Giữ lại giá trị "Khách Hàng" và "Ca"
+  FIELDS_TO_KEEP_VALUE: [1, 4],}; // .....................................................Giữ lại giá trị "Khách Hàng" và "Ca"
 const gridElement = document.querySelector('.excel-grid');
 
 let khachHangList = [];
-//GÁN SỰ KIỆN; HÀM:
-document.getElementById('addnewrow').addEventListener('click', addNewRow);//gán Hàm vao nút thêm dòng
- //SỰ KIỆN THÊM DÒNG
+//GÁN SỰ KIỆN; HÀM VÀO NÚT
+document.getElementById('addnewrow').addEventListener('click', addNewRow);//.................GẮN HÀM THÊM DÒNG VÀO NÚT THÊM DÒNG
+document.querySelectorAll('.action-cell button').forEach(button => {
+    if (button.textContent.includes('🗑️')) {
+        button.addEventListener('click', function () {
+            deleteRow(this);
+        }); } });// ..........................................................................GÁN HÀM XÓA DÒNG VÀO NÚT XÓA
+
+ //..............................................SỰ KIỆN THÊM DÒNG
 function addNewRow() {
     const allCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
     const lastRowCells = allCells.slice(-formConfig.TOTAL_COLUMN_COUNT);
@@ -29,7 +35,6 @@ function addNewRow() {
         } else {
             newInput.value = '';
         }
-
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
         newCell.appendChild(newInput);
