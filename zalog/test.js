@@ -1,31 +1,38 @@
-// ======================================================================
-// ✅ Hàm thêm dòng mới vào grid nhập liệu
-// ======================================================================
+//THÊM DÒNG
 function addRow() {
-    const grid = document.querySelector('.excel-grid'); // Tìm container grid
-    const FORM_COLUMN_COUNT = 6; // Số ô input trong mỗi dòng
+    const grid = document.querySelector('.excel-grid');
+    const lastCells = Array.from(grid.querySelectorAll('.excel-cell')).slice(-7); // 7 cột cuối
+    const newInputs = [];
 
-    const newInputs = []; // Mảng lưu input mới tạo
+    // Tạo lại 6 ô nhập (0–5)
+    for (let i = 0; i < 6; i++) {
+        const lastInput = lastCells[i]?.querySelector('input');
+        const newInput = createElement('input', { type: 'text' });
 
-    // ✅ Tạo 6 ô input (từ index 0 đến 5)
-    for (let i = 0; i < FORM_COLUMN_COUNT; i++) {
-        const input = document.createElement('input'); // Tạo thẻ input
-        input.type = 'text';
+        // ✅ Copy toàn bộ thuộc tính từ ô cũ
+        if (lastInput) {
+            for (const attr of lastInput.attributes) {
+                if (attr.name !== 'value') newInput.setAttribute(attr.name, attr.value);
+            }
 
-        const cell = document.createElement('div');     // Tạo ô chứa input
-        cell.className = 'excel-cell';                  // Gán class để định dạng
-        cell.appendChild(input);                        // Gắn input vào ô
-        grid.appendChild(cell);                         // Gắn ô vào grid
+            // ✅ Riêng index 1 và 5 → giữ giá trị nếu có
+            if ((i === 1 || i === 5) && lastInput.value.trim() !== '') {
+                newInput.value = lastInput.value;
+            }
+        }
 
-        newInputs.push(input);                          // Lưu input vào mảng
+        const newCell = createElement('div', { className: 'excel-cell' });
+        newCell.appendChild(newInput);
+        grid.appendChild(newCell);
+        newInputs.push(newInput);
     }
 
-    // ✅ Tạo ô cuối cùng là ô hành động (index 6)
-    const actionCell = document.createElement('div');
-    actionCell.className = 'excel-cell action-cell';    // Gán class đặc biệt
-    actionCell.innerHTML = `<button onclick="deleteRow(this)">🗑️</button>`; // Nút xoá
-    grid.appendChild(actionCell); // Gắn ô hành động vào grid
+    // ✅ Ô hành động (index 6)
+    const lastActionCell = lastCells[6];
+    const newActionCell = createElement('div', { className: 'excel-cell action-cell' });
+    newActionCell.innerHTML = lastActionCell?.innerHTML || ''; // Copy toàn bộ nút
+    grid.appendChild(newActionCell);
 
-    return newInputs; // Trả về mảng input mới nếu cần dùng
+    return newInputs;
 }
-
+//HẾT
