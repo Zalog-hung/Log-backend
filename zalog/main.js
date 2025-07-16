@@ -111,6 +111,7 @@ const ExcelGrid = {
         e.preventDefault();
         const inputValue = e.target.value.trim(); // ✅ Ghi nhận dữ liệu người dùng nhập
         const inputIndex = e.target.dataset?.index; // (nếu cần phân loại sau này)
+        console.log("📥 Dữ liệu đã nhập:", inputValue);
         const allInputs = this._inputCache;
         const currentIndex = allInputs.indexOf(e.target);
 
