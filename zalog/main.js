@@ -124,7 +124,7 @@ const ExcelGrid = {
     } else {
         allInputs[currentIndex + 1]?.focus();
     }
-};
+},
     //Hết đoạn code
 
 
