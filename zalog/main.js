@@ -29,12 +29,16 @@ function addNewRow() {
         const lastInput = lastRowCells[i]?.querySelector('input, select');
         const newInput = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
 
-        // Giữ lại giá trị nếu cột là "Khách Hàng" (2) hoặc "Ca" (4)
+        // Gán thuộc tính data-col để JS gắn đúng định dạng
+        newInput.setAttribute('data-col', i);
+
+        // Gán lại giá trị nếu cần
         if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
             newInput.value = lastInput.value.trim();
         } else {
-            newInput.value = '';}
-        
+            newInput.value = '';
+        }
+
         const newCell = document.createElement('div');
         newCell.className = 'excel-cell data-cell';
         newCell.appendChild(newInput);
@@ -42,20 +46,34 @@ function addNewRow() {
         newInputs.push(newInput);
     }
 
-    // Thêm ô hành động (nút sửa, xóa, tách)
+    // Thêm ô hành động
     const lastActionCell = lastRowCells[formConfig.FORM_COLUMN_COUNT];
     const newActionCell = document.createElement('div');
     newActionCell.className = 'excel-cell action-cell';
 
     if (lastActionCell) {
         lastActionCell.childNodes.forEach(child => {
-            newActionCell.appendChild(child.cloneNode(true));
+            const newBtn = child.cloneNode(true);
+            newActionCell.appendChild(newBtn);
         });
     }
 
     gridElement.appendChild(newActionCell);
+
+    // Gắn lại logic xử lý từng input theo data-col (index0, index1, ...)
+    newInputs.forEach(input => {
+        const col = parseInt(input.dataset.col);
+        switch (col) {
+            case 0: index0(input); break;
+            case 1: index1(input); break;
+            // case 2: index2(input); ...
+            // case 3: index3(input); ...
+        }
+    });
+
     return newInputs;
 }
+
 //✅............................HÀM XÓA DÒNG.......................
 function deleteRow(button) {
     const actionCell = button.closest('.excel-cell');
