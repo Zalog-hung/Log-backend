@@ -9,7 +9,6 @@ const FIELDS_TO_KEEP_VALUE= [1, 4]; // Giữ lại giá trị "Khách Hàng" và
 const gridElement = document.querySelector('.excel-grid');
 
 let khachHangList = [];
- gridElement: null;
 //GÁN SỰ KIỆN; HÀM:
 document.getElementById('addnewrow').addEventListener('click', addNewRow);//gán Hàm vao nút thêm dòng
  //SỰ KIỆN THÊM DÒNG
