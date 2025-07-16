@@ -75,27 +75,28 @@ function index1(input) {
         let value = input.value.trim();
         if (!value) return;
 
-        const parts = value.split('/');
-        let day = parts[0] || '';
-        let month = parts[1] || '';
-        let year = parts[2] || new Date().getFullYear();
+        let [day, month, year] = value.split('/');
+        const currentYear = new Date().getFullYear();
 
-        if (day.length === 1) day = '0' + day;
-        if (month.length === 1) month = '0' + month;
-        if (year.length === 2) year = '20' + year;
+        // Bổ sung số 0 nếu thiếu
+        if (day && day.length === 1) day = '0' + day;
+        if (month && month.length === 1) month = '0' + month;
+
+        // Nếu thiếu năm → dùng năm hiện tại
+        if (!year) {
+            year = currentYear;
+        } else if (year.length === 2) {
+            year = '20' + year;
+        }
 
         input.value = `${day}/${month}/${year}`;
     });
 }
 
-// Gọi ngay sau khi định nghĩa
-document.querySelectorAll('.excel-cell input[type="text"]').forEach((input) => {
-    const cell = input.closest('.excel-cell');
-    const cells = Array.from(cell.parentElement.children);
-    const cellIndex = cells.indexOf(cell);
-    if (cellIndex % 7 === 1) {
-        index1(input);
+// GÁN CHO TẤT CẢ INPUT Ở CỘT INDEX = 1
+document.querySelectorAll('.excel-cell').forEach((cell, i) => {
+    if (i % 7 === 1) { // Cột "Ngày"
+        const input = cell.querySelector('input[type="text"]');
+        if (input) index1(input);
     }
 });
-//
-
