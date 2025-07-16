@@ -13,7 +13,8 @@ body {
     font-family: Arial, sans-serif;
     background-color: var(--nen-than-trang);
     margin: 0;
-    padding: 20px 30px;
+    padding: 15px 25px; /* Thay đổi: Giảm padding tổng thể */
+    font-size: 13px; /* Thay đổi: Đặt cỡ chữ cơ bản nhỏ hơn */
 }
 
 /* === THANH CHUYỂN TAB === */
@@ -24,7 +25,7 @@ body {
 }
 
 .tab-item {
-    padding: 8px 16px;
+    padding: 6px 14px; /* Thay đổi: Giảm padding */
     margin-right: 8px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
@@ -61,7 +62,7 @@ body {
 .header-cell {
     justify-content: center;
     font-weight: bold;
-    padding: 8px;
+    padding: 6px; /* Thay đổi: Giảm padding */
     background-color: var(--nen-tieu-de);
 }
 
@@ -75,13 +76,13 @@ body {
 .excel-cell select {
     width: 100%;
     height: 100%;
-    min-height: 30px;
-    padding: 6px 8px;
+    min-height: 28px; /* Thay đổi: Giảm chiều cao tối thiểu */
+    padding: 5px 7px; /* Thay đổi: Giảm padding */
     border: none;
     outline: none;
     box-sizing: border-box;
     background-color: transparent;
-    font-size: 14px;
+    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
 }
 
 .excel-cell input:focus {
@@ -93,9 +94,9 @@ body {
     background: #eee;
     border: 1px solid var(--mau-vien-xam);
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 11px; /* Thay đổi: Giảm cỡ chữ */
     cursor: pointer;
-    padding: 2px 6px;
+    padding: 2px 5px; /* Thay đổi: Giảm padding */
 }
 
 .action-cell button:hover {
@@ -106,8 +107,8 @@ body {
 #addRowBtn, #logBtn {
     margin-top: 12px;
     margin-right: 8px;
-    padding: 8px 14px;
-    font-size: 14px;
+    padding: 6px 12px; /* Thay đổi: Giảm padding */
+    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
     font-weight: bold;
     color: #fff;
     background-color: var(--mau-xanh-chu-dao);
@@ -123,7 +124,6 @@ body {
 }
 
 /* === KHU VỰC LOG === */
-/* ✅ HỢP NHẤT: Đây là định dạng duy nhất cho khu vực Log và bảng Log */
 #logArea {
     font-family: Arial, sans-serif;
     background: var(--nen-trang);
@@ -131,11 +131,11 @@ body {
     padding: 10px;
     border-radius: 6px;
     border: 1px solid var(--mau-vien-xam);
-    overflow: hidden; /* Để thẻ con .log-table-wrapper xử lý cuộn */
+    overflow: hidden;
 }
 
 .log-table-wrapper {
-    overflow: auto; /* Cho phép cuộn cả ngang và dọc */
+    overflow: auto;
     max-height: 400px;
     margin-top: 10px;
 }
@@ -143,13 +143,13 @@ body {
 .log-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
 }
 
 .log-table th,
 .log-table td {
     border: 1px solid var(--mau-vien-xam);
-    padding: 8px 12px;
+    padding: 6px 10px; /* Thay đổi: Giảm padding */
     text-align: left;
     white-space: nowrap;
 }
@@ -158,13 +158,12 @@ body {
     background-color: #f0f0f0;
     font-weight: bold;
     position: sticky;
-    top: -1px; /* Dính sát lên cạnh trên khi cuộn */
+    top: -1px;
     z-index: 1;
     text-align: center;
 }
 
 /* === HỘP GỢI Ý KHÁCH HÀNG === */
-/* ✅ HỢP NHẤT: Đây là định dạng duy nhất cho hộp gợi ý */
 .suggestions-container {
     position: absolute;
     z-index: 1000;
@@ -176,9 +175,9 @@ body {
 }
 
 .suggestion-item {
-    padding: 8px 12px;
+    padding: 6px 10px; /* Thay đổi: Giảm padding */
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px; /* Thay đổi: Giảm cỡ chữ */
 }
 
 .suggestion-item:hover {
@@ -186,9 +185,9 @@ body {
 }
 .action-bar {
   display: flex;
-  gap: 8px; /* Khoảng cách giữa các nút */
+  gap: 8px;
   margin-top: 12px;
 }
 .action-bar .tab-item {
-  white-space: nowrap; /* Ngăn không cho xuống dòng */
+  white-space: nowrap;
 }
