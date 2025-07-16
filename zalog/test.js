@@ -1,14 +1,14 @@
-// === TỰ ĐỘNG TẢI VÀ HIỂN THỊ LOG, CÓ THỂ SỬA VÀ GỬI LÊN SERVER ===
-
-// GỌI KHI TRANG TẢI XONG
 window.addEventListener('DOMContentLoaded', fetchAndShowLog);
 
-// HÀM CHÍNH
+let fullLogData = [];
+let currentRenderIndex = 0;
+const PAGE_SIZE = 100;
+
 async function fetchAndShowLog() {
     const logArea = document.getElementById('logArea');
     const logTableContainer = document.getElementById('logTableContainer');
-
     if (!logArea || !logTableContainer) return;
+
     logTableContainer.innerHTML = '<div>⏳ Đang tải log...</div>';
 
     try {
@@ -20,17 +20,35 @@ async function fetchAndShowLog() {
             return;
         }
 
-        const logTable = renderLogTable(data);
+        fullLogData = data;
+        currentRenderIndex = 1;
+
         logTableContainer.innerHTML = `<div>📋 Tìm thấy ${data.length - 1} dòng log có dữ liệu:</div>`;
-        logTableContainer.appendChild(logTable);
+        const tableWrapper = renderLogTable(data, currentRenderIndex);
+        logTableContainer.appendChild(tableWrapper);
+
+        if (data.length - 1 > PAGE_SIZE) {
+            const loadMoreBtn = document.createElement('button');
+            loadMoreBtn.textContent = '⬇ Tải thêm';
+            loadMoreBtn.style.margin = '10px 0';
+            loadMoreBtn.addEventListener('click', () => {
+                currentRenderIndex += PAGE_SIZE;
+                const newTbody = renderLogRows(data, currentRenderIndex - PAGE_SIZE + 1, currentRenderIndex);
+                tableWrapper.querySelector('tbody').appendChild(newTbody);
+                if (currentRenderIndex >= data.length - 1) {
+                    loadMoreBtn.remove();
+                }
+            });
+            logTableContainer.appendChild(loadMoreBtn);
+        }
+
     } catch (err) {
         logTableContainer.innerHTML += '<div>❌ Lỗi khi tải log.</div>';
         console.error(err);
     }
 }
 
-// TẠO BẢNG LOG
-function renderLogTable(data) {
+function renderLogTable(data, limit) {
     const wrapper = document.createElement('div');
     wrapper.style.cssText = 'overflow:auto; max-height:400px; max-width:100%; border:1px solid #ccc; background:#fff; margin-top:10px;';
 
@@ -51,8 +69,15 @@ function renderLogTable(data) {
     table.appendChild(thead);
 
     // Body
+    const tbody = renderLogRows(data, 1, limit);
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+}
+
+function renderLogRows(data, fromIndex, toIndex) {
     const tbody = document.createElement('tbody');
-    for (let i = 1; i < data.length; i++) {
+    for (let i = fromIndex; i <= toIndex && i < data.length; i++) {
         const row = data[i];
         if (!row || row.slice(0, 26).every(cell => cell === '')) continue;
 
@@ -69,12 +94,9 @@ function renderLogTable(data) {
         }
         tbody.appendChild(tr);
     }
-    table.appendChild(tbody);
-    wrapper.appendChild(table);
-    return wrapper;
+    return tbody;
 }
 
-// CÀI ĐẶT KIỂU Ô
 function styleCell(cell, isHeader = false) {
     cell.style.border = '1px solid #ccc';
     cell.style.padding = '4px 6px';
@@ -92,7 +114,6 @@ function styleCell(cell, isHeader = false) {
     }
 }
 
-// XỬ LÝ SỬA DỮ LIỆU
 function handleCellEdit(event) {
     const td = event.target;
     const newValue = td.textContent.trim();
@@ -101,12 +122,9 @@ function handleCellEdit(event) {
     const colLabel = String.fromCharCode(65 + parseInt(col));
 
     console.log(`📝 Sửa log: dòng ${parseInt(row) + 1}, cột ${colLabel} → "${newValue}"`);
-
-    // Gửi dữ liệu lên server (ví dụ)
     sendLogUpdate({ row, col, value: newValue });
 }
 
-// GỬI CẬP NHẬT LÊN SERVER (CHỈ MINH HOẠ)
 async function sendLogUpdate(update) {
     try {
         const response = await fetch('https://your-update-api-url.com/update', {
@@ -117,7 +135,30 @@ async function sendLogUpdate(update) {
 
         const result = await response.json();
         console.log('✅ Đã gửi cập nhật:', result);
+        showToast('✅ Sửa thành công', 'success');
     } catch (err) {
         console.error('❌ Lỗi khi gửi cập nhật:', err);
+        showToast('❌ Gửi cập nhật thất bại', 'error');
     }
+}
+
+// Thêm toast đơn giản
+function showToast(message, type = 'info') {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.padding = '10px 16px';
+    toast.style.background = type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#333';
+    toast.style.color = '#fff';
+    toast.style.borderRadius = '6px';
+    toast.style.boxShadow = '0 2px 6px rgba(0,0,0,0.3)';
+    toast.style.zIndex = '9999';
+    toast.style.opacity = '0.95';
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
