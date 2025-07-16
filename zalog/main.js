@@ -104,29 +104,30 @@ const ExcelGrid = {
         this._updateInputCache();
         return newInputs;
     },
+// Phím Enter
+   handleKeyDown(e) {
+    if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
 
-    handleKeyDown(e) {
-        if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
+    e.preventDefault();
 
-        e.preventDefault();
-        const inputValue = e.target.value.trim(); // ✅ Ghi nhận dữ liệu người dùng nhập
-        const inputIndex = e.target.dataset?.index; // (nếu cần phân loại sau này)
-        console.log("📥 Dữ liệu đã nhập:", inputValue);
-        const allInputs = this._inputCache;
-        const currentIndex = allInputs.indexOf(e.target);
+    const inputValue = e.target.value.trim(); // ✅ Ghi nhận dữ liệu người dùng nhập
+    console.log("📥 Dữ liệu đã nhập:", inputValue); // ✅ In ra console
 
-        if (currentIndex === -1) return;
+    const allInputs = this._inputCache;
+    const currentIndex = allInputs.indexOf(e.target);
 
-        const isLastInRow =
-            (currentIndex + 1) % this.FORM_COLUMN_COUNT === 0;
+    if (currentIndex === -1) return;
 
-        if (isLastInRow) {
-            const newInputs = this.addNewRow();
-            newInputs[0]?.focus();
-        } else {
-            allInputs[currentIndex + 1]?.focus();
-        }
-    },
+    const isLastInRow = (currentIndex + 1) % this.FORM_COLUMN_COUNT === 0;
+
+    if (isLastInRow) {
+        const newInputs = this.addNewRow();
+        newInputs[0]?.focus();
+    } else {
+        allInputs[currentIndex + 1]?.focus();
+    }
+},//Hết đoạn code
+
 
     init() {
         this.gridElement = document.querySelector('.excel-grid');
