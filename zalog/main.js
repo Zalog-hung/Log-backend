@@ -65,3 +65,37 @@ function deleteRow(button) {
         for (let i = formConfig.TOTAL_COLUMN_COUNT - 1; i >= 0; i--) {
             gridElement.children[rowStartIndex + i].remove();}}}
 //................................................................
+// ....................CỘT 1 (INDEX0) ID CHUYẾN.........
+if (index === 0) {
+    newInput.addEventListener('blur', () => {
+        newInput.value = newInput.value.trim();});}
+//...........CỘT 2 (INDEX1) NGÀY..............
+function index1(input) {
+    input.addEventListener('blur', () => {
+        let value = input.value.trim();
+        if (!value) return;
+
+        const parts = value.split('/');
+        let day = parts[0] || '';
+        let month = parts[1] || '';
+        let year = parts[2] || new Date().getFullYear();
+
+        if (day.length === 1) day = '0' + day;
+        if (month.length === 1) month = '0' + month;
+        if (year.length === 2) year = '20' + year;
+
+        input.value = `${day}/${month}/${year}`;
+    });
+}
+
+// Gọi ngay sau khi định nghĩa
+document.querySelectorAll('.excel-cell input[type="text"]').forEach((input) => {
+    const cell = input.closest('.excel-cell');
+    const cells = Array.from(cell.parentElement.children);
+    const cellIndex = cells.indexOf(cell);
+    if (cellIndex % 7 === 1) {
+        index1(input);
+    }
+});
+//
+
