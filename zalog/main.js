@@ -21,15 +21,13 @@ function enter(input) {
         const isLast = (i + 1) % FORM_COLUMN_COUNT === 0;
 
         if (isLast) {
-            const newInputs = addNewRow();
-            newInputs.forEach(enter); // Gắn sự kiện Enter cho dòng mới
-            newInputs[0].focus();     // Focus ô đầu tiên dòng mới
+            // 👉 Nếu là ô cuối cùng của dòng → Thêm dòng mới
+            const newInputs = addRow(); // hoặc addNewRow() nếu bạn dùng tên đó
+            attachEventListenersToRow(newInputs); // Gắn lại enter + xử lý khác
+            newInputs[0].focus();
         } else {
-            all[i + 1]?.focus(); // Focus ô kế tiếp
-             // ✅ Nếu là ô cuối dòng (index 5), thì thêm dòng mới
-                    const newInputs = addRow();
-                    attachEventListenersToRow(newInputs); // Gắn lại sự kiện
-                    newInputs[0].focus();
+            // 👉 Nếu không phải ô cuối → Focus ô kế tiếp
+            all[i + 1]?.focus();
         }
     });
 }
