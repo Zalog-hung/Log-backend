@@ -109,10 +109,11 @@ const ExcelGrid = {
     if (e.key !== 'Enter' || !e.target.closest('.data-cell')) return;
 
     e.preventDefault();
-
+// ✅ Ghi lại nội dung người dùng vừa nhập (nếu cần xử lý hoặc làm sạch)
     const inputValue = e.target.value.trim();
-    console.log("📥 Dữ liệu đã nhập:", inputValue); // ✅ Dòng bạn cần
+    e.target.value = inputValue;  // Ghi lại nếu muốn cắt khoảng trắng
 
+    console.log("📥 Dữ liệu đã nhập:", inputValue);
     const allInputs = this._inputCache;
     const currentIndex = allInputs.indexOf(e.target);
 
