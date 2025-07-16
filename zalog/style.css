@@ -189,3 +189,6 @@ body {
   gap: 8px; /* Khoảng cách giữa các nút */
   margin-top: 12px;
 }
+.action-bar .tab-item {
+  white-space: nowrap; /* Ngăn không cho xuống dòng */
+}
