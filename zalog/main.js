@@ -6,3 +6,8 @@ const FORM_COLUMN_COUNT = 6;
 const LOG_COLUMN_COUNT = 26;
 
 let khachHangList = [];
+const formConfig = {
+    TOTAL_COLUMN_COUNT: 7,
+    FORM_COLUMN_COUNT: 6,
+    FIELDS_TO_KEEP_VALUE: [2, 4], // Giữ lại giá trị "Khách Hàng" và "Ca"
+};
