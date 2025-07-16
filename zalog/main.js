@@ -4,8 +4,8 @@ const LOG_API_URL = "https://script.google.com/macros/s/AKfycbwhGc1NHndpO2IYfEhF
 const GHI_LOG_PROXY_URL = 'https://za-log-proxy-4pkb9hu3p-hung-za.vercel.app/api/proxy';
 const FORM_COLUMN_COUNT = 6;
 const LOG_COLUMN_COUNT = 26;
-const TOTAL_COLUMN_COUNT: 7;
-const FORM_COLUMN_COUNT: 6;
+const TOTAL_COLUMN_COUNT= 7;
+const FORM_COLUMN_COUNT= 6;
 const FIELDS_TO_KEEP_VALUE: [1, 4]; // Giữ lại giá trị "Khách Hàng" và "Ca"
 const gridElement = document.querySelector('.excel-grid');
 
