@@ -120,12 +120,6 @@ function index1(input) {
     });
 }
 
-document.querySelectorAll('.excel-cell').forEach((cell, i) => {
-    if (i % 7 === 1) { // Cột "Ngày"
-        const input = cell.querySelector('input[type="text"]');
-        if (input) index1(input);
-    }
-});
 //✅...........CỘT 2 (INDEX1) NGÀY..............
 function index1(input) {
     input.addEventListener('blur', () => {
@@ -149,10 +143,3 @@ function index1(input) {
         input.value = `${day}/${month}/${year}`;
     });
 }
-
-document.querySelectorAll('.excel-cell').forEach((cell, i) => {
-    if (i % 7 === 1) { // Cột "Ngày"
-        const input = cell.querySelector('input[type="text"]');
-        if (input) index1(input);
-    }
-});
