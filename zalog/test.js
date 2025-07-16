@@ -14,3 +14,20 @@ function attachHandlersByDataCol() {
 
 attachHandlersByDataCol();
 
+function index1(input) {
+  input.addEventListener('blur', () => {
+    let value = input.value.trim();
+    if (!value) return;
+
+    let [day, month, year] = value.split('/');
+    const currentYear = new Date().getFullYear();
+
+    if (day?.length === 1) day = '0' + day;
+    if (month?.length === 1) month = '0' + month;
+
+    if (!year) year = currentYear;
+    else if (year.length === 2) year = '20' + year;
+
+    input.value = `${day}/${month}/${year}`;
+  });
+}
