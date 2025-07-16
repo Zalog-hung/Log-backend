@@ -107,7 +107,6 @@ function index1(input) {
     input.value = `${day}/${month}/${year}`;
   });
 }
-
 function attachHandlersByDataCol() {
   document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
     const col = parseInt(input.dataset.col);
