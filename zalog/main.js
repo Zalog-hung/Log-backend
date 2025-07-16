@@ -88,16 +88,14 @@ function index1(input) {
     if (!value) return;
 
     let parts = value.split('/');
-    if (parts.length < 2) return; // Cần ít nhất ngày và tháng
+    if (parts.length < 2) return;
 
     let [day, month, year] = parts;
     const currentYear = new Date().getFullYear();
 
-    // Chuẩn hóa ngày và tháng
-    if (day) day = day.padStart(2, '0');
-    if (month) month = month.padStart(2, '0');
+    day = day.padStart(2, '0');
+    month = month.padStart(2, '0');
 
-    // Xử lý năm
     if (!year) {
       year = currentYear;
     } else if (year.length === 1) {
@@ -109,6 +107,20 @@ function index1(input) {
     input.value = `${day}/${month}/${year}`;
   });
 }
+
+function attachHandlersByDataCol() {
+  document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
+    const col = parseInt(input.dataset.col);
+    switch (col) {
+      case 0: index0(input); break;
+      case 1: index1(input); break;
+    }
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  attachHandlersByDataCol();
+});
 //✅          Gắn Hàm DataCol để gán vào form từng ô
 
 function attachHandlersByDataCol() {
