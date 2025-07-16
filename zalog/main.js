@@ -11,3 +11,4 @@ const formConfig = {
     FORM_COLUMN_COUNT: 6,
     FIELDS_TO_KEEP_VALUE: [2, 4], // Giữ lại giá trị "Khách Hàng" và "Ca"
 };
+const gridElement = document.querySelector('.excel-grid');
