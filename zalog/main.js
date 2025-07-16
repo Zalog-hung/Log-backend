@@ -102,18 +102,29 @@ function index1(input) {
         let value = input.value.trim();
         if (!value) return;
 
-        let [day, month, year] = value.split('/');
+        let parts = value.split('/').map(p => p.trim());
         const currentYear = new Date().getFullYear();
+        let day = parts[0] || '';
+        let month = parts[1] || '';
+        let year = parts[2] || '';
 
         // Bổ sung số 0 nếu thiếu
-        if (day && day.length === 1) day = '0' + day;
-        if (month && month.length === 1) month = '0' + month;
+        if (day.length === 1) day = '0' + day;
+        if (month.length === 1) month = '0' + month;
 
-        // Nếu thiếu năm → dùng năm hiện tại
+        // Xử lý năm
         if (!year) {
             year = currentYear;
         } else if (year.length === 2) {
-            year = '20' + year;
+            year = parseInt(year) >= 50 ? '19' + year : '20' + year;
+        } else if (year.length === 1) {
+            year = '200' + year;
+        }
+
+        // Kiểm tra định dạng hợp lệ
+        if (!/^\d{2}$/.test(day) || !/^\d{2}$/.test(month) || !/^\d{4}$/.test(year)) {
+            input.value = ''; // hoặc báo lỗi tuỳ nhu cầu
+            return;
         }
 
         input.value = `${day}/${month}/${year}`;
