@@ -98,31 +98,29 @@ function index0(input) {
 }
 //✅...........CỘT 2 (INDEX1) NGÀY..............
 function index1(input) {
-    input.addEventListener('blur', () => {
-        let value = input.value.trim();
-        if (!value) return;
+  input.addEventListener('blur', () => {
+    let value = input.value.trim();
+    if (!value) return;
 
-        let parts = value.split('/');
-        if (parts.length < 2) return; // Cần ít nhất ngày và tháng
+    let parts = value.split('/');
+    if (parts.length < 2) return; // Cần ít nhất ngày và tháng
 
-        let [day, month, year] = parts;
-        const currentYear = new Date().getFullYear();
+    let [day, month, year] = parts;
+    const currentYear = new Date().getFullYear();
 
-        day = day.padStart(2, '0');
-        month = month.padStart(2, '0');
+    // Chuẩn hóa ngày và tháng
+    if (day) day = day.padStart(2, '0');
+    if (month) month = month.padStart(2, '0');
 
-        if (!year) {
-            year = currentYear;
-        } else if (year.length === 1) {
-            year = '200' + year;
-        } else if (year.length === 2) {
-            year = (+year >= 50 ? '19' : '20') + year;
-        }
+    // Xử lý năm
+    if (!year) {
+      year = currentYear;
+    } else if (year.length === 1) {
+      year = '200' + year;
+    } else if (year.length === 2) {
+      year = (+year >= 50 ? '19' : '20') + year;
+    }
 
-        input.value = `${day}/${month}/${year}`;
-    });
+    input.value = `${day}/${month}/${year}`;
+  });
 }
-
-// 👉 Gán sự kiện cho tất cả input có data-col="1" (cột Ngày)
-document.querySelectorAll('input[data-col="1"]').forEach(index1);
-</script>
