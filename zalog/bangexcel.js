@@ -1,59 +1,57 @@
 import { formConfig } from './cauhinh.js';
 import { index0, index1 } from './xulycot.js';
 
-const gridElement = document.querySelector('.excel-grid');
+const gridElement = document.getElementById('gridElement');
 
 export function themDongMoi() {
-  const allCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
-  const lastRowCells = allCells.slice(-formConfig.TOTAL_COLUMN_COUNT);
+  const cells = Array.from(gridElement.querySelectorAll('.excel-cell'));
+  const lastRow = cells.slice(-formConfig.TOTAL_COLUMN_COUNT);
   const newInputs = [];
 
   for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
-    const lastInput = lastRowCells[i]?.querySelector('input, select');
-    const newInput = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
-    newInput.setAttribute('data-col', i);
-
-    switch (i) {
-      case 0: index0(newInput); break;
-      case 1: index1(newInput); break;
-    }
+    const lastInput = lastRow[i]?.querySelector('input');
+    const input = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
+    input.setAttribute('data-col', i);
 
     if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
-      newInput.value = lastInput.value.trim();
+      input.value = lastInput.value.trim();
     } else {
-      newInput.value = '';
+      input.value = '';
     }
 
-    const newCell = document.createElement('div');
-    newCell.className = 'excel-cell data-cell';
-    newCell.appendChild(newInput);
-    gridElement.appendChild(newCell);
-    newInputs.push(newInput);
+    // Gắn hàm xử lý cột
+    if (i === 0) index0(input);
+    if (i === 1) index1(input);
+
+    const cell = document.createElement('div');
+    cell.className = 'excel-cell';
+    cell.appendChild(input);
+    gridElement.appendChild(cell);
+    newInputs.push(input);
   }
 
-  const lastActionCell = lastRowCells[formConfig.FORM_COLUMN_COUNT];
-  const newActionCell = document.createElement('div');
-  newActionCell.className = 'excel-cell action-cell';
-
-  if (lastActionCell) {
-    lastActionCell.childNodes.forEach(child => {
-      const newBtn = child.cloneNode(true);
-      newBtn.addEventListener('click', () => xoaDong(newBtn));
-      newActionCell.appendChild(newBtn);
-    });
-  }
-
-  gridElement.appendChild(newActionCell);
-  return newInputs;
+  const actionCell = document.createElement('div');
+  actionCell.className = 'excel-cell action-cell';
+  actionCell.innerHTML = `
+    <button onclick="editRow(this)">✏️</button>
+    <button onclick="deleteRow(this)">🗑️</button>
+    <button onclick="splitRow(this)">⚙️</button>
+  `;
+  gridElement.appendChild(actionCell);
 }
 
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
-  const rowStartIndex = Array.from(gridElement.children).indexOf(actionCell) - formConfig.FORM_COLUMN_COUNT;
+  const allCells = Array.from(gridElement.children);
+  const index = allCells.indexOf(actionCell);
 
-  if (rowStartIndex >= 0) {
-    for (let i = formConfig.TOTAL_COLUMN_COUNT - 1; i >= 0; i--) {
-      gridElement.children[rowStartIndex + i].remove();
+  if (index >= formConfig.TOTAL_COLUMN_COUNT) {
+    for (let i = 0; i < formConfig.TOTAL_COLUMN_COUNT; i++) {
+      gridElement.removeChild(gridElement.children[index - formConfig.FORM_COLUMN_COUNT]);
     }
   }
+}
+
+export function tachChuyen(button) {
+  alert("⚙️ Tính năng chia chuyến đang phát triển...");
 }
