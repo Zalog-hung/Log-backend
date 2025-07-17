@@ -48,19 +48,18 @@ export function index5(input) {
 // ✅ Cột 6: Hành động – thường không có input, nhưng giữ hàm để tránh lỗi
 // ✅ Cột 6: GẮN CHỨC NĂNG NHẬP LIỆU
 export function ganSuKienTheoCot() {
-  const allInputs = document.querySelectorAll('input[data-col]');
-  console.log(`🔍 Tìm thấy ${allInputs.length} input có data-col`);
-
-  allInputs.forEach(input => {
+  document.querySelectorAll('input[data-col]').forEach(input => {
     const col = +input.dataset.col;
-    console.log(`🧩 Gán xử lý cho cột ${col}`, input);
-
-    if (col === 0) index0(input);
-    if (col === 1) index1(input);
-    if (col === 2) index2(input);
-    if (col === 3) index3(input);
-    if (col === 4) index4(input);
-    if (col === 5) index5(input);
-    if (col === 6) index6(input);
+    try {
+      if (col === 0) index0(input);
+      if (col === 1) index1(input);
+      if (col === 2) index2(input);
+      if (col === 3) index3(input); // Có thể chưa viết
+      if (col === 4) index4(input); // Có thể lỗi
+      if (col === 5) index5(input);
+      if (col === 6) index6(input);
+    } catch (err) {
+      console.warn(`⚠️ Lỗi khi gắn xử lý cho cột ${col}:`, err);
+    }
   });
 }
