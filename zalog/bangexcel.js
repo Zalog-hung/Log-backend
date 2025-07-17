@@ -1,9 +1,8 @@
-// bangexcel.js
+// 📁 bangexcel.js
 import { formConfig, zacache } from './cauhinh.js';
 
-const gridElement = document.getElementById('gridElement');
-
 export function themDongMoi() {
+  const gridElement = document.querySelector('.excel-grid');
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
 
   if (totalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
@@ -25,9 +24,8 @@ export function themDongMoi() {
       input.value = lastRow[i].value;
     }
 
-    // ✅ Sửa đúng dùng zacache.handlers thay vì colEvents
     try {
-      const handler = zacache.handlers?.[i];
+      const handler = zacache.colEvents?.[i];
       if (typeof handler === 'function') {
         handler(input);
       }
@@ -55,14 +53,14 @@ export function themDongMoi() {
 }
 
 export function xoaDong(button) {
+  const gridElement = document.querySelector('.excel-grid');
   const actionCell = button.closest('.excel-cell');
   const allCells = Array.from(gridElement.children);
   const index = allCells.indexOf(actionCell);
 
   if (index >= formConfig.TOTAL_COLUMN_COUNT) {
-    const rowStart = index - (index % formConfig.TOTAL_COLUMN_COUNT);
     for (let i = 0; i < formConfig.TOTAL_COLUMN_COUNT; i++) {
-      gridElement.removeChild(gridElement.children[rowStart]);
+      gridElement.removeChild(gridElement.children[index - formConfig.FORM_COLUMN_COUNT]);
     }
   }
 }
