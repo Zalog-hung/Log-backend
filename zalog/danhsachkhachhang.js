@@ -16,7 +16,7 @@ export async function loadKhachHangList() {
   }
 }
 
-export function index2(input) {
+export function goiykh(input) {
   let suggestionBox = null;
   let debounceTimer = null;
 
