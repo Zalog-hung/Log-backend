@@ -2,11 +2,11 @@ let indexHandlers = {}; // ánh xạ các hàm theo cột
 
 export async function khoiDongHeThong() {
   try {
-    // --- 1. Import các module động ---
     let themDongMoi, xoaDong, tachChuyen;
     let index0, index1, index3, index4, index5;
     let goiykh, loadKhachHangList;
 
+    // --- 1. Import module bảng
     try {
       const bang = await import('./bangexcel.js');
       themDongMoi = bang.themDongMoi;
@@ -16,6 +16,7 @@ export async function khoiDongHeThong() {
       console.warn("⚠️ Không thể load bangexcel.js:", err);
     }
 
+    // --- 2. Import module xử lý cột
     try {
       const xuly = await import('./xulycot.js');
       index0 = xuly.index0;
@@ -27,6 +28,7 @@ export async function khoiDongHeThong() {
       console.warn("⚠️ Không thể load xulycot.js:", err);
     }
 
+    // --- 3. Import danh sách khách hàng
     try {
       const dskh = await import('./danhsachkhachhang.js');
       goiykh = dskh.goiykh;
@@ -35,30 +37,34 @@ export async function khoiDongHeThong() {
       console.warn("⚠️ Không thể load danhsachkhachhang.js:", err);
     }
 
-    // --- 2. Tải danh sách khách hàng ---
+    // --- 4. Tải danh sách khách hàng
     if (typeof loadKhachHangList === 'function') {
       await loadKhachHangList();
       console.log('✅ Danh sách khách hàng đã sẵn sàng.');
     }
 
-    // --- 3. Thiết lập ánh xạ xử lý theo cột ---
+    // --- 5. Thiết lập ánh xạ xử lý theo cột
     indexHandlers = {
       0: index0,
       1: index1,
-      2: goiykh, // Từ danhsachkhachhang.js
+      2: goiykh,
       3: index3,
       4: index4,
       5: index5,
     };
 
-    // --- 4. Gắn xử lý cho input ban đầu ---
+    // --- 6. Gắn xử lý cho input ban đầu
     ganChoTatCaInput();
 
-    // --- 5. Gắn các hàm onclick cho HTML ---
+    // --- 7. Gắn các hàm onclick cho HTML (dùng window)
     if (typeof themDongMoi === 'function') {
       window.addNewRow = () => {
-        const inputs = themDongMoi(); // Thêm dòng
-        if (Array.isArray(inputs)) ganCho1Dong(inputs); // Gắn indexN
+        try {
+          const inputs = themDongMoi(); // Thêm dòng
+          if (Array.isArray(inputs)) ganCho1Dong(inputs); // Gắn indexN
+        } catch (err) {
+          console.error("❌ Lỗi khi thêm dòng:", err);
+        }
       };
     }
 
