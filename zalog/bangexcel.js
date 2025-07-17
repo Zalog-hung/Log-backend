@@ -33,6 +33,8 @@ export function themDongMoi() {
       console.warn(`⚠️ Lỗi khi gán sự kiện cột ${i}:`, err);
     }
 
+    ganSuKienEnter(input);
+
     const cell = document.createElement('div');
     cell.className = 'excel-cell data-cell';
     cell.appendChild(input);
@@ -50,6 +52,29 @@ export function themDongMoi() {
   gridElement.appendChild(actionCell);
 
   return newInputs;
+}
+
+function ganSuKienEnter(input) {
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+
+    input.value = input.value.trim(); // ✅ ghi lại giá trị
+
+    const col = +input.dataset.col;
+    const allInputs = Array.from(document.querySelectorAll('input[data-col]'));
+    const index = allInputs.indexOf(input);
+    if (index === -1) return;
+
+    if (col < 5) {
+      const next = allInputs[index + 1];
+      if (next) next.focus();
+    } else {
+      const newInputs = themDongMoi();
+      if (Array.isArray(newInputs) && newInputs.length > 0) {
+        newInputs[0].focus();
+      }
+    }
+  });
 }
 
 export function xoaDong(button) {
