@@ -6,5 +6,12 @@ export const GHI_LOG_PROXY_URL = 'https://za-log-proxy-4pkb9hu3p-hung-za.vercel.
 export const formConfig = {
   TOTAL_COLUMN_COUNT: 7,
   FORM_COLUMN_COUNT: 6,
-  FIELDS_TO_KEEP_VALUE: [1, 4], // giữ "Khách hàng" và "Ca"
+  FIELDS_TO_KEEP_VALUE: [1, 4], // giữ "Ngày" và "Ca"
+};
+
+// ✅ BỘ NHỚ TẠM TOÀN CỤC ZA – CÓ THỂ MỞ RỘNG
+export const zacache = {
+  khachHangList: [],      // 🔄 Danh sách khách hàng tải về từ Google Sheet
+  colEvents: {},          // 🔧 Ánh xạ cột -> hàm xử lý nhập liệu
+  otherConfigs: {},       // 📦 Không bắt buộc – để dùng cho các config khác nếu cần
 };
