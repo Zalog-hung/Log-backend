@@ -1,9 +1,10 @@
+//✅ Cột 0: ID chuyến
 export function index0(input) {
   input.addEventListener('blur', () => {
     input.value = input.value.trim();
   });
 }
-
+//✅ Cột 1: Ngày
 export function index1(input) {
   console.log('🔍 Gọi index1 cho ô:', input);
 
@@ -23,6 +24,30 @@ export function index1(input) {
 
     input.value = `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
   });
+}
+// ✅ Cột 2: Khách hàng
+export function index2(input) {
+  // TODO: xử lý gợi ý khách hàng
+}
+
+// ✅ Cột 3: Số lượng
+export function index3(input) {
+  // TODO: kiểm tra số lượng là số hợp lệ
+}
+
+// ✅ Cột 4: Ca
+export function index4(input) {
+  // TODO: kiểm tra ca sáng/chiều hoặc gợi ý
+}
+
+// ✅ Cột 5: Tài xế
+export function index5(input) {
+  // TODO: kiểm tra họ tên tài xế
+}
+
+// ✅ Cột 6: Hành động – thường không có input, nhưng giữ hàm để tránh lỗi
+export function index6(input) {
+  // TODO: thường không cần vì là cột nút, nhưng khai báo để tránh lỗi
 }
 
 export function ganSuKienTheoCot() {
