@@ -1,5 +1,3 @@
-// ✅ XỬ LÝ RIÊNG TỪNG CỘT
-
 export function index0(input) {
   input.addEventListener('blur', () => {
     input.value = input.value.trim();
@@ -8,36 +6,26 @@ export function index0(input) {
 
 export function index1(input) {
   input.addEventListener('blur', () => {
-    let value = input.value.trim();
-    if (!value) return;
+    let val = input.value.trim();
+    if (!val) return;
 
-    let parts = value.split('/');
-    if (parts.length < 2) return;
+    let [day, month, year] = val.split('/');
+    if (!month) return;
 
-    let [day, month, year] = parts;
-    const currentYear = new Date().getFullYear();
-
-    day = day.padStart(2, '0');
-    month = month.padStart(2, '0');
-
-    if (!year) {
-      year = currentYear;
-    } else if (year.length === 1) {
-      year = '200' + year;
-    } else if (year.length === 2) {
-      year = (+year >= 50 ? '19' : '20') + year;
+    const now = new Date();
+    year = year || now.getFullYear();
+    if (year.length === 2) {
+      year = +year >= 50 ? '19' + year : '20' + year;
     }
 
-    input.value = `${day}/${month}/${year}`;
+    input.value = `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
   });
 }
 
 export function ganSuKienTheoCot() {
-  document.querySelectorAll('.excel-cell input[data-col]').forEach(input => {
-    const col = parseInt(input.dataset.col);
-    switch (col) {
-      case 0: index0(input); break;
-      case 1: index1(input); break;
-    }
+  document.querySelectorAll('input[data-col]').forEach(input => {
+    const col = +input.dataset.col;
+    if (col === 0) index0(input);
+    if (col === 1) index1(input);
   });
 }
