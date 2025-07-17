@@ -25,19 +25,19 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // 🔍 Kiểm tra lại sau khi khởi tạo
   if (typeof window.addNewRow !== 'function') {
-    console.warn("⚠️ window.addNewRow chưa được gán. Nút HTML sẽ không hoạt động!");
+    console.warn("⚠️ window.addNewRow chưa gán trong fixloi");
   } else {
     console.log("🟢 addNewRow đã sẵn sàng.");
   }
 
   if (typeof window.deleteRow !== 'function') {
-    console.warn("⚠️ window.deleteRow chưa được gán.");
+    console.warn("⚠️ window.deleteRow chưa gán trong fixloi.");
   } else {
-    console.log("🟢 deleteRow đã sẵn sàng.");
+    console.log("🟢 deleteRow đã sẵn sàng trong fixloi.");
   }
 
   if (typeof window.splitRow !== 'function') {
-    console.warn("⚠️ window.splitRow chưa được gán.");
+    console.warn("⚠️ window.splitRow chưa được gán trong fixloi.");
   } else {
     console.log("🟢 splitRow đã sẵn sàng.");
   }
