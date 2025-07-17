@@ -3,7 +3,7 @@ import { formConfig } from './cauhinh.js';
 
 const gridElement = document.getElementById('gridElement');
 
-// ✅ THÊM DÒNG
+// ✅ THÊM DÒNG – Không gắn indexN, chỉ trả về inputs để xử lý bên ngoài
 export function themDongMoi() {
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
 
@@ -21,7 +21,7 @@ export function themDongMoi() {
     input.setAttribute('data-col', i);
     input.value = '';
 
-    // Giữ lại giá trị nếu nằm trong danh sách cần giữ
+    // 🔁 Giữ lại giá trị nếu nằm trong danh sách cần giữ
     if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i)) {
       const lastRowCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
       const lastRowInput = lastRowCells[lastRowCells.length - formConfig.TOTAL_COLUMN_COUNT + i]?.querySelector('input');
@@ -45,14 +45,16 @@ export function themDongMoi() {
   `;
   gridElement.appendChild(actionCell);
 
-  // 🟨 KIỂM TRA
+  // 🟨 KIỂM TRA TỔNG Ô
   const newTotalCells = gridElement.querySelectorAll('.excel-cell').length;
   if (newTotalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
     console.error('❌ LỖI: Sau khi thêm dòng bị lệch! Tổng ô:', newTotalCells);
   }
+
+  return newInputs; // ✅ Trả về để fixloi.js gắn xử lý cột
 }
 
-// ✅ HÀM XOÁ DÒNG
+// ✅ XOÁ DÒNG
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
   const allCells = Array.from(gridElement.children);
@@ -65,7 +67,7 @@ export function xoaDong(button) {
   }
 }
 
-// ✅ HÀM CHIA CHUYẾN
+// ✅ CHIA CHUYẾN
 export function tachChuyen(button) {
   alert("⚙️ Tính năng chia chuyến đang phát triển...");
 }
