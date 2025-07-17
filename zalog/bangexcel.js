@@ -1,8 +1,5 @@
 // 📁 bangexcel.js
-import * as cauhinh from './cauhinh.js';
-
-const formConfig = cauhinh.formConfig;
-const zacache = cauhinh.zacache;
+import { formConfig, zacache } from './cauhinh.js';
 
 export function themDongMoi() {
   const gridElement = document.querySelector('.excel-grid');
