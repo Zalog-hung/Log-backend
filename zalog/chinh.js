@@ -1,44 +1,42 @@
-// ✅ chinh.js – Điểm khởi đầu của toàn bộ hệ thống
 console.log("🟢 chinh.js đã được load!");
 
-// ✅ Import tất cả từ fixloi.js để dùng được khoiDongHeThong()
 import * as fixloi from './fixloi.js';
 
-// 🔍 Kiểm tra xem fixloi có đúng không
 console.log("🔍 Kiểm tra fixloi:", fixloi);
+
+// ✅ Kiểm tra tồn tại hàm khởi động
 if (!fixloi.khoiDongHeThong) {
   console.warn("❌ Không tìm thấy hàm khoiDongHeThong trong fixloi.js");
 } else {
   console.log("✅ Hàm khoiDongHeThong đã sẵn sàng.");
 }
 
-// ✅ Khởi tạo khi DOM đã sẵn sàng
 window.addEventListener('DOMContentLoaded', async () => {
   console.log("✅ DOM sẵn sàng, bắt đầu khởi tạo...");
 
   try {
     await fixloi.khoiDongHeThong();
-    console.log("✅ Gọi khoiDongHeThong() thành công.");
+    console.log("🟢 Gọi khoiDongHeThong() thành công.");
   } catch (err) {
     console.error("❌ Lỗi khi gọi khoiDongHeThong():", err);
   }
 
-  // 🔍 Kiểm tra lại sau khi khởi tạo
-  if (typeof window.addNewRow !== 'function') {
-    console.warn("⚠️ window.addNewRow chưa gán trong fixloi");
+  // --- Kiểm tra từng hàm sau khi khởi động ---
+  if (typeof window.addNewRow === 'function') {
+    console.log("✅ window.addNewRow đã được gán thành công.");
   } else {
-    console.log("🟢 addNewRow đã sẵn sàng.");
+    console.warn("⚠️ window.addNewRow chưa gán trong fixloi (bangexcel.js có thể bị lỗi).");
   }
 
-  if (typeof window.deleteRow !== 'function') {
+  if (typeof window.deleteRow === 'function') {
+    console.log("✅ window.deleteRow đã được gán thành công.");
+  } else {
     console.warn("⚠️ window.deleteRow chưa gán trong fixloi.");
-  } else {
-    console.log("🟢 deleteRow đã sẵn sàng trong fixloi.");
   }
 
-  if (typeof window.splitRow !== 'function') {
-    console.warn("⚠️ window.splitRow chưa được gán trong fixloi.");
+  if (typeof window.splitRow === 'function') {
+    console.log("✅ window.splitRow đã được gán thành công.");
   } else {
-    console.log("🟢 splitRow đã sẵn sàng.");
+    console.warn("⚠️ window.splitRow chưa được gán trong fixloi.");
   }
 });
