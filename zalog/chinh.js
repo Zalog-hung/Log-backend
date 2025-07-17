@@ -1,3 +1,5 @@
+console.log("🟢 chinh.js đã được load!") 
+
 import { themDongMoi, xoaDong } from './bangexcel.js';
 import { ganSuKienTheoCot } from './xulycot.js';
 
