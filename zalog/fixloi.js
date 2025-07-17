@@ -1,5 +1,3 @@
-// ✅ fixloi.js – Gọi module và gắn sự kiện an toàn (không sập hệ thống)
-
 let indexHandlers = {}; // ánh xạ các hàm theo cột
 
 export async function khoiDongHeThong() {
