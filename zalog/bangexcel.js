@@ -1,11 +1,9 @@
-// ✅ Gọi cấu hình cột
+// bangexcel.js
 import { formConfig, zacache } from './cauhinh.js';
 
 const gridElement = document.getElementById('gridElement');
 
-// ✅ THÊM DÒNG
 export function themDongMoi() {
-  const gridElement = document.querySelector('.excel-grid');
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
 
   if (totalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
@@ -23,14 +21,13 @@ export function themDongMoi() {
     input.type = 'text';
     input.setAttribute('data-col', i);
 
-    // ✅ Giữ giá trị từ dòng trước nếu cần
     if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastRow[i]) {
       input.value = lastRow[i].value;
     }
 
-    // ✅ Gọi xử lý nhập liệu từ zacache nếu có
+    // ✅ Sửa đúng dùng zacache.handlers thay vì colEvents
     try {
-      const handler = zacache.colEvents?.[i];
+      const handler = zacache.handlers?.[i];
       if (typeof handler === 'function') {
         handler(input);
       }
@@ -45,7 +42,6 @@ export function themDongMoi() {
     newInputs.push(input);
   }
 
-  // ✅ Cột hành động
   const actionCell = document.createElement('div');
   actionCell.className = 'excel-cell action-cell';
   actionCell.innerHTML = `
@@ -58,20 +54,19 @@ export function themDongMoi() {
   return newInputs;
 }
 
-// ✅ XOÁ DÒNG
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
   const allCells = Array.from(gridElement.children);
   const index = allCells.indexOf(actionCell);
 
   if (index >= formConfig.TOTAL_COLUMN_COUNT) {
+    const rowStart = index - (index % formConfig.TOTAL_COLUMN_COUNT);
     for (let i = 0; i < formConfig.TOTAL_COLUMN_COUNT; i++) {
-      gridElement.removeChild(gridElement.children[index - formConfig.FORM_COLUMN_COUNT]);
+      gridElement.removeChild(gridElement.children[rowStart]);
     }
   }
 }
 
-// ✅ CHIA CHUYẾN
 export function tachChuyen(button) {
   alert("⚙️ Tính năng chia chuyến đang phát triển...");
 }
