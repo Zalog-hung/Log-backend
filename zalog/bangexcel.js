@@ -3,7 +3,9 @@ import { formConfig } from './cauhinh.js';
 
 const gridElement = document.getElementById('gridElement');
 
-// ✅ THÊM DÒNG – Không gắn indexN, chỉ trả về inputs để xử lý bên ngoài
+// ✅ THÊM DÒNG
+import { formConfig, zacache } from './cauhinh.js';
+
 export function themDongMoi() {
   const gridElement = document.querySelector('.excel-grid');
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
@@ -28,6 +30,16 @@ export function themDongMoi() {
       input.value = lastRow[i].value;
     }
 
+    // ✅ Gọi xử lý nhập liệu từ zacache nếu có
+    try {
+      const handler = zacache.colEvents?.[i];
+      if (typeof handler === 'function') {
+        handler(input);
+      }
+    } catch (err) {
+      console.warn(`⚠️ Lỗi khi gán sự kiện cột ${i}:`, err);
+    }
+
     const cell = document.createElement('div');
     cell.className = 'excel-cell data-cell';
     cell.appendChild(input);
@@ -35,7 +47,7 @@ export function themDongMoi() {
     newInputs.push(input);
   }
 
-  // Cột hành động
+  // ✅ Cột hành động
   const actionCell = document.createElement('div');
   actionCell.className = 'excel-cell action-cell';
   actionCell.innerHTML = `
@@ -45,18 +57,7 @@ export function themDongMoi() {
   `;
   gridElement.appendChild(actionCell);
 
-  // ✅ Gọi lại gán sự kiện chỉ cho dòng mới
-  newInputs.forEach(input => {
-    const col = +input.dataset.col;
-    try {
-      const handler = indexHandlers[col];
-      if (typeof handler === 'function') {
-        handler(input);
-      }
-    } catch (err) {
-      console.warn(`⚠️ Lỗi khi gắn sự kiện cho input mới [col ${col}]:`, err);
-    }
-  });
+  return newInputs;
 }
 
 // ✅ XOÁ DÒNG
