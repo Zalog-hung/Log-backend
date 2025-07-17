@@ -9,6 +9,12 @@ export async function khoiDongHeThong() {
     if (typeof loadKhachHangList === 'function') {
       await loadKhachHangList();
     }
+    // ✅ Gán phím Enter cho dòng đầu tiên
+document.querySelectorAll('input[data-col]').forEach(input => {
+  if (typeof window.ganSuKienEnter === 'function') {
+    window.ganSuKienEnter(input);
+  }
+});
 
     zacache.handlers = {
       0: index0,
