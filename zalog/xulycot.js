@@ -26,9 +26,21 @@ export function index1(input) {
     input.value = `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
   });
 }
-// ✅ Cột 2: Khách hàng
+// ✅ Cột 2: Khách hàng - lấy từ danhsachkhachhang.js
+import { khachHangList } from './danhsachkhachhang.js';
+
 export function index2(input) {
-  // TODO: xử lý gợi ý khách hàng
+  input.addEventListener('input', () => {
+    const val = input.value.trim().toLowerCase();
+    if (!val || khachHangList.length === 0) return;
+
+    const suggestions = khachHangList.filter(kh =>
+      kh.toLowerCase().includes(val)
+    );
+
+    console.log("📦 Gợi ý KH:", suggestions.slice(0, 5));
+    // 👉 TODO: sau sẽ hiển thị dropdown
+  });
 }
 
 // ✅ Cột 3: Số lượng
