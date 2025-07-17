@@ -47,16 +47,23 @@ export async function khoiDongHeThong() {
     indexHandlers = {
       0: index0,
       1: index1,
-      2: goiykh,
+      2: goiykh, // Từ danhsachkhachhang.js
       3: index3,
       4: index4,
       5: index5,
     };
 
-    ganSuKienTheoCot(); // ✅ Gắn sự kiện input theo từng cột
+    // --- 4. Gắn xử lý cho input ban đầu ---
+    ganChoTatCaInput();
 
-    // --- 4. Gắn các hàm onclick cho HTML ---
-    if (typeof themDongMoi === 'function') window.addNewRow = themDongMoi;
+    // --- 5. Gắn các hàm onclick cho HTML ---
+    if (typeof themDongMoi === 'function') {
+      window.addNewRow = () => {
+        const inputs = themDongMoi(); // Thêm dòng
+        if (Array.isArray(inputs)) ganCho1Dong(inputs); // Gắn indexN
+      };
+    }
+
     if (typeof xoaDong === 'function') window.deleteRow = xoaDong;
     if (typeof tachChuyen === 'function') window.splitRow = tachChuyen;
 
@@ -66,17 +73,25 @@ export async function khoiDongHeThong() {
   }
 }
 
-// ✅ Gắn sự kiện an toàn theo từng input[data-col]
-export function ganSuKienTheoCot() {
-  document.querySelectorAll('input[data-col]').forEach(input => {
-    const col = +input.dataset.col;
-    try {
-      const handler = indexHandlers[col];
-      if (typeof handler === 'function') {
-        handler(input);
-      }
-    } catch (err) {
-      console.warn(`⚠️ Lỗi khi gắn xử lý cho cột ${col}:`, err);
+// ✅ Gắn xử lý indexN an toàn cho 1 input
+function ganCho1Input(input) {
+  const col = +input.dataset.col;
+  try {
+    const handler = indexHandlers[col];
+    if (typeof handler === 'function') {
+      handler(input);
     }
-  });
+  } catch (err) {
+    console.warn(`⚠️ Lỗi xử lý cột ${col}:`, err);
+  }
+}
+
+// ✅ Gắn cho toàn bộ input ban đầu
+export function ganChoTatCaInput() {
+  document.querySelectorAll('input[data-col]').forEach(ganCho1Input);
+}
+
+// ✅ Gắn cho 1 dòng mới thêm
+export function ganCho1Dong(inputArray) {
+  inputArray.forEach(ganCho1Input);
 }
