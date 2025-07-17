@@ -1,3 +1,6 @@
+//✅ load danhsachkhachhang.js
+import { goiy } from './danhsachkhachhang.js';
+
 //✅ Cột 0: ID chuyến
 export function index0(input) {
   console.log("✅ index0 được gắn cho:", input);
@@ -27,21 +30,7 @@ export function index1(input) {
   });
 }
 // ✅ Cột 2: Khách hàng - lấy từ danhsachkhachhang.js
-import { khachHangList } from './danhsachkhachhang.js';
-
-export function index2(input) {
-  input.addEventListener('input', () => {
-    const val = input.value.trim().toLowerCase();
-    if (!val || khachHangList.length === 0) return;
-
-    const suggestions = khachHangList.filter(kh =>
-      kh.toLowerCase().includes(val)
-    );
-
-    console.log("📦 Gợi ý KH:", suggestions.slice(0, 5));
-    // 👉 TODO: sau sẽ hiển thị dropdown
-  });
-}
+export const index2 = goiy;
 
 // ✅ Cột 3: Số lượng
 export function index3(input) {
