@@ -1,5 +1,3 @@
-//✅ load danhsachkhachhang.js
-import { goiy } from './danhsachkhachhang.js';
 
 //✅ Cột 0: ID chuyến
 export function index0(input) {
