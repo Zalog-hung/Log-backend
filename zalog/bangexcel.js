@@ -22,11 +22,11 @@ export function themDongMoi() {
     // Gắn hàm xử lý cột
     if (i === 0) index0(input);
     if (i === 1) index1(input);
-    if (col === 2) index2(input);
-    if (col === 3) index3(input);
-    if (col === 4) index4(input);
-    if (col === 5) index5(input);
-    if (col === 6) index6(input);
+    if (i === 2) index2(input);
+    if (i === 3) index3(input);
+    if (i === 4) index4(input);
+    if (i === 5) index5(input);
+    if (i === 6) index6(input);
 
     const cell = document.createElement('div');
     cell.className = 'excel-cell';
