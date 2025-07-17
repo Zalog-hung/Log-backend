@@ -1,16 +1,11 @@
 // 📁 fixloi.js
 import { formConfig, zacache } from './cauhinh.js';
+import { themDongMoi, xoaDong, tachChuyen } from './bangexcel.js';
+import { index0, index1, index3, index4, index5 } from './xulycot.js';
+import { goiykh, loadKhachHangList } from './danhsachkhachhang.js';
 
 export async function khoiDongHeThong() {
   try {
-    const bang = await import('./bangexcel.js');
-    const xuly = await import('./xulycot.js');
-    const dskh = await import('./danhsachkhachhang.js');
-
-    const { themDongMoi, xoaDong, tachChuyen } = bang;
-    const { index0, index1, index3, index4, index5 } = xuly;
-    const { goiykh, loadKhachHangList } = dskh;
-
     if (typeof loadKhachHangList === 'function') {
       await loadKhachHangList();
     }
