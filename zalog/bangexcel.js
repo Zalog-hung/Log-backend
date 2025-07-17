@@ -1,8 +1,9 @@
+// ✅ Gọi xulycot.js
 import { formConfig } from './cauhinh.js';
 import { index0, index1, index2, index3, index4, index5 } from './xulycot.js';
 
 const gridElement = document.getElementById('gridElement');
-
+// ✅ Hàm thêm dòngdòng
 export function themDongMoi() {
   const cells = Array.from(gridElement.querySelectorAll('.excel-cell'));
   const lastRow = cells.slice(-formConfig.TOTAL_COLUMN_COUNT); // lấy dòng cuối
@@ -44,7 +45,7 @@ export function themDongMoi() {
   gridElement.appendChild(actionCell);
 }
 
-
+// ✅ Hàm xóa dòng
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
   const allCells = Array.from(gridElement.children);
