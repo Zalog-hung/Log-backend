@@ -3,24 +3,32 @@ import { formConfig } from './cauhinh.js';
 import { index0, index1, index2, index3, index4, index5 } from './xulycot.js';
 
 const gridElement = document.getElementById('gridElement');
-// ✅ Hàm thêm dòngdòng
+// ✅ THÊM DÒNG
 export function themDongMoi() {
-  const cells = Array.from(gridElement.querySelectorAll('.excel-cell'));
-  const lastRow = cells.slice(-formConfig.TOTAL_COLUMN_COUNT); // lấy dòng cuối
+  const totalCells = gridElement.querySelectorAll('.excel-cell').length;
+
+  // 🛡️ Check tổng số ô hiện tại có chia hết cho số cột không
+  if (totalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
+    console.warn('⚠️ Dữ liệu bảng bị lệch! Dòng hiện tại không đủ 7 ô.');
+    return;
+  }
+
   const newInputs = [];
 
   for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
-    const lastInput = lastRow[i]?.querySelector('input');
-    const input = lastInput ? lastInput.cloneNode(true) : document.createElement('input');
+    const input = document.createElement('input');
+    input.type = 'text';
     input.setAttribute('data-col', i);
+    input.value = '';
 
-    if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastInput) {
-      input.value = lastInput.value.trim();
-    } else {
-      input.value = '';
+    // Giữ lại giá trị nếu nằm trong danh sách cần giữ
+    if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i)) {
+      const lastRowCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
+      const lastRowInput = lastRowCells[lastRowCells.length - formConfig.TOTAL_COLUMN_COUNT + i]?.querySelector('input');
+      if (lastRowInput) input.value = lastRowInput.value.trim();
     }
 
-    // Gắn xử lý cột
+    // Gắn xử lý theo cột
     if (i === 0) index0(input);
     if (i === 1) index1(input);
     if (i === 2) index2(input);
@@ -29,12 +37,13 @@ export function themDongMoi() {
     if (i === 5) index5(input);
 
     const cell = document.createElement('div');
-    cell.className = 'excel-cell data-cell'; // ✅ Thêm class 'data-cell'
+    cell.className = 'excel-cell data-cell';
     cell.appendChild(input);
     gridElement.appendChild(cell);
     newInputs.push(input);
   }
 
+  // 🟨 Cột 6: Hành động
   const actionCell = document.createElement('div');
   actionCell.className = 'excel-cell action-cell';
   actionCell.innerHTML = `
@@ -43,6 +52,11 @@ export function themDongMoi() {
     <button onclick="splitRow(this)">⚙️</button>
   `;
   gridElement.appendChild(actionCell);
+// 🟨 KIỂM TRA
+  const newTotalCells = gridElement.querySelectorAll('.excel-cell').length;
+  if (newTotalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
+    console.error('❌ LỖI: Sau khi thêm dòng bị lệch! Tổng ô:', newTotalCells);
+  }
 }
 
 // ✅ Hàm xóa dòng
