@@ -1,12 +1,13 @@
-// ✅ Gọi xulycot.js
+// ✅ Gọi cấu hình cột
 import { formConfig } from './cauhinh.js';
 
 const gridElement = document.getElementById('gridElement');
+
 // ✅ THÊM DÒNG
 export function themDongMoi() {
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
 
-  // 🛡️ Check tổng số ô hiện tại có chia hết cho số cột không
+  // 🛡️ Check dữ liệu hiện tại có đủ cột không
   if (totalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
     console.warn('⚠️ Dữ liệu bảng bị lệch! Dòng hiện tại không đủ 7 ô.');
     return;
@@ -27,14 +28,6 @@ export function themDongMoi() {
       if (lastRowInput) input.value = lastRowInput.value.trim();
     }
 
-    // Gắn xử lý theo cột
-    if (i === 0) index0(input);
-    if (i === 1) index1(input);
-    if (i === 2) index2(input);
-    if (i === 3) index3(input);
-    if (i === 4) index4(input);
-    if (i === 5) index5(input);
-
     const cell = document.createElement('div');
     cell.className = 'excel-cell data-cell';
     cell.appendChild(input);
@@ -51,14 +44,15 @@ export function themDongMoi() {
     <button onclick="splitRow(this)">⚙️</button>
   `;
   gridElement.appendChild(actionCell);
-// 🟨 KIỂM TRA
+
+  // 🟨 KIỂM TRA
   const newTotalCells = gridElement.querySelectorAll('.excel-cell').length;
   if (newTotalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
     console.error('❌ LỖI: Sau khi thêm dòng bị lệch! Tổng ô:', newTotalCells);
   }
 }
 
-// ✅ Hàm xóa dòng
+// ✅ HÀM XOÁ DÒNG
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
   const allCells = Array.from(gridElement.children);
@@ -71,6 +65,7 @@ export function xoaDong(button) {
   }
 }
 
+// ✅ HÀM CHIA CHUYẾN
 export function tachChuyen(button) {
   alert("⚙️ Tính năng chia chuyến đang phát triển...");
 }
