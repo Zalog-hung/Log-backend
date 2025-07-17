@@ -1,18 +1,16 @@
-console.log("🟢 chinh.js đã được load!") 
+console.log("🟢 chinh.js đã được load!");
 
 import { themDongMoi, xoaDong, tachChuyen } from './bangexcel.js';
-import { ganSuKienTheoCot } from './xulycot.js';
+import { khoiDongHeThong } from './fixloi.js';
 
 window.addEventListener('DOMContentLoaded', async () => {
   console.log("✅ DOM sẵn sàng, bắt đầu khởi tạo...");
 
-  await loadKhachHangList(); // 🔄 Tải danh sách khách hàng trước
-
-  // Gắn các hàm để HTML dùng onclick="..."
+  // Gắn các hàm để HTML dùng onclick="...”
   window.addNewRow = themDongMoi;
   window.deleteRow = xoaDong;
   window.splitRow = tachChuyen;
 
-  // Gắn xử lý theo cột sau khi đã tải danh sách
-  ganSuKienTheoCot();
+  // 🧠 Gọi trung gian để tải danh sách + gắn index an toàn
+  await khoiDongHeThong();
 });
