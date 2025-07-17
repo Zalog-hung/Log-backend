@@ -5,7 +5,7 @@ const gridElement = document.getElementById('gridElement');
 
 export function themDongMoi() {
   const cells = Array.from(gridElement.querySelectorAll('.excel-cell'));
-  const lastRow = cells.slice(-formConfig.TOTAL_COLUMN_COUNT);
+  const lastRow = cells.slice(-formConfig.TOTAL_COLUMN_COUNT); // lấy dòng cuối
   const newInputs = [];
 
   for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
@@ -19,16 +19,16 @@ export function themDongMoi() {
       input.value = '';
     }
 
-    // Gắn hàm xử lý cột 
-if (i === 0) index0(input);
-if (i === 1) index1(input);
-if (i === 2) index2(input);
-if (i === 3) index3(input);
-if (i === 4) index4(input);
-if (i === 5) index5(input);
+    // Gắn xử lý cột
+    if (i === 0) index0(input);
+    if (i === 1) index1(input);
+    if (i === 2) index2(input);
+    if (i === 3) index3(input);
+    if (i === 4) index4(input);
+    if (i === 5) index5(input);
 
     const cell = document.createElement('div');
-    cell.className = 'excel-cell';
+    cell.className = 'excel-cell data-cell'; // ✅ Thêm class 'data-cell'
     cell.appendChild(input);
     gridElement.appendChild(cell);
     newInputs.push(input);
@@ -43,6 +43,7 @@ if (i === 5) index5(input);
   `;
   gridElement.appendChild(actionCell);
 }
+
 
 export function xoaDong(button) {
   const actionCell = button.closest('.excel-cell');
