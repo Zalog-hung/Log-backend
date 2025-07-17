@@ -1,5 +1,5 @@
 import { formConfig } from './cauhinh.js';
-import { index0, index1, index2, index3, index4, index5  } from './xulycot.js';
+import { index0, index1, index2, index3, index4, index5 } from './xulycot.js';
 
 const gridElement = document.getElementById('gridElement');
 
