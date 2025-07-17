@@ -5,8 +5,11 @@ export function index0(input) {
 }
 
 export function index1(input) {
+  console.log('🔍 Gọi index1 cho ô:', input);
+
   input.addEventListener('blur', () => {
     let val = input.value.trim();
+    console.log('📅 Xử lý ngày:', val);
     if (!val) return;
 
     let [day, month, year] = val.split('/');
