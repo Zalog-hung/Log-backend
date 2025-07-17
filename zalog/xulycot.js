@@ -30,5 +30,11 @@ export function ganSuKienTheoCot() {
     const col = +input.dataset.col;
     if (col === 0) index0(input);
     if (col === 1) index1(input);
+    if (col === 2) index2(input);
+    if (col === 3) index3(input);
+    if (col === 4) index4(input);
+    if (col === 5) index5(input);
+    if (col === 6) index6(input);
+
   });
 }
