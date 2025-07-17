@@ -1,4 +1,4 @@
-// 📁 xulycot.js
+// 📁 xulycot
 import { goiykh } from './danhsachkhachhang.js';
 
 export function index0(input) {
