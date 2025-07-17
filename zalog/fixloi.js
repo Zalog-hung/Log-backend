@@ -1,4 +1,4 @@
-let indexHandlers = {}; // ánh xạ các hàm theo cột
+import { formConfig, zacache } from './cauhinh.js';
 
 export async function khoiDongHeThong() {
   try {
@@ -12,6 +12,7 @@ export async function khoiDongHeThong() {
       themDongMoi = bang.themDongMoi;
       xoaDong = bang.xoaDong;
       tachChuyen = bang.tachChuyen;
+      console.log("✅ Đã load bangexcel.js");
     } catch (err) {
       console.warn("⚠️ Không thể load bangexcel.js:", err);
     }
@@ -24,6 +25,7 @@ export async function khoiDongHeThong() {
       index3 = xuly.index3;
       index4 = xuly.index4;
       index5 = xuly.index5;
+      console.log("✅ Đã load xulycot.js");
     } catch (err) {
       console.warn("⚠️ Không thể load xulycot.js:", err);
     }
@@ -33,6 +35,7 @@ export async function khoiDongHeThong() {
       const dskh = await import('./danhsachkhachhang.js');
       goiykh = dskh.goiykh;
       loadKhachHangList = dskh.loadKhachHangList;
+      console.log("✅ Đã load danhsachkhachhang.js");
     } catch (err) {
       console.warn("⚠️ Không thể load danhsachkhachhang.js:", err);
     }
@@ -44,7 +47,7 @@ export async function khoiDongHeThong() {
     }
 
     // --- 5. Thiết lập ánh xạ xử lý theo cột
-    indexHandlers = {
+    zacache.handlers = {
       0: index0,
       1: index1,
       2: goiykh,
@@ -56,20 +59,28 @@ export async function khoiDongHeThong() {
     // --- 6. Gắn xử lý cho input ban đầu
     ganChoTatCaInput();
 
-    // --- 7. Gắn các hàm onclick cho HTML (dùng window)
+    // --- 7. Gắn các hàm onclick cho HTML
     if (typeof themDongMoi === 'function') {
       window.addNewRow = () => {
         try {
-          const inputs = themDongMoi(); // Thêm dòng
-          if (Array.isArray(inputs)) ganCho1Dong(inputs); // Gắn indexN
+          const inputs = themDongMoi();
+          if (Array.isArray(inputs)) ganCho1Dong(inputs);
+          console.log("🟢 addNewRow() đã chạy.");
         } catch (err) {
           console.error("❌ Lỗi khi thêm dòng:", err);
         }
       };
     }
 
-    if (typeof xoaDong === 'function') window.deleteRow = xoaDong;
-    if (typeof tachChuyen === 'function') window.splitRow = tachChuyen;
+    if (typeof xoaDong === 'function') {
+      window.deleteRow = xoaDong;
+      console.log("🟢 deleteRow() đã gán.");
+    }
+
+    if (typeof tachChuyen === 'function') {
+      window.splitRow = tachChuyen;
+      console.log("🟢 splitRow() đã gán.");
+    }
 
     console.log("✅ Hệ thống đã khởi động hoàn tất.");
   } catch (error) {
@@ -81,7 +92,7 @@ export async function khoiDongHeThong() {
 function ganCho1Input(input) {
   const col = +input.dataset.col;
   try {
-    const handler = indexHandlers[col];
+    const handler = zacache.handlers[col];
     if (typeof handler === 'function') {
       handler(input);
     }
