@@ -1,4 +1,4 @@
-// xulycot.js
+// 📁 xulycot.js
 import { goiykh } from './danhsachkhachhang.js';
 
 export function index0(input) {
@@ -13,9 +13,10 @@ export function index1(input) {
     if (!val) return;
 
     let [day, month, year] = val.split('/');
+    if (!month) return;
+
     const now = new Date();
     year = year || now.getFullYear();
-
     if (year.length === 2) {
       year = +year >= 50 ? '19' + year : '20' + year;
     }
