@@ -1,3 +1,6 @@
+// ✅ Gọi cấu hình cột
+import { formConfig, zacache } from './cauhinh.js'; // ✅ chỉ giữ 1 dòng import duy nhất
+
 console.log("🟢 chinh.js đã được load!");
 
 import * as fixloi from './fixloi.js';
