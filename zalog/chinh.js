@@ -1,22 +1,25 @@
 console.log("🟢 chinh.js đã được load!");
 
-import { khoiDongHeThong } from './fixloi.js';
+// ✅ Kiểm tra import từ fixloi.js
+import * as fixloi from './fixloi.js';
+
+console.log("🔍 Kiểm tra fixloi:", fixloi);
+if (!fixloi.khoiDongHeThong) {
+  console.warn("❌ Không tìm thấy hàm khoiDongHeThong trong fixloi.js");
+} else {
+  console.log("✅ Hàm khoiDongHeThong đã sẵn sàng.");
+}
 
 window.addEventListener('DOMContentLoaded', async () => {
   console.log("✅ DOM sẵn sàng, bắt đầu khởi tạo...");
 
   try {
-    await khoiDongHeThong();
+    await fixloi.khoiDongHeThong();
   } catch (err) {
-    console.error("❌ Lỗi khi gọi khoiDongHeThong:", err);
+    console.error("❌ Lỗi khi gọi khoiDongHeThong():", err);
   }
 
-  // 🧪 Kiểm tra nếu addNewRow chưa gán vào window
   if (typeof window.addNewRow !== 'function') {
-    console.warn("⚠️ window.addNewRow chưa được gán. Nút HTML sẽ không hoạt động!");
-    // ✅ Bạn có thể thử tự gán tạm thời tại đây (không khuyến nghị nếu đã gán bên fixloi.js)
-    // window.addNewRow = () => { alert("Tạm thời gán addNewRow test"); };
-  } else {
-    console.log("✅ window.addNewRow đã sẵn sàng.");
+    console.warn("⚠️ addNewRow chưa được gán vào window.");
   }
 });
