@@ -46,9 +46,6 @@ export function index5(input) {
 }
 
 // ✅ Cột 6: Hành động – thường không có input, nhưng giữ hàm để tránh lỗi
-export function index6(input) {
-  // TODO: thường không cần vì là cột nút, nhưng khai báo để tránh lỗi
-}
 
 export function ganSuKienTheoCot() {
   document.querySelectorAll('input[data-col]').forEach(input => {
