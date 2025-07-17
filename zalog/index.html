@@ -15,35 +15,38 @@
 
     <div id="tabContent">
         
-        <div id="formContent">
- <div class="excel-grid" id="gridElement">
+<div id="formContent">
+  <div class="excel-grid" id="gridElement">
 
-  <!-- 🟦 Dòng tiêu đề (7 cột) -->
-  <div class="excel-cell header-cell">ID chuyến</div>
-  <div class="excel-cell header-cell">Ngày</div>
-  <div class="excel-cell header-cell">Khách hàng</div>
-  <div class="excel-cell header-cell">Số lượng</div>
-  <div class="excel-cell header-cell">Ca</div>
-  <div class="excel-cell header-cell">Tài xế</div>
-  <div class="excel-cell header-cell">#</div>
-   <!--🟨.......Nội dung ô nhập liệu-->
-<div class="excel-cell"><input type="text" data-col="0"></div>
-<div class="excel-cell"><input type="text" data-col="1"placeholder="dd/mm/yyyy"></div>
-<div class="excel-cell"><input type="text" data-col="2"></div>
-<div class="excel-cell"><input type="text" data-col="3"></div>
-<div class="excel-cell"><input type="text" data-col="4"></div>
-<div class="excel-cell"><input type="text" data-col="5"></div>
+    <!-- 🟦 Dòng tiêu đề (7 cột) -->
+    <div class="excel-cell header-cell">ID chuyến</div>
+    <div class="excel-cell header-cell">Ngày</div>
+    <div class="excel-cell header-cell">Khách hàng</div>
+    <div class="excel-cell header-cell">Số lượng</div>
+    <div class="excel-cell header-cell">Ca</div>
+    <div class="excel-cell header-cell">Tài xế</div>
+    <div class="excel-cell header-cell">#</div>
 
-<!-- index 6: Hành động -->
-<div class="excel-cell action-cell">
-  <button onclick="editRow(this)">✏️</button>
-  <button onclick="deleteRow(this)">🗑️</button>
-  <button onclick="splitRow(this)">⚙️</button>
-</div> 
-<div class="action-bar">
-  <div class="tab-item" onclick="addNewRow()">➕ Thêm dòng</div>
-  <div class="tab-item" onclick="saveLog()">📝 Ghi Log</div>
-</div>
+    <!-- 🟨 Ô nhập liệu -->
+    <div class="excel-cell"><input type="text" data-col="0" /></div>
+    <div class="excel-cell"><input type="text" data-col="1" placeholder="dd/mm/yyyy" /></div>
+    <div class="excel-cell"><input type="text" data-col="2" /></div>
+    <div class="excel-cell"><input type="text" data-col="3" /></div>
+    <div class="excel-cell"><input type="text" data-col="4" /></div>
+    <div class="excel-cell"><input type="text" data-col="5" /></div>
+    <div class="excel-cell action-cell">
+      <button onclick="editRow(this)">✏️</button>
+      <button onclick="deleteRow(this)">🗑️</button>
+      <button onclick="splitRow(this)">⚙️</button>
+    </div>
+
+  </div> <!-- ✅ Kết thúc .excel-grid -->
+
+  <!-- ✅ Action bar nằm ngoài .excel-grid -->
+  <div class="action-bar">
+    <div class="tab-item" onclick="addNewRow()">➕ Thêm dòng</div>
+    <div class="tab-item" onclick="saveLog()">📝 Ghi Log</div>
+  </div>
 </div>
         <div id="logContent" style="display: none;">
             📜 Đang ở tab Xem Log
