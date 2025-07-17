@@ -28,7 +28,7 @@ export function index1(input) {
   });
 }
 // ✅ Cột 2: Khách hàng - lấy từ danhsachkhachhang.js
-export const index2 = goiy;
+export const index2 = goiykh;
 
 // ✅ Cột 3: Số lượng
 export function index3(input) {
