@@ -19,14 +19,13 @@ export function themDongMoi() {
       input.value = '';
     }
 
-    // Gắn hàm xử lý cột
-    if (i === 0) index0(input);
-    if (i === 1) index1(input);
-    if (i === 2) index2(input);
-    if (i === 3) index3(input);
-    if (i === 4) index4(input);
-    if (i === 5) index5(input);
-    if (i === 6) index6(input);
+    // Gắn hàm xử lý cột 
+if (i === 0) index0(input);
+if (i === 1) index1(input);
+if (i === 2) index2(input);
+if (i === 3) index3(input);
+if (i === 4) index4(input);
+if (i === 5) index5(input);
 
     const cell = document.createElement('div');
     cell.className = 'excel-cell';
