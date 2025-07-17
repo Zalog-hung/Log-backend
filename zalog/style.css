@@ -44,17 +44,22 @@ body {
   gap: 1px;
   background-color: #ccc;
   border: 1px solid #999;
+  align-items: stretch; /* ✅ Đảm bảo các dòng cao đều */
 }
 
+/* Ô dữ liệu */
 .excel-cell {
   background-color: #fff;
   padding: 6px;
-  min-height: 36px;
   display: flex;
   align-items: center;
+  justify-content: center;
   border: 1px solid #ddd;
+  height: 100%; /* ✅ Giữ chiều cao dòng */
+  min-height: 40px;
 }
 
+/* Header */
 .header-cell {
   background-color: #2b6cb0;
   color: white;
@@ -71,9 +76,10 @@ body {
   border: 1px solid #bbb;
   border-radius: 4px;
   font-size: 14px;
+  height: 100%; /* ✅ input luôn giãn đầy chiều cao ô */
 }
 
-/* Nút hành động trong từng dòng */
+/* Ô chứa nút */
 .action-cell {
   justify-content: center;
   gap: 6px;
@@ -88,6 +94,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.2s;
+  align-self: center; /* ✅ Nút luôn giữa hàng */
 }
 
 .action-cell button:hover {
