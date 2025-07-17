@@ -5,27 +5,27 @@ const gridElement = document.getElementById('gridElement');
 
 // ✅ THÊM DÒNG – Không gắn indexN, chỉ trả về inputs để xử lý bên ngoài
 export function themDongMoi() {
+  const gridElement = document.querySelector('.excel-grid');
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
 
-  // 🛡️ Check dữ liệu hiện tại có đủ cột không
   if (totalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
     console.warn('⚠️ Dữ liệu bảng bị lệch! Dòng hiện tại không đủ 7 ô.');
     return;
   }
 
   const newInputs = [];
+  const lastInputs = Array.from(gridElement.querySelectorAll('input'));
+  const lastRowStart = lastInputs.length - formConfig.FORM_COLUMN_COUNT;
+  const lastRow = lastInputs.slice(lastRowStart);
 
   for (let i = 0; i < formConfig.FORM_COLUMN_COUNT; i++) {
     const input = document.createElement('input');
     input.type = 'text';
     input.setAttribute('data-col', i);
-    input.value = '';
 
-    // 🔁 Giữ lại giá trị nếu nằm trong danh sách cần giữ
-    if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i)) {
-      const lastRowCells = Array.from(gridElement.querySelectorAll('.excel-cell'));
-      const lastRowInput = lastRowCells[lastRowCells.length - formConfig.TOTAL_COLUMN_COUNT + i]?.querySelector('input');
-      if (lastRowInput) input.value = lastRowInput.value.trim();
+    // ✅ Giữ giá trị từ dòng trước nếu cần
+    if (formConfig.FIELDS_TO_KEEP_VALUE.includes(i) && lastRow[i]) {
+      input.value = lastRow[i].value;
     }
 
     const cell = document.createElement('div');
@@ -35,7 +35,7 @@ export function themDongMoi() {
     newInputs.push(input);
   }
 
-  // 🟨 Cột 6: Hành động
+  // Cột hành động
   const actionCell = document.createElement('div');
   actionCell.className = 'excel-cell action-cell';
   actionCell.innerHTML = `
@@ -45,13 +45,18 @@ export function themDongMoi() {
   `;
   gridElement.appendChild(actionCell);
 
-  // 🟨 KIỂM TRA TỔNG Ô
-  const newTotalCells = gridElement.querySelectorAll('.excel-cell').length;
-  if (newTotalCells % formConfig.TOTAL_COLUMN_COUNT !== 0) {
-    console.error('❌ LỖI: Sau khi thêm dòng bị lệch! Tổng ô:', newTotalCells);
-  }
-
-  return newInputs; // ✅ Trả về để fixloi.js gắn xử lý cột
+  // ✅ Gọi lại gán sự kiện chỉ cho dòng mới
+  newInputs.forEach(input => {
+    const col = +input.dataset.col;
+    try {
+      const handler = indexHandlers[col];
+      if (typeof handler === 'function') {
+        handler(input);
+      }
+    } catch (err) {
+      console.warn(`⚠️ Lỗi khi gắn sự kiện cho input mới [col ${col}]:`, err);
+    }
+  });
 }
 
 // ✅ XOÁ DÒNG
