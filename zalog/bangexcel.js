@@ -1,4 +1,4 @@
-// 📁 bangexcel.js
+// 📁 bangexcel
 import { formConfig, zacache } from './cauhinh.js';
 
 export function themDongMoi() {
