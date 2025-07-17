@@ -1,5 +1,6 @@
 //✅ Cột 0: ID chuyến
 export function index0(input) {
+  console.log("✅ index0 được gắn cho:", input);
   input.addEventListener('blur', () => {
     input.value = input.value.trim();
   });
