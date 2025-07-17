@@ -5,6 +5,14 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ✅ Chặn cache cho js, css, html
+app.use((req, res, next) => {
+  if (req.url.match(/\.(js|css|html)$/)) {
+    res.setHeader('Cache-Control', 'no-store');
+  }
+  next();
+});
+
 // Phục vụ file tĩnh như index.html, style.css, js...
 app.use(express.static(__dirname));
 
