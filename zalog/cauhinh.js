@@ -11,7 +11,6 @@ export const formConfig = {
 
 // ✅ BỘ NHỚ TẠM TOÀN CỤC ZA – CÓ THỂ MỞ RỘNG
 export const zacache = {
-  khachHangList: [],      // 🔄 Danh sách khách hàng tải về từ Google Sheet
-  colEvents: {},          // 🔧 Ánh xạ cột -> hàm xử lý nhập liệu
-  otherConfigs: {},       // 📦 Không bắt buộc – để dùng cho các config khác nếu cần
+  handlers: {},
+  khachHangList: [], // tùy bạn dùng hay không
 };
