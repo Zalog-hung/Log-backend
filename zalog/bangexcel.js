@@ -76,7 +76,7 @@ function ganSuKienEnter(input) {
     }
   });
 }
-
+window.ganSuKienEnter = ganSuKienEnter;
 export function xoaDong(button) {
   const gridElement = document.querySelector('.excel-grid');
   const actionCell = button.closest('.excel-cell');
