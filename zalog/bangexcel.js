@@ -1,11 +1,9 @@
 // ✅ Gọi cấu hình cột
-import { formConfig } from './cauhinh.js';
+import { formConfig, zacache } from './cauhinh.js';
 
 const gridElement = document.getElementById('gridElement');
 
 // ✅ THÊM DÒNG
-import { formConfig, zacache } from './cauhinh.js';
-
 export function themDongMoi() {
   const gridElement = document.querySelector('.excel-grid');
   const totalCells = gridElement.querySelectorAll('.excel-cell').length;
