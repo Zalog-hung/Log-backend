@@ -3,125 +3,56 @@ import { formConfig, zacache } from './cauhinh.js';
 export async function khoiDongHeThong() {
   try {
     let themDongMoi, xoaDong, tachChuyen;
-    let index0, index1, index3, index4, index5;
+    let index0, index1, index2, index3, index4, index5;
     let goiykh, loadKhachHangList;
 
-    // --- 1. Import module bảng
-    try {
-      const bang = await import('./bangexcel.js');
-      themDongMoi = bang.themDongMoi;
-      xoaDong = bang.xoaDong;
-      tachChuyen = bang.tachChuyen;
-      console.log("✅ Đã load bangexcel.js");
-    } catch (err) {
-      console.warn("⚠️ Không thể load bangexcel.js:", err);
-    }
+    const bang = await import('./bangexcel.js');
+    themDongMoi = bang.themDongMoi;
+    xoaDong = bang.xoaDong;
+    tachChuyen = bang.tachChuyen;
 
-    // --- 2. Import module xử lý cột
-    try {
-      const xuly = await import('./xulycot.js');
-      index0 = xuly.index0;
-      index1 = xuly.index1;
-      index3 = xuly.index3;
-      index4 = xuly.index4;
-      index5 = xuly.index5;
-      console.log("✅ Đã load xulycot.js");
-    } catch (err) {
-      console.warn("⚠️ Không thể load xulycot.js:", err);
-    }
+    const xuly = await import('./xulycot.js');
+    index0 = xuly.index0;
+    index1 = xuly.index1;
+    index2 = xuly.index2;
+    index3 = xuly.index3;
+    index4 = xuly.index4;
+    index5 = xuly.index5;
 
-    // --- 3. Import danh sách khách hàng
-    try {
-      const dskh = await import('./danhsachkhachhang.js');
-      goiykh = dskh.goiykh;
-      loadKhachHangList = dskh.loadKhachHangList;
-      console.log("✅ Đã load danhsachkhachhang.js");
-    } catch (err) {
-      console.warn("⚠️ Không thể load danhsachkhachhang.js:", err);
-    }
+    const dskh = await import('./danhsachkhachhang.js');
+    goiykh = dskh.goiykh;
+    loadKhachHangList = dskh.loadKhachHangList;
 
-    // --- 4. Tải danh sách khách hàng
-    if (typeof loadKhachHangList === 'function') {
-      await loadKhachHangList();
-      console.log('✅ Danh sách khách hàng đã sẵn sàng.');
-    }
+    await loadKhachHangList();
 
-    // --- 5. Thiết lập ánh xạ xử lý theo cột
     zacache.handlers = {
       0: index0,
       1: index1,
-      2: goiykh,
+      2: index2,
       3: index3,
       4: index4,
       5: index5,
     };
 
-    // --- 6. Gắn xử lý cho input ban đầu
-    ganChoTatCaInput();
-
-    // --- 7. Gán các hàm vào window (nếu không có, dùng fallback)
+    // Gán vào window
     if (typeof themDongMoi === 'function') {
       window.addNewRow = () => {
-        try {
-          const inputs = themDongMoi();
-          if (Array.isArray(inputs)) ganCho1Dong(inputs);
-          console.log("🟢 addNewRow() đã chạy.");
-        } catch (err) {
-          console.error("❌ Lỗi khi thêm dòng:", err);
+        const inputs = themDongMoi();
+        if (Array.isArray(inputs)) {
+          inputs.forEach(input => {
+            const col = +input.dataset.col;
+            const handler = zacache.handlers[col];
+            if (typeof handler === 'function') handler(input);
+          });
         }
       };
-    } else {
-      window.addNewRow = () => {
-        alert("⚠️ Chức năng 'Thêm dòng' đang được phát triển.");
-        console.warn("⚠️ themDongMoi chưa được load.");
-      };
     }
 
-    if (typeof xoaDong === 'function') {
-      window.deleteRow = xoaDong;
-      console.log("🟢 deleteRow() đã gán.");
-    } else {
-      window.deleteRow = () => {
-        alert("⚠️ Chức năng 'Xoá dòng' đang được phát triển.");
-        console.warn("⚠️ xoaDong chưa được load.");
-      };
-    }
-
-    if (typeof tachChuyen === 'function') {
-      window.splitRow = tachChuyen;
-      console.log("🟢 splitRow() đã gán.");
-    } else {
-      window.splitRow = () => {
-        alert("⚠️ Chức năng 'Chia chuyến' đang được phát triển.");
-        console.warn("⚠️ tachChuyen chưa được load.");
-      };
-    }
+    if (typeof xoaDong === 'function') window.deleteRow = xoaDong;
+    if (typeof tachChuyen === 'function') window.splitRow = tachChuyen;
 
     console.log("✅ Hệ thống đã khởi động hoàn tất.");
-  } catch (error) {
-    console.error("❌ Lỗi tổng khi khởi động hệ thống:", error);
-  }
-}
-
-// ✅ Gắn xử lý indexN an toàn cho 1 input
-function ganCho1Input(input) {
-  const col = +input.dataset.col;
-  try {
-    const handler = zacache.handlers[col];
-    if (typeof handler === 'function') {
-      handler(input);
-    }
   } catch (err) {
-    console.warn(`⚠️ Lỗi xử lý cột ${col}:`, err);
+    console.error("❌ Lỗi khi khởi động hệ thống:", err);
   }
-}
-
-// ✅ Gắn cho toàn bộ input ban đầu
-export function ganChoTatCaInput() {
-  document.querySelectorAll('input[data-col]').forEach(ganCho1Input);
-}
-
-// ✅ Gắn cho 1 dòng mới thêm
-export function ganCho1Dong(inputArray) {
-  inputArray.forEach(ganCho1Input);
 }
