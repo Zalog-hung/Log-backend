@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>ZA-LOG</title>
+    <!-- Load CSS từ file riêng -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 🟦 Thanh tab - Chuyển đổi giữa form nhập liệu và xem log -->
+    <div id="tabBar">
+        <!-- Tab form nhập dữ liệu -->
+        <div class="tab-item active" onclick="switchTab('form')">Nhập Dữ Liệu</div>
+        <!-- Tab xem log đã lưu -->
+        <div class="tab-item" onclick="switchTab('log')">Xem Log</div>
+    </div>
+
+    <!-- Vùng chứa nội dung của các tab -->
+    <div id="tabContent">
+
+        <!-- Tab nội dung form nhập liệu -->
+        <div id="formContent">
+            <!-- Bảng Excel-style để nhập dữ liệu chuyến hàng -->
+            <div class="excel-grid" id="gridElement">
+
+                <!-- 🟦 Dòng tiêu đề cột (7 cột: ID chuyến, Ngày, KH, Số lượng, Ca, Tài xế, Hành động) -->
+                <div class="excel-cell header-cell">ID chuyến</div>
+                <div class="excel-cell header-cell">Ngày</div>
+                <div class="excel-cell header-cell">Khách hàng</div>
+                <div class="excel-cell header-cell">Số lượng</div>
+                <div class="excel-cell header-cell">Ca</div>
+                <div class="excel-cell header-cell">Tài xế</div>
+                <div class="excel-cell header-cell">#</div>
+
+                <!-- 🟨 Dòng đầu tiên để nhập dữ liệu -->
+                <!-- Cột 0: ID chuyến (tự động generate theo format dd.mm.xxx) -->
+                <div class="excel-cell"><input type="text" data-col="0" /></div>
+                <!-- Cột 1: Ngày giao hàng (format dd/mm/yyyy) -->
+                <div class="excel-cell"><input type="text" data-col="1" placeholder="dd/mm/yyyy" /></div>
+                <!-- Cột 2: Tên khách hàng (có autocomplete) -->
+                <div class="excel-cell"><input type="text" data-col="2" /></div>
+                <!-- Cột 3: Số lượng hàng (cho phép format như 5, 10T, 5+3T) -->
+                <div class="excel-cell"><input type="text" data-col="3" /></div>
+                <!-- Cột 4: Ca làm việc (ngày/đêm) -->
+                <div class="excel-cell"><input type="text" data-col="4" /></div>
+                <!-- Cột 5: Tên tài xế -->
+                <div class="excel-cell"><input type="text" data-col="5" /></div>
+                <!-- Cột hành động với 3 nút: Sửa, Xóa, Chia chuyến -->
+                <div class="excel-cell action-cell">
+                    <button onclick="editRow(this)" title="Sửa dòng này">✏️</button>
+                    <button onclick="deleteRow(this)" title="Xóa dòng này">🗑️</button>
+                    <button onclick="splitRow(this)" title="Chia chuyến theo quy tắc">⚙️</button>
+                </div>
+
+            </div> <!-- Kết thúc bảng Excel -->
+
+            <!-- Thanh chức năng với 2 nút chính --> 
+            <div class="action-bar3">
+                <!-- Nút thêm dòng mới vào bảng -->
+                <div class="action-button3" onclick="addNewRow()">Thêm dòng</div>
+                <!-- Nút lưu tất cả dữ liệu vào log -->
+                <div class="action-button3" onclick="saveLog()">Ghi Log</div>
+            </div>
+        </div>
+
+        <!-- Tab nội dung xem log -->
+        <div id="logContent" style="display: none;">
+            <div style="padding: 20px; text-align: center; font-style: italic; color: #666;">
+                📜 Khu vực hiển thị log sẽ được load khi click tab "Xem Log"
+            </div>
+        </div>
+
+        <!-- Khu vực hiển thị log và trạng thái hệ thống -->
+        <div id="logArea">
+
+            <!-- Thông báo hệ thống sẵn sàng -->
+            <div id="logReady">[LOG] Hệ thống sẵn sàng.</div>
+            <!-- Thông báo đang load log từ server -->
+            <div id="logLoading" style="display: none;">⏳ Đang tải log...</div>
+            <!-- Thông báo số lượng log tìm thấy -->
+            <div id="logFound" style="display: none;">
+                📋 Tìm thấy <span id="logCount">0</span> dòng log có dữ liệu:
+            </div>
+
+            <!-- Nút cập nhật log, đặt ở góc phải -->
+            <div class="log-button-container">
+                <button class="log-update-button" onclick="capNhatLog()" title="Làm mới dữ liệu log từ server">[LOG] Cập Nhật</button>
+            </div>
+
+            <!-- Container chứa bảng log sẽ được tạo động -->
+            <div id="logTableContainer"></div>
+        </div>
+    </div>
+
+    <!-- Script dự phòng - Chạy trước khi load module chính -->
+    <script>
+    // =============================================================================
+    // CÁC FUNCTION DỰ PHÒNG - Đảm bảo HTML không bị lỗi khi JS chưa load xong
+    // =============================================================================
+
+    /**
+     * Chuyển đổi giữa tab Form và Log
+     * @param {string} tabName - Tên tab: 'form' hoặc 'log'
+     */
+    window.switchTab = window.switchTab || function(tabName) {
+        console.log('🔄 Chuyển sang tab:', tabName);
+        
+        try {
+            // Xóa class active khỏi tất cả tab
+            document.querySelectorAll('.tab-item').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Thêm class active cho tab được click
+            event.target.classList.add('active');
+            
+            // Lấy các vùng nội dung
+            const formContent = document.getElementById('formContent');
+            const logContent = document.getElementById('logContent');
+            
+            if (tabName === 'form') {
+                // Hiện form, ẩn log
+                formContent.style.display = 'block';
+                logContent.style.display = 'none';
+                console.log('✅ Đã chuyển sang tab Nhập Dữ Liệu');
+            } else if (tabName === 'log') {
+                // Ẩn form, hiện log
+                formContent.style.display = 'none';
+                logContent.style.display = 'block';
+                console.log('✅ Đã chuyển sang tab Xem Log');
+                
+                // Tự động load log nếu có function ShowLog
+                if (typeof window.ShowLog === 'function') {
+                    window.ShowLog();
+                }
+            }
+        } catch (error) {
+            console.error('❌ Lỗi khi chuyển tab:', error);
+            alert('⚠️ Có lỗi khi chuyển tab. Vui lòng thử lại!');
+        }
+    };
+
+    /**
+     * Lưu dữ liệu từ form vào log
+     */
+    window.saveLog = window.saveLog || function() {
+        console.log('💾 Bắt đầu lưu dữ liệu...');
+        
+        try {
+            // Thu thập tất cả input trong form
+            const allInputs = document.querySelectorAll('input[data-col]');
+            const rows = [];
+            
+            // Nhóm input thành từng dòng (6 input mỗi dòng)
+            for (let i = 0; i < allInputs.length; i += 6) {
+                const rowInputs = Array.from(allInputs).slice(i, i + 6);
+                const rowData = rowInputs.map(input => input.value.trim());
+                
+                // Chỉ thêm dòng có dữ liệu (không rỗng hoàn toàn)
+                if (rowData.some(value => value !== '')) {
+                    rows.push({
+                        idChuyen: rowData[0] || '',
+                        ngay: rowData[1] || '',
+                        khachHang: rowData[2] || '',
+                        soLuong: rowData[3] || '',
+                        ca: rowData[4] || '',
+                        taiXe: rowData[5] || ''
+                    });
+                }
+            }
+            
+            if (rows.length === 0) {
+                alert('⚠️ Không có dữ liệu để lưu!\nVui lòng nhập ít nhất một dòng có thông tin.');
+                return;
+            }
+            
+            console.log('📋 Dữ liệu sẽ lưu:', rows);
+            
+            // Hiển thị trạng thái đang lưu
+            const saveButton = document.querySelector('.action-button3:last-child');
+            const originalText = saveButton.textContent;
+            saveButton.textContent = '⏳ Đang lưu...';
+            saveButton.style.pointerEvents = 'none';
+            
+            // TODO: Kết nối với API thực tế ở đây
+            // Hiện tại chỉ mô phỏng với setTimeout
+            setTimeout(() => {
+                saveButton.textContent = originalText;
+                saveButton.style.pointerEvents = '';
+                alert(`✅ Đã lưu thành công ${rows.length} dòng dữ liệu!`);
+            }, 1000);
+            
+        } catch (error) {
+            console.error('❌ Lỗi khi lưu dữ liệu:', error);
+            alert('⚠️ Có lỗi khi lưu dữ liệu. Vui lòng kiểm tra và thử lại!');
+        }
+    };
+
+    /**
+     * Chỉnh sửa dòng được chọn
+     * @param {HTMLElement} button - Nút edit được click
+     */
+    window.editRow = window.editRow || function(button) {
+        console.log('✏️ Bắt đầu chỉnh sửa dòng');
+        
+        try {
+            // Tìm dòng chứa nút edit
+            const actionCell = button.closest('.excel-cell');
+            const gridElement = document.querySelector('.excel-grid');
+            const allCells = Array.from(gridElement.children);
+            const actionIndex = allCells.indexOf(actionCell);
+            
+            // Tính vị trí bắt đầu của dòng (mỗi dòng có 7 ô)
+            const rowStartIndex = Math.floor(actionIndex / 7) * 7;
+            const rowCells = allCells.slice(rowStartIndex, rowStartIndex + 6);
+            const inputs = rowCells.map(cell => cell.querySelector('input')).filter(Boolean);
+            
+            if (inputs.length === 0) {
+                alert('⚠️ Không tìm thấy ô input để chỉnh sửa!');
+                return;
+            }
+            
+            // Focus vào ô đầu tiên và select toàn bộ text
+            inputs[0].focus();
+            inputs[0].select();
+            
+            // Làm nổi bật dòng đang sửa bằng màu nền
+            inputs.forEach(input => {
+                input.style.backgroundColor = '#fff3cd';
+                input.style.transition = 'background-color 0.3s';
+            });
+            
+            // Trở về màu bình thường sau 2 giây
+            setTimeout(() => {
+                inputs.forEach(input => {
+                    input.style.backgroundColor = '';
+                });
+            }, 2000);
+            
+            console.log('✅ Đã focus vào dòng để chỉnh sửa');
+            
+        } catch (error) {
+            console.error('❌ Lỗi khi edit dòng:', error);
+            alert('⚠️ Có lỗi khi chỉnh sửa dòng. Vui lòng thử lại!');
+        }
+    };
+
+    /**
+     * Cập nhật dữ liệu log từ server
+     */
+    window.capNhatLog = window.capNhatLog || function() {
+        console.log('🔄 Cập nhật log...');
+        
+        try {
+            // Hiển thị trạng thái đang load
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = '⏳ Đang cập nhật...';
+            button.disabled = true;
+            
+            // Gọi function ShowLog nếu có
+            if (typeof window.ShowLog === 'function') {
+                window.ShowLog().then(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    console.log('✅ Cập nhật log thành công');
+                }).catch((error) => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    console.error('❌ Lỗi cập nhật log:', error);
+                });
+            } else {
+                // Fallback nếu chưa có ShowLog
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    alert('⚠️ Chức năng cập nhật log chưa sẵn sàng!');
+                }, 1000);
+            }
+            
+        } catch (error) {
+            console.error('❌ Lỗi khi cập nhật log:', error);
+            alert('⚠️ Có lỗi khi cập nhật log. Vui lòng thử lại!');
+        }
+    };
+
+    // Placeholder functions để tránh lỗi
+    window.addNewRow = window.addNewRow || function() {
+        console.log('⚠️ Function addNewRow chưa được load');
+        alert('Chức năng này đang tải...');
+    };
+
+    window.deleteRow = window.deleteRow || function() {
+        console.log('⚠️ Function deleteRow chưa được load');
+        alert('Chức năng này đang tải...');
+    };
+
+    window.splitRow = window.splitRow || function() {
+        console.log('⚠️ Function splitRow chưa được load');
+        alert('Chức năng này đang tải...');
+    };
+
+    // =============================================================================
+    // KHỞI TẠO KHI TRANG WEB LOAD XONG
+    // =============================================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🟢 HTML đã load xong, đang chờ JS modules...');
+        
+        // Kiểm tra xem các JS module đã load chưa
+        const checkModules = setInterval(() => {
+            if (typeof window.addNewRow === 'function' && 
+                typeof window.deleteRow === 'function' && 
+                typeof window.splitRow === 'function') {
+                console.log('✅ Tất cả JS modules đã load thành công!');
+                clearInterval(checkModules);
+            }
+        }, 500);
+        
+        // Timeout sau 10 giây nếu JS không load được
+        setTimeout(() => {
+            clearInterval(checkModules);
+            if (typeof window.addNewRow !== 'function') {
+                console.warn('⚠️ Một số chức năng JS chưa sẵn sàng sau 10 giây');
+                // Vẫn có thể sử dụng với functions dự phòng
+            }
+        }, 10000);
+    });
+    </script>
+
+    <!-- Load module chính sau khi có functions dự phòng -->
+    <script type="module" src="./chinh.js"></script>
+
+</body>
+</html>

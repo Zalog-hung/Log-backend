@@ -1,0 +1,421 @@
+/* —————————————– */
+/* 🔵 PHẦN 1: TABBAR (Tab chuyển đổi Form / Log) */
+/* —————————————– */
+
+#tabBar {
+  display: flex;
+  background-color: #217346;
+  padding: 0;
+}
+
+.tab-item {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border: none;
+  border-bottom: 3px solid transparent;
+}
+
+.tab-item:hover {
+  background-color: #2e8b57;
+}
+
+.tab-item.active {
+  background-color: #2e8b57;
+  color: white;
+  border-bottom: 3px solid #2e8b57;
+}
+
+/* —————————————– */
+/* 🟢 PHẦN 2: FORM NHẬP DỮ LIỆU (Excel Grid) */
+/* —————————————– */
+
+.excel-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  background: #fff;
+  border: 0.5px solid #ccc;
+  font-family: Consolas, monospace;
+  color: #0d0d0d;
+  font-size: 14px;
+}
+
+.excel-cell {
+  background-color: #fff;
+  padding: 0;
+  border: 0.5px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  min-height: 20px;
+  text-align: center;
+}
+
+.header-cell {
+  background: #14afe7;
+  color: #0c0d0d;
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  font-family: Consolas, monospace;
+}
+
+.excel-cell input[type="text"] {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: Consolas, monospace;
+  background: transparent;
+  color: #040404;
+  text-align: center;
+}
+
+.action-cell {
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.action-cell button {
+  padding: 4px 6px;
+  border: none;
+  background-color: #66c6e6;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.action-cell button:hover {
+  background-color: #2d3748;
+}
+
+/* 🟠 PHẦN 3: Hành động – 2 nút nằm ngang, căn phải */
+.action-bar3 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+  padding-right: 10px;
+}
+
+.action-button3 {
+  padding: 8px 16px;
+  background-color: #217346;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.action-button3:hover {
+  background-color: #2e8b57;
+}
+
+/* —————————————– */
+/* 🔴 PHẦN 4: HIỂN THỊ LOG */
+/* —————————————– */
+
+#logArea {
+  margin-top: 10px;
+  background-color: #217346;
+  color: #09ea3e;
+  padding: 12px;
+  border-radius: 6px;
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#logTableContainer {
+  margin-top: 10px;
+  border-top: 1px solid #0008ff77;
+  padding-top: 8px;
+}
+
+#logContent {
+  padding: 10px;
+  font-style: italic;
+  color: #444;
+}
+
+.log-wrapper {
+  overflow: auto;
+  max-height: 400px;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+.log-table {
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: max-content;
+  background: #fff;
+}
+
+.log-cell {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+  min-width: 100px;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #000;
+}
+
+.log-header {
+  background: #14afe7;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: center;
+}
+
+.log-update-button {
+  padding: 8px 16px;
+  background-color: #217346;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.log-update-button:hover {
+  background-color: #2e8b57;
+}
+
+.log-button-container {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+/* —————————————– */
+/* 🟡 PHẦN 5: SUGGESTION BOX */
+/* —————————————– */
+
+.suggestions-container {
+  position: absolute;
+  z-index: 9999;
+  border: 1px solid #ccc;
+  background: #fff;
+  max-height: 150px;
+  overflow-y: auto;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: none;
+}
+
+.suggestion-item,
+.suggestions-container > div {
+  padding: 4px 8px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.suggestion-item:hover,
+.suggestions-container > div:hover {
+  background-color: #f0f8ff;
+}
+
+/* —————————————– */
+/* 🟢 PHẦN 6: RESPONSIVE & UTILITIES */
+/* —————————————– */
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Reset cơ bản */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Consolas, monospace;
+  background-color: #f5f5f5;
+}
+
+/* —————————————– */
+/* 🟡 PHẦN 7: RESPONSIVE MOBILE */
+/* —————————————– */
+
+/* Tablet và nhỏ hơn */
+@media (max-width: 1024px) {
+  .excel-grid {
+    font-size: 12px;
+  }
+
+  .excel-cell {
+    min-width: 80px;
+  }
+
+  .action-cell button {
+    padding: 2px 4px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile và nhỏ hơn */
+@media (max-width: 768px) {
+  /* Tab bar responsive */
+  #tabBar {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .tab-item {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  /* Excel grid responsive */
+  .excel-grid {
+    grid-template-columns: repeat(7, minmax(60px, 1fr));
+    font-size: 11px;
+    overflow-x: auto;
+    min-width: 100%;
+  }
+
+  .excel-cell {
+    min-width: 60px;
+    height: 35px;
+    padding: 2px;
+  }
+
+  .excel-cell input[type="text"] {
+    font-size: 11px;
+  }
+
+  .header-cell {
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  .action-cell {
+    gap: 2px;
+  }
+
+  .action-cell button {
+    padding: 3px 5px;
+    font-size: 11px;
+    min-width: 25px;
+  }
+
+  /* Action buttons responsive */
+  .action-bar3 {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding-right: 5px;
+  }
+
+  .action-button3 {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  /* Log area responsive */
+  #logArea {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .log-wrapper {
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  .log-table {
+    font-size: 11px;
+  }
+
+  .log-cell {
+    padding: 3px 4px;
+    min-width: 60px;
+    max-width: 120px;
+    font-size: 10px;
+  }
+
+  .log-update-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Fix cho suggestion box trên mobile */
+  .suggestions-container {
+    max-height: 120px;
+    font-size: 12px;
+  }
+
+  .suggestion-item,
+  .suggestions-container > div {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+/* Mobile cực nhỏ */
+@media (max-width: 480px) {
+  .excel-grid {
+    grid-template-columns: repeat(7, minmax(50px, 1fr));
+    font-size: 10px;
+  }
+
+  .excel-cell {
+    min-width: 50px;
+    height: 32px;
+  }
+
+  .excel-cell input[type="text"] {
+    font-size: 10px;
+  }
+
+  .header-cell {
+    font-size: 9px;
+    padding: 1px;
+  }
+
+  .action-cell button {
+    padding: 2px 3px;
+    font-size: 10px;
+    min-width: 20px;
+  }
+
+  .tab-item {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* Đảm bảo scroll horizontal cho bảng */
+.excel-grid-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
