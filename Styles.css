@@ -1,0 +1,1018 @@
+/* ===========================================
+   1. THIẾT LẬP CƠ BẢN - RESET VÀ BODY/HTML
+   =========================================== */
+
+/* Thiết lập cơ bản cho body */
+body {
+  font-family: Arial, sans-serif; /* Font mặc định */
+  margin: 0; /* Không có margin */
+  background: #f5f5f5; /* Nền xám nhạt */
+  height: 100%; /* Chiều cao 100% */
+  padding: 0; /* Không có padding */
+  overflow: hidden !important; /* Chặn cuộn toàn trang */
+  overscroll-behavior: none; /* Ngăn hiệu ứng cuộn quá giới hạn */
+}
+
+/* Thiết lập cơ bản cho html */
+html {
+  height: 100%; /* Chiều cao 100% */
+  margin: 0; /* Không có margin */
+  padding: 0; /* Không có padding */
+  overflow: hidden !important; /* Chặn cuộn toàn trang */
+}
+
+/* ===========================================
+   1.1. MAIN LAYOUT - LAYOUT CHÍNH CHO WEB & MAP
+   =========================================== */
+
+/* Layout chính: Web bên trái, Map bên phải */
+.main-layout {
+  display: flex; /* Flexbox ngang */
+  width: 100vw; /* Chiều rộng 100% viewport */
+  height: 100vh; /* Chiều cao 100% viewport */
+  overflow: hidden; /* Không tràn layout */
+}
+
+/* Panel bên trái cho web */
+.left-panel {
+  width: 60%; /* Chiếm 60% chiều rộng */
+  height: 100vh; /* Chiều cao đầy đủ */
+  overflow: hidden; /* Không tràn panel */
+  background: #f5f5f5; /* Nền xám nhạt */
+  border-right: 2px solid #ddd; /* Viền phân cách */
+}
+
+/* Panel bên phải cho map */
+.right-panel {
+  width: 40%; /* Chiếm 40% chiều rộng */
+  height: 100vh; /* Chiều cao đầy đủ */
+  overflow: hidden; /* Không tràn panel */
+  background: #fff; /* Nền trắng */
+}
+
+/* Container cho map */
+.map-container {
+  width: 100%; /* Chiều rộng 100% */
+  height: 100%; /* Chiều cao 100% */
+  position: relative; /* Vị trí tương đối */
+}
+
+/* Placeholder cho map */
+.map-placeholder {
+  width: 100%; /* Chiều rộng 100% */
+  height: 100%; /* Chiều cao 100% */
+  display: flex; /* Flexbox */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  background: #f8f9fa; /* Nền xám nhạt */
+  color: #666; /* Màu chữ xám */
+  font-size: 18px; /* Cỡ chữ */
+  font-weight: 500; /* Độ đậm */
+  border: 2px dashed #ddd; /* Viền nét đứt */
+  box-sizing: border-box; /* Box-sizing kiểu border-box */
+}
+
+/* ===========================================
+   2. CONTAINER - KHUNG CHÍNH (ĐIỀU CHỈNH CHO LEFT PANEL)
+   ========================================== */
+
+/* Container chính - khung bao toàn bộ nội dung web */
+.container {
+  max-width: none; /* Không giới hạn chiều rộng tối đa */
+  width: 100%; /* Chiều rộng 100% của left panel */
+  margin: 0; /* Không căn giữa */
+  background: white; /* Nền trắng */
+  height: 100vh !important; /* Chiếm đúng chiều cao viewport */
+  min-height: auto !important; /* Không giới hạn chiều cao tối thiểu */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Xếp theo chiều dọc */
+  overflow: hidden !important; /* Không tràn container */
+}
+
+/* ===========================================
+   3. HEADER - THANH TIÊU ĐỀ TRÊN CÙNG
+   ========================================== */
+
+/* Header - Thanh tiêu đề màu xanh */
+.header {
+  background: #2196F3; /* Nền xanh */
+  color: white; /* Chữ trắng */
+  padding: 10px 20px; /* Padding vừa phải */
+}
+
+/* Tiêu đề h1 trong header */
+.header h1 {
+  margin: 0; /* Không có margin */
+  font-size: 20px; /* Cỡ chữ nhỏ hơn */
+}
+
+/* ===========================================
+   4. TABS - THANH ĐIỀU HƯỚNG TAB
+   ========================================== */
+
+/* Container cho tabs */
+.tabs-container {
+  position: sticky; /* Dính khi cuộn */
+  top: 0; /* Ở vị trí đầu */
+  z-index: 50; /* Lớp hiển thị cao */
+}
+
+/* Thanh tab điều hướng */
+.tabs {
+  display: flex; /* Flexbox */
+  background: #fff; /* Nền trắng */
+  border-bottom: 1px solid #dee2e6; /* Viền dưới */
+  overflow-x: auto; /* Cuộn ngang khi nhiều tab */
+  position: sticky; /* Dính khi cuộn */
+  top: 0; /* Ở vị trí đầu */
+  z-index: 50; /* Lớp hiển thị cao */
+  margin: 0 !important; /* Không margin */
+}
+
+/* Từng tab riêng lẻ */
+.tab {
+  padding: 8px 20px; /* Padding nhỏ hơn */
+  cursor: pointer; /* Con trỏ kiểu pointer */
+  border: none; /* Không có viền */
+  background: transparent; /* Nền trong suốt */
+  font-size: 13px; /* Cỡ chữ nhỏ */
+  font-weight: 500; /* Độ đậm vừa phải */
+  color: #666; /* Màu chữ xám */
+  border-bottom: 2px solid transparent; /* Viền dưới trong suốt */
+  transition: all 0.3s ease; /* Hiệu ứng chuyển đổi */
+  white-space: nowrap; /* Không ngắt chữ */
+}
+
+/* Hiệu ứng hover tab */
+.tab:hover {
+  background: #f8f9fa; /* Nền xám nhạt khi hover */
+  color: #333; /* Màu chữ đậm hơn */
+}
+
+/* Tab đang active */
+.tab.active {
+  color: #2196F3; /* Màu chữ xanh */
+  border-bottom-color: #2196F3; /* Viền dưới xanh */
+  background: #f8f9fa; /* Nền xám nhạt */
+}
+
+/* ===========================================
+   5. SHEET INFO BAR - THANH THÔNG TIN BẢNG TÍNH
+   ========================================== */
+
+/* Thanh thông tin bảng tính */
+.sheet-info-bar {
+  position: relative !important; /* Vị trí tương đối */
+  top: auto !important; /* Không fixed top */
+  z-index: auto !important; /* Z-index tự động */
+  display: flex !important; /* Flexbox */
+  justify-content: space-between !important; /* Căn đều hai bên */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  background: #e8f5e8 !important; /* Nền xanh lá nhạt */
+  border-left: 4px solid #4CAF50 !important; /* Viền trái xanh lá */
+  margin: 0 !important; /* Không margin */
+  padding: 0 !important; /* Không padding */
+  height: 39px !important; /* Chiều cao cố định */
+  min-height: 30px !important; /* Chiều cao tối thiểu */
+  max-height: 39px !important; /* Chiều cao tối đa */
+  overflow: hidden !important; /* Ngăn tràn nội dung */
+  box-sizing: border-box !important; /* Box-sizing kiểu border-box */
+}
+
+/* Phần tử con trong sheet-info-bar */
+.sheet-info-bar > * {
+  height: 18px !important; /* Chiều cao cố định */
+  max-height: 18px !important; /* Chiều cao tối đa */
+  line-height: 18px !important; /* Line-height bằng chiều cao */
+  margin: 0 !important; /* Không margin */
+  padding: 0 12px !important; /* Padding trái phải */
+  border: 0 !important; /* Không viền */
+  display: flex !important; /* Flexbox */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  overflow: hidden !important; /* Ngăn tràn nội dung */
+}
+
+/* Phần thông tin sheet bên trái */
+.sheet-info {
+  padding: 0 20px !important; /* Chỉ padding trái phải */
+  font-size: 13px !important; /* Cỡ chữ nhỏ */
+  color: #2e7d32 !important; /* Màu chữ xanh lá */
+  flex: 1 !important; /* Lấy hết không gian còn lại */
+  line-height: 24px !important; /* Line height = chiều cao */
+  display: flex !important; /* Flexbox */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  margin: 0 !important; /* Không margin */
+  white-space: nowrap !important; /* Không ngắt chữ */
+  overflow: hidden !important; /* Ngăn tràn nội dung */
+  text-overflow: ellipsis !important; /* Hiển thị dấu ... khi tràn */
+  border: 0 !important; /* Không viền */
+}
+
+/* Phần điều hướng tháng bên phải */
+.month-navigator {
+  display: flex !important; /* Flexbox */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  gap: 13px !important; /* Khoảng cách giữa các phần tử */
+  padding: 0 20px !important; /* Chỉ padding trái phải */
+  margin: 0 !important; /* Không margin */
+  height: 24px !important; /* Chiều cao cố định */
+  border: 0 !important; /* Không viền */
+}
+
+/* Hiển thị tháng */
+.month-display {
+  width: auto !important; /* Chiều rộng tự động */
+  min-width: 80px !important; /* Chiều rộng tối thiểu lớn hơn */
+  text-align: center !important; /* Căn giữa text */
+  font-weight: 600 !important; /* Độ đậm cao hơn */
+  font-size: 14px !important; /* Cỡ chữ lớn hơn */
+  color: #333 !important; /* Màu chữ đen */
+  padding: 0 10px !important; /* Padding trái phải lớn hơn */
+  margin: 0 !important; /* Không margin */
+  line-height: 26px !important; /* Line-height cao hơn */
+  height: 26px !important; /* Chiều cao lớn hơn */
+  display: flex !important; /* Flexbox */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  justify-content: center !important; /* Căn giữa theo chiều ngang */
+  border: 0 !important; /* Không viền */
+  box-sizing: border-box !important; /* Box-sizing kiểu border-box */
+  overflow: hidden !important; /* Ngăn tràn nội dung */
+  background: #f0f0f0 !important; /* Thêm màu nền xám nhạt */
+  border-radius: 4px !important; /* Bo góc nhẹ */
+}
+
+/* Override cho month-display trong sheet-info-bar */
+.sheet-info-bar .month-display {
+  height: 32px !important; /* Chiều cao riêng lớn hơn */
+  line-height: 32px !important; /* Line-height = chiều cao */
+  padding: 0 15px !important; /* Padding trái phải lớn hơn */
+  border: 0 !important; /* Không viền */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; /* Thêm đổ bóng nhẹ */
+}
+
+/* Nút điều hướng tháng */
+.nav-btn {
+  width: 28px !important; /* Chiều rộng lớn hơn */
+  height: 28px !important; /* Chiều cao lớn hơn */
+  min-width: 28px !important; /* Chiều rộng tối thiểu */
+  min-height: 28px !important; /* Chiều cao tối thiểu */
+  max-width: 28px !important; /* Chiều rộng tối đa */
+  max-height: 28px !important; /* Chiều cao tối đa */
+  border: 1px solid #ccc !important; /* Viền màu xám đậm hơn */
+  background: white !important; /* Nền trắng */
+  border-radius: 4px !important; /* Bo góc lớn hơn */
+  cursor: pointer !important; /* Con trỏ kiểu pointer */
+  display: flex !important; /* Flexbox */
+  align-items: center !important; /* Căn giữa theo chiều dọc */
+  justify-content: center !important; /* Căn giữa theo chiều ngang */
+  font-size: 16px !important; /* Cỡ chữ lớn hơn */
+  color: #555 !important; /* Màu chữ đậm hơn */
+  padding: 0 !important; /* Không padding */
+  margin: 0 !important; /* Không margin */
+  box-sizing: border-box !important; /* Box-sizing kiểu border-box */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1) !important; /* Thêm đổ bóng nhẹ */
+}
+
+/* Override cho nav-btn trong sheet-info-bar */
+.sheet-info-bar .nav-btn,
+.sheet-info-bar .nav-btn span {
+  height: 32px !important; /* Chiều cao lớn hơn */
+  min-height: 32px !important; /* Chiều cao tối thiểu */
+  max-height: 32px !important; /* Chiều cao tối đa */
+  line-height: 32px !important; /* Line-height = chiều cao */
+  padding: 0 !important; /* Không padding */
+  margin: 0 !important; /* Không margin */
+}
+
+/* Hiệu ứng hover nút */
+.nav-btn:hover {
+  background: #f0f0f0 !important; /* Nền xám nhạt khi hover */
+  border-color: #2196F3 !important; /* Viền xanh */
+  color: #2196F3 !important; /* Màu chữ xanh */
+}
+
+/* Span trong nav-btn */
+.nav-btn span {
+  display: block !important; /* Hiển thị block */
+  line-height: 1 !important; /* Line-height */
+  height: 16px !important; /* Chiều cao lớn hơn */
+  font-size: 16px !important; /* Cỡ chữ lớn hơn */
+  margin: 0 !important; /* Không margin */
+  padding: 0 !important; /* Không padding */
+  border: 0 !important; /* Không viền */
+}
+
+/* ===========================================
+   6. CONTENT CONTAINER - KHU VỰC NỘI DUNG
+   ========================================== */
+
+/* Container chứa nội dung bảng */
+#contentContainer {
+  flex: 1 1 auto; /* Lấy hết không gian còn lại */
+  min-height: 0; /* Không giới hạn chiều cao tối thiểu */
+  display: flex; /* Flexbox */
+  flex-direction: column; /* Xếp theo chiều dọc */
+  overflow: hidden; /* Không tràn container */
+}
+
+/* ===========================================
+   7. TABLE WRAPPER - KHUNG CHỨA BẢNG
+   ========================================== */
+
+/* Wrapper bao quanh bảng */
+.table-wrapper {
+  flex: 1 1 auto; /* Lấy hết không gian còn lại */
+  min-height: 0; /* Không giới hạn chiều cao tối thiểu */
+  overflow: auto !important; /* Cho phép cuộn */
+  max-height: none !important; /* Không giới hạn chiều cao tối đa */
+  border: 1px solid #dee2e6; /* Viền xám nhạt */
+  border-radius: 4px; /* Bo góc */
+  user-select: none; /* Không cho select text */
+  position: relative; /* Vị trí tương đối */
+}
+
+/* Ưu tiên cho header khi cuộn */
+.table-wrapper thead {
+  position: relative; /* Vị trí tương đối */
+  z-index: 10; /* Lớp hiển thị cao */
+}
+
+.table-wrapper .selection {
+  z-index: 5; /* Lớp hiển thị trung bình */
+}
+
+/* Tùy chỉnh thanh cuộn */
+.table-wrapper::-webkit-scrollbar {
+  width: 16px; /* Chiều rộng thanh cuộn */
+  height: 16px; /* Chiều cao thanh cuộn */
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f8f9fa; /* Nền thanh cuộn */
+  border: 1px solid #dee2e6; /* Viền thanh cuộn */
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #adb5bd; /* Màu nền thumb */
+  border: 2px solid #f8f9fa; /* Viền thumb */
+}
+
+/* ===========================================
+   8. TABLE BASE - BẢNG CƠ BẢN
+   ========================================== */
+
+/* Bảng dữ liệu */
+table {
+  width: 100%; /* Chiều rộng 100% */
+  border-collapse: collapse; /* Viền sát nhau */
+  margin: 0; /* Không margin */
+  background: white; /* Nền trắng */
+  min-width: calc(1400px + 52px); /* Chiều rộng tối thiểu */
+}
+
+/* Ô cơ bản (td, th) */
+th, td {
+  min-width: 80px; /* Chiều rộng tối thiểu */
+  max-width: 200px; /* Chiều rộng tối đa */
+  white-space: nowrap; /* Không ngắt chữ */
+  overflow: hidden; /* Ngăn tràn nội dung */
+  text-overflow: ellipsis; /* Hiển thị dấu ... khi tràn */
+  position: relative; /* Vị trí tương đối */
+}
+
+/* ===========================================
+   9. TABLE HEADERS - TIÊU ĐỀ CỘT VÀ HÀNG
+   ========================================== */
+
+/* Tiêu đề cột */
+th {
+  background: #eef2fa !important; /* Nền xanh nhạt đậm hơn */
+  padding: 5px 10px !important; /* Padding vừa phải */
+  text-align: center !important; /* Căn giữa thay vì căn trái */
+  border-bottom: 1px solid #c0c0c0 !important; /* Viền dưới đậm hơn */
+  border-right: 1px solid #d0d0d0 !important; /* Viền phải đậm hơn */
+  font-weight: 600 !important; /* Độ đậm cao hơn */
+  font-size: 13px !important; /* Cỡ chữ vừa phải */
+  color: #444 !important; /* Màu chữ đậm hơn */
+  position: sticky !important; /* Dính khi cuộn */
+  top: 0 !important; /* Ở vị trí đầu */
+  z-index: 60 !important; /* Lớp hiển thị cao */
+  cursor: pointer !important; /* Con trỏ kiểu pointer */
+  height: 28px !important; /* Chiều cao vừa phải */
+  line-height: 18px !important; /* Line-height cân đối */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important; /* Thêm đổ bóng nhẹ */
+}
+
+/* Hover tiêu đề cột */
+th:hover {
+  background: #e0e9f7 !important; /* Nền xanh nhạt đậm hơn khi hover */
+}
+
+/* Tiêu đề cột được chọn */
+th.header-selected,
+th.selected-column {
+  background-color: #e6f3ff !important; /* Nền xanh nhạt */
+  border: 2px solid #0078d4 !important; /* Viền xanh */
+  color: #0078d4 !important; /* Màu chữ xanh */
+  font-weight: bold !important; /* Chữ đậm */
+}
+
+/* Tiêu đề số thứ tự hàng (góc trên trái) */
+th.row-number {
+  background: #f0f0f0 !important; /* Nền xám nhạt đậm hơn */
+  color: #777 !important; /* Màu chữ mờ hơn */
+  text-align: center !important; /* Căn giữa */
+  width: 25px !important; /* Chiều rộng giảm 1/2 */
+  min-width: 25px !important; /* Chiều rộng tối thiểu giảm 1/2 */
+  max-width: 25px !important; /* Thêm chiều rộng tối đa */
+  font-weight: 500 !important; /* Độ đậm vừa phải */
+  border-right: 1px solid #c0c0c0 !important; /* Viền phải đậm hơn */
+  position: sticky !important; /* Dính khi cuộn */
+  left: 0 !important; /* Ở vị trí trái */
+  top: 0 !important; /* Ở vị trí đầu */
+  z-index: 70 !important; /* Lớp hiển thị cao nhất */
+  cursor: default !important; /* Con trỏ mặc định */
+  height: 36px !important; /* Tăng chiều cao */
+  line-height: 20px !important; /* Tăng line-height */
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.05) !important; /* Thêm đổ bóng nhẹ */
+  padding: 8px 2px !important; /* Tăng padding trên dưới */
+  font-size: 13px !important; /* Tăng cỡ chữ */
+}
+
+/* Số thứ tự hàng */
+td.row-number {
+  background: #f8f8f8 !important; /* Nền xám nhạt */
+  color: #888 !important; /* Màu chữ mờ hơn */
+  text-align: center !important; /* Căn giữa */
+  font-weight: 400 !important; /* Độ đậm nhẹ hơn */
+  width: 25px !important; /* Chiều rộng giảm 1/2 */
+  min-width: 25px !important; /* Chiều rộng tối thiểu giảm 1/2 */
+  max-width: 25px !important; /* Thêm chiều rộng tối đa */
+  border-right: 1px solid #d0d0d0 !important; /* Viền phải */
+  position: sticky !important; /* Dính khi cuộn */
+  left: 0 !important; /* Ở vị trí trái */
+  z-index: 40 !important; /* Lớp hiển thị cao */
+  cursor: pointer !important; /* Con trỏ kiểu pointer */
+  height: 22px !important; /* Chiều cao cũ */
+  line-height: 16px !important; /* Line-height cũ */
+  padding: 3px 2px !important; /* Padding cũ */
+  font-size: 13px !important; /* Cỡ chữ cũ */
+}
+
+/* Hover số thứ tự hàng */
+td.row-number:hover {
+  background: #f0f6ff !important; /* Nền xanh nhạt khi hover */
+  color: #666 !important; /* Màu chữ đậm hơn khi hover */
+}
+
+/* Số thứ tự hàng được chọn */
+td.row-number.header-selected,
+td.row-number.selected-row {
+  background-color: #e6f3ff !important; /* Nền xanh nhạt */
+  border: 2px solid #0078d4 !important; /* Viền xanh */
+  color: #0078d4 !important; /* Màu chữ xanh */
+  font-weight: bold !important; /* Chữ đậm */
+}
+
+/* ===========================================
+   10. TABLE CELLS - Ô BẢNG DỮ LIỆU
+   ========================================== */
+
+/* Ô dữ liệu */
+td {
+  padding: 3px 8px !important; /* Padding cũ */
+  border-bottom: 1px solid #e8e8e8 !important; /* Viền dưới */
+  border-right: 1px solid #e8e8e8 !important; /* Viền phải */
+  font-size: 12px !important; /* Cỡ chữ nhỏ */
+  color: #333 !important; /* Màu chữ đen */
+  height: 22px !important; /* Chiều cao cũ */
+  line-height: 16px !important; /* Line-height cũ */
+}
+
+/* Input trong ô */
+td input[type="text"] {
+  width: 100%; /* Chiều rộng 100% */
+  border: none; /* Không viền */
+  outline: none; /* Không outline */
+  background: transparent; /* Nền trong suốt */
+  font-size: inherit; /* Kế thừa font size */
+  color: inherit; /* Kế thừa màu chữ */
+  padding: 0; /* Không padding */
+  margin: 0; /* Không margin */
+  height: 100%; /* Chiều cao 100% */
+}
+
+/* Màu hàng xen kẽ */
+tr:nth-child(even) {
+  background: #fafafa !important; /* Nền xám nhạt */
+}
+
+tr:nth-child(even) td.row-number {
+  background: #f5f5f5 !important; /* Nền xám nhạt hơn */
+}
+
+/* Hover hàng */
+tr:hover {
+  background: #f0f8ff !important; /* Nền xanh nhạt khi hover */
+}
+
+tr:hover td.row-number {
+  background: #e8f4f8 !important; /* Nền xanh nhạt hơn khi hover */
+}
+
+/* Hàng được chọn */
+tr.selected-row {
+  background: #e6f3ff !important; /* Nền xanh nhạt */
+}
+
+tr.selected-row td:not(.row-number) {
+  background: #e6f3ff !important; /* Nền xanh nhạt */
+}
+
+/* ===========================================
+   11. CELL SELECTION - HỆ THỐNG CHỌN Ô
+   ========================================== */
+
+/* Ô cơ bản */
+.cell {
+  outline: none; /* Không outline */
+  cursor: pointer; /* Con trỏ kiểu pointer */
+  position: relative; /* Vị trí tương đối */
+  transition: background-color 0.1s ease, border-color 0.1s ease; /* Hiệu ứng chuyển đổi */
+}
+
+/* Ô đang active */
+.cell.active-cell {
+  background-color: white !important; /* Nền trắng */
+  border: 2px solid #0078d4 !important; /* Viền xanh */
+  outline: none !important; /* Không outline */
+  z-index: 100 !important; /* Lớp hiển thị cao nhất */
+  position: relative !important; /* Vị trí tương đối */
+}
+
+/* Ô được chọn */
+.cell.selected-cell:not(.active-cell) {
+  background-color: #f0f8ff !important; /* Nền xanh nhạt */
+}
+
+/* Viền vùng chọn */
+.cell.selection-top {
+  border-top: 2px solid #0078d4 !important; /* Viền trên xanh */
+}
+
+.cell.selection-right {
+  border-right: 2px solid #0078d4 !important; /* Viền phải xanh */
+}
+
+.cell.selection-bottom {
+  border-bottom: 2px solid #0078d4 !important; /* Viền dưới xanh */
+}
+
+.cell.selection-left {
+  border-left: 2px solid #0078d4 !important; /* Viền trái xanh */
+}
+
+/* Viền copy (nét đứt) */
+.cell.copy-border-top {
+  border-top: 2px dashed #0078d4 !important; /* Viền trên dạng nét đứt */
+}
+
+.cell.copy-border-right {
+  border-right: 2px dashed #0078d4 !important; /* Viền phải dạng nét đứt */
+}
+
+.cell.copy-border-bottom {
+  border-bottom: 2px dashed #0078d4 !important; /* Viền dưới dạng nét đứt */
+}
+
+.cell.copy-border-left {
+  border-left: 2px dashed #0078d4 !important; /* Viền trái dạng nét đứt */
+}
+
+/* Hiệu ứng hover */
+.cell:hover:not(.active-cell):not(.selected-cell) {
+  background-color: #f8f9fa !important; /* Nền xám nhạt khi hover */
+}
+
+.cell.active-cell:hover {
+  background-color: white !important; /* Nền trắng khi hover */
+}
+
+/* Trạng thái chỉnh sửa */
+.cell.editing {
+  background-color: white !important; /* Nền trắng */
+  cursor: text !important; /* Con trỏ kiểu text */
+}
+
+/* Trạng thái focus */
+.cell:focus {
+  outline: 2px solid #0078d4 !important; /* Outline xanh */
+  outline-offset: -2px !important; /* Offset âm */
+}
+
+/* Tương thích ngược */
+.cell.selected {
+  background-color: #f0f8ff !important; /* Nền xanh nhạt */
+}
+
+.cell.in-selection {
+  background-color: #f0f8ff !important; /* Nền xanh nhạt */
+}
+
+.cell.primary-selected {
+  background-color: white !important; /* Nền trắng */
+  border: 2px solid #0078d4 !important; /* Viền xanh */
+  z-index: 100 !important; /* Lớp hiển thị cao nhất */
+}
+
+/* ===========================================
+   12. RESIZE HANDLES - TAY KÉO THAY ĐỔI KÍCH THƯỚC
+   ========================================== */
+
+/* Tay kéo cơ bản */
+.resize-handle {
+  position: absolute; /* Vị trí tuyệt đối */
+  background: transparent; /* Nền trong suốt */
+  z-index: 30; /* Lớp hiển thị cao */
+}
+
+.resize-handle:hover {
+  background: #0078d4; /* Nền xanh khi hover */
+  opacity: 0.3; /* Độ trong suốt */
+}
+
+/* Tay kéo cột */
+.col-resize {
+  right: -3px; /* Vị trí phải */
+  top: 0; /* Vị trí trên */
+  width: 6px; /* Chiều rộng */
+  height: 100%; /* Chiều cao 100% */
+  cursor: col-resize; /* Con trỏ kiểu col-resize */
+}
+
+/* Tay kéo hàng */
+.row-resize {
+  bottom: -3px; /* Vị trí dưới */
+  left: 0; /* Vị trí trái */
+  width: 100%; /* Chiều rộng 100% */
+  height: 6px; /* Chiều cao */
+  cursor: row-resize; /* Con trỏ kiểu row-resize */
+}
+
+/* Cursors khi đang resize */
+.resizing-col {
+  cursor: col-resize !important; /* Con trỏ kiểu col-resize */
+}
+
+.resizing-row {
+  cursor: row-resize !important; /* Con trỏ kiểu row-resize */
+}
+
+/* ===========================================
+   13. CELL EDITOR - EDITOR Ô
+   ========================================== */
+
+/* Input editor ô */
+.cell-input {
+  width: 100% !important; /* Chiều rộng 100% */
+  height: 100% !important; /* Chiều cao 100% */
+  border: none !important; /* Không viền */
+  outline: none !important; /* Không outline */
+  background: white !important; /* Nền trắng */
+  font-size: inherit !important; /* Kế thừa font size */
+  padding: 0 !important; /* Không padding */
+  margin: 0 !important; /* Không margin */
+}
+
+.cell-editor.floating-input {
+  z-index: 3000; /* Lớp hiển thị cao nhất */
+}
+
+/* ===========================================
+   14. EDITOR CONTROLS - THANH ĐIỀU KHIỂN
+   ========================================== */
+
+/* Thanh điều khiển */
+.editor-controls {
+  background: #e8f5e8; /* Nền xanh lá nhạt */
+  padding: 8px 20px; /* Padding */
+  border-left: 4px solid #4CAF50; /* Viền trái xanh lá */
+  display: flex; /* Flexbox */
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+/* Nút điều khiển */
+.editor-btn {
+  padding: 6px 10px; /* Padding */
+  background: #4CAF50; /* Nền xanh lá */
+  color: white; /* Chữ trắng */
+  border: none; /* Không viền */
+  border-radius: 4px; /* Bo góc */
+  cursor: pointer; /* Con trỏ kiểu pointer */
+  font-size: 12px; /* Cỡ chữ nhỏ */
+  transition: background 0.2s; /* Hiệu ứng chuyển đổi */
+}
+
+.editor-btn:hover {
+  background: #45a049; /* Nền xanh lá đậm khi hover */
+}
+
+/* Thông tin phụ */
+.editor-help {
+  margin-left: auto; /* Margin trái tự động */
+  font-size: 12px; /* Cỡ chữ nhỏ */
+  color: #666; /* Màu chữ xám */
+}
+
+/* Thông tin vùng chọn */
+.selection-info {
+  padding: 4px 8px; /* Padding */
+  background: #fff3cd; /* Nền vàng nhạt */
+  border: 1px solid #ffeaa7; /* Viền vàng */
+  border-radius: 3px; /* Bo góc */
+  font-size: 11px; /* Cỡ chữ nhỏ */
+  color: #856404; /* Màu chữ vàng đậm */
+}
+
+/* Thanh điều khiển dưới */
+.editor-controls-bottom {
+  flex: 0 0 auto; /* Không co giãn */
+  position: sticky; /* Dính khi cuộn */
+  bottom: 0; /* Ở vị trí dưới */
+  z-index: 5; /* Lớp hiển thị cao */
+}
+
+/* ===========================================
+   15. AUTOCOMPLETE - DROPDOWN GỢI Ý
+   ========================================== */
+
+/* Dropdown gợi ý */
+#autocompleteDropdown {
+  display: none; /* Ẩn mặc định */
+  position: absolute; /* Vị trí tuyệt đối */
+  z-index: 3001; /* Lớp hiển thị cao nhất */
+  background: white; /* Nền trắng */
+  border: 1px solid #ccc; /* Viền xám */
+  max-height: 200px !important; /* Chiều cao tối đa */
+  overflow-y: auto !important; /* Cho phép cuộn dọc */
+  overflow-x: hidden; /* Ẩn cuộn ngang */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15); /* Đổ bóng */
+  border-radius: 4px; /* Bo góc */
+  font-size: 13px; /* Cỡ chữ nhỏ */
+  width: auto; /* Chiều rộng tự động */
+  min-width: 150px; /* Chiều rộng tối thiểu */
+  scrollbar-width: thin; /* Thanh cuộn mỏng */
+  scrollbar-color: #aaa #f1f1f1; /* Màu thanh cuộn */
+}
+
+/* Scrollbar cho dropdown */
+#autocompleteDropdown::-webkit-scrollbar {
+  width: 8px !important; /* Chiều rộng thanh cuộn */
+}
+
+#autocompleteDropdown::-webkit-scrollbar-track {
+  background: #f1f1f1 !important; /* Nền track */
+  border-radius: 4px !important; /* Bo góc */
+}
+
+#autocompleteDropdown::-webkit-scrollbar-thumb {
+  background: #aaa !important; /* Màu nền thumb */
+  border-radius: 4px !important; /* Bo góc */
+  border: 2px solid #f1f1f1 !important; /* Viền thumb */
+}
+
+#autocompleteDropdown::-webkit-scrollbar-thumb:hover {
+  background: #888 !important; /* Màu nền thumb khi hover */
+}
+
+/* Item trong dropdown */
+.autocomplete-item {
+  padding: 8px 12px; /* Padding */
+  cursor: pointer; /* Con trỏ kiểu pointer */
+  border-bottom: 1px solid #eee; /* Viền dưới */
+  color: #333; /* Màu chữ đen */
+  white-space: nowrap; /* Không ngắt chữ */
+  overflow: hidden; /* Ngăn tràn nội dung */
+  text-overflow: ellipsis; /* Hiển thị dấu ... khi tràn */
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none; /* Không viền dưới cho item cuối */
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.highlighted {
+  background: #f0f8ff; /* Nền xanh nhạt khi hover */
+  color: #0078d4; /* Màu chữ xanh */
+}
+
+/* ===========================================
+   16. STATUS MESSAGES - THÔNG BÁO TRẠNG THÁI
+   ========================================== */
+
+/* Thông báo loading */
+.loading {
+  text-align: center; /* Căn giữa text */
+  padding: 40px; /* Padding */
+  color: #666; /* Màu chữ xám */
+}
+
+/* Thông báo trống */
+.empty-message {
+  text-align: center; /* Căn giữa text */
+  padding: 40px 20px; /* Padding */
+  color: #666; /* Màu chữ xám */
+  font-size: 16px; /* Cỡ chữ */
+}
+
+/* Toast thông báo */
+#editorStatus {
+  position: fixed; /* Vị trí cố định */
+  top: 10px; /* Vị trí trên */
+  left: 50%; /* Vị trí giữa */
+  transform: translateX(-50%); /* Dịch trái 50% */
+  padding: 8px 12px; /* Padding */
+  border-radius: 8px; /* Bo góc */
+  background: #e6f4ea; /* Nền xanh lá nhạt */
+  color: #2e7d32; /* Màu chữ xanh lá */
+  box-shadow: 0 4px 16px rgba(0,0,0,.12); /* Đổ bóng */
+  z-index: 2000; /* Lớp hiển thị cao */
+  pointer-events: none; /* Không bắt sự kiện con trỏ */
+  opacity: 0; /* Trong suốt */
+  transition: opacity .2s ease, transform .2s ease; /* Hiệu ứng chuyển đổi */
+}
+
+#editorStatus.show {
+  opacity: 1; /* Hiện hoàn toàn */
+  transform: translateX(-50%) translateY(0); /* Dịch trái 50% */
+}
+
+#editorStatus.error {
+  background: #fdecea; /* Nền đỏ nhạt */
+  color: #b71c1c; /* Màu chữ đỏ */
+}
+
+#editorStatus.warning {
+  background: #fff4e5; /* Nền vàng nhạt */
+  color: #8a6d3b; /* Màu chữ vàng đậm */
+}
+
+/* ===========================================
+   17. PRINT & RESPONSIVE - IN ẤN & ĐÁP ỨNG
+   ========================================== */
+
+/* Styles khi in */
+@media print {
+  .selection-top, .selection-right, .selection-bottom, .selection-left {
+    border: 1px solid #000 !important; /* Viền đen khi in */
+  }
+  
+  .copy-border-top, .copy-border-right, .copy-border-bottom, .copy-border-left {
+    border: 1px dashed #000 !important; /* Viền nét đứt đen khi in */
+  }
+  
+  .header-selected {
+    background-color: #f0f0f0 !important; /* Nền xám nhạt khi in */
+    border: 1px solid #000 !important; /* Viền đen khi in */
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .selected-cell {
+    background-color: #1a3d5c !important; /* Nền xanh đậm trong dark mode */
+  }
+  
+  .active-cell {
+    background-color: #2d2d2d !important; /* Nền xám đậm trong dark mode */
+    border-color: #4a9eff !important; /* Viền xanh nhạt trong dark mode */
+  }
+  
+  .header-selected {
+    background-color: #1a3d5c !important; /* Nền xanh đậm trong dark mode */
+    border-color: #4a9eff !important; /* Viền xanh nhạt trong dark mode */
+    color: #4a9eff !important; /* Màu chữ xanh nhạt trong dark mode */
+  }
+  
+  .selection-top, .selection-right, .selection-bottom, .selection-left {
+    border-color: #4a9eff !important; /* Viền xanh nhạt trong dark mode */
+  }
+  
+  .copy-border-top, .copy-border-right, .copy-border-bottom, .copy-border-left {
+    border-color: #4a9eff !important; /* Viền xanh nhạt trong dark mode */
+  }
+}
+.cell.selection-top    { border-top:    2px solid #1a73e8 !important; }
+.cell.selection-right  { border-right:  2px solid #1a73e8 !important; }
+.cell.selection-bottom { border-bottom: 2px solid #1a73e8 !important; }
+.cell.selection-left   { border-left:   2px solid #1a73e8 !important; }
+/* Add these styles to the end of your Styles.css file */
+
+/* ==========================================
+   18. SELECTION FIXES - IMPROVED BORDERS
+   ========================================== */
+
+/* Base cell styles */
+.cell {
+  border: 1px solid #e8e8e8;
+  position: relative;
+  z-index: 1;
+  transition: background-color 0.1s;
+}
+
+/* Fixed selection border styles with high specificity */
+.cell.selection-top {
+  border-top: 2px solid #1a73e8 !important;
+  border-top-color: #1a73e8 !important;
+}
+
+.cell.selection-right {
+  border-right: 2px solid #1a73e8 !important;
+  border-right-color: #1a73e8 !important;
+}
+
+.cell.selection-bottom {
+  border-bottom: 2px solid #1a73e8 !important;
+  border-bottom-color: #1a73e8 !important;
+}
+
+.cell.selection-left {
+  border-left: 2px solid #1a73e8 !important;
+  border-left-color: #1a73e8 !important;
+}
+
+/* Active cell improved styling */
+.cell.active-cell {
+  background-color: white !important;
+  outline: 2px solid #0078d4 !important;
+  outline-offset: -2px !important;
+  border-color: transparent !important;
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+/* Ensure consistent styling for selected cells */
+.cell.selected-cell:not(.active-cell) {
+  background-color: #f0f8ff !important;
+}
+
+/* Fix copy-border styling */
+.cell.copy-border-top {
+  border-top: 2px dashed #1a73e8 !important;
+}
+
+.cell.copy-border-right {
+  border-right: 2px dashed #1a73e8 !important;
+}
+
+.cell.copy-border-bottom {
+  border-bottom: 2px dashed #1a73e8 !important;
+}
+
+.cell.copy-border-left {
+  border-left: 2px dashed #1a73e8 !important;
+}
+
+/* Fill preview style */
+.cell.fill-preview {
+  background-color: rgba(26, 115, 232, 0.1) !important;
+}
+
+/* Selection and fill transitions */
+.cell.selection-top,
+.cell.selection-right,
+.cell.selection-bottom,
+.cell.selection-left,
+.cell.copy-border-top,
+.cell.copy-border-right,
+.cell.copy-border-bottom,
+.cell.copy-border-left,
+.cell.selected-cell,
+.cell.fill-preview {
+  transition: background-color 0.1s, border-color 0.1s, border-width 0.1s;
+}
+
+/* Ensure formula cells are properly styled */
+.cell.formula-cell {
+  color: #0078d4 !important;
+  font-style: italic;
+}
+
+.cell.formula-error {
+  color: #d32f2f !important;
+  background-color: #ffebee !important;
+}
+
+/* Fix selection when cell is also editing */
+.cell.editing.selected-cell {
+  background-color: white !important;
+}
+
+/* Fix z-index for floating input */
+.cell-editor.floating-input {
+  z-index: 9999 !important;
+  background-color: white !important;
+  border: 2px solid #0078d4 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}

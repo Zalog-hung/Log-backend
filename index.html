@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test JSON Display - Editor Fixed</title>
+  <link rel="stylesheet" href="Styles.css"/>
+  <style>
+    /* Ẩn hoàn toàn nút menu và dropdown trên desktop */
+    .mobile-menu-toggle,
+    .mobile-actions-toggle,
+    .mobile-actions-dropdown {
+      display: none;
+    }
+    
+    /* Responsive styling for mobile */
+    @media screen and (max-width: 768px) {
+      .container {
+        width: 100%;
+        padding: 10px;
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      /* Mobile menu styling */
+      .mobile-menu-toggle,
+      .mobile-actions-toggle {
+        display: block;
+        position: fixed;
+        z-index: 1000;
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      
+      .mobile-menu-toggle {
+        top: 15px;
+        right: 15px;
+      }
+      
+      .mobile-actions-toggle {
+        bottom: 15px;
+        right: 15px;
+        background: #16a085;
+      }
+      
+      .tabs-container {
+        position: relative;
+      }
+      
+      .tabs {
+        display: none;
+        flex-direction: column;
+        position: fixed; /* Thay đổi từ absolute sang fixed */
+        top: 80px; /* Khoảng cách đủ lớn để tránh bị che bởi header */
+        left: 0;
+        width: 100%;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 100;
+        max-height: 70vh; /* Giới hạn chiều cao tối đa */
+        overflow-y: auto; /* Cho phép cuộn nếu có nhiều tab */
+      }
+      
+      .tabs.mobile-open {
+        display: flex;
+      }
+      
+      .tabs .tab {
+        width: 100%;
+        margin: 0;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      
+      /* Mobile actions dropdown */
+      .mobile-actions-dropdown {
+        display: none;
+        position: fixed;
+        bottom: 60px;
+        right: 15px;
+        background: white;
+        border-radius: 5px;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        z-index: 100;
+        flex-direction: column;
+        width: 200px;
+        max-width: 80vw;
+        overflow: hidden;
+      }
+      
+      .mobile-actions-dropdown.mobile-open {
+        display: flex;
+      }
+      
+      .mobile-action-btn {
+        padding: 12px 15px;
+        text-align: left;
+        background: none;
+        border: none;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      
+      .mobile-action-btn:last-child {
+        border-bottom: none;
+      }
+      
+      .mobile-action-btn:hover {
+        background: #f5f5f5;
+      }
+      
+      .mobile-action-btn .icon {
+        margin-right: 10px;
+        font-size: 16px;
+      }
+      
+      .sheet-info-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .month-navigator {
+        width: 100%;
+        margin-top: 10px;
+        justify-content: center;
+      }
+      
+      .editor-controls {
+        display: none; /* Hide on mobile, replaced by our dropdown */
+      }
+      
+      .selection-info {
+        width: 100%;
+        text-align: center;
+        margin-top: 10px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        font-size: 12px;
+      }
+      
+      .editor-help {
+        display: none;
+      }
+      
+      /* Table responsive */
+      .table-wrapper {
+        overflow-x: auto;
+      }
+      
+      table {
+        min-width: 600px; /* Ensure table has minimum width */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Toast / Status -->
+  <div id="editorStatus" class="editor-status">Editor Ready!</div>
+
+  <!-- Mobile Menu Toggle Button -->
+  <button class="mobile-menu-toggle" id="mobileMenuToggle">☰ Menu</button>
+  
+  <!-- Mobile Actions Toggle Button -->
+  <button class="mobile-actions-toggle" id="mobileActionsToggle">⚙️ Thao tác</button>
+  
+  <!-- Mobile Actions Dropdown -->
+  <div class="mobile-actions-dropdown" id="mobileActionsDropdown">
+    <button class="mobile-action-btn" id="mobileAddRows50">
+      <span class="icon">⏬</span> Thêm 50 dòng
+    </button>
+    <button class="mobile-action-btn" id="mobileSyncDrivers">
+      <span class="icon">🔄</span> Đồng bộ tài xế
+    </button>
+    <button class="mobile-action-btn" id="mobileDeleteRow">
+      <span class="icon">🗑️</span> Xóa dòng đang chọn
+    </button>
+    <button class="mobile-action-btn" id="mobileCreateFile">
+      <span class="icon">📄</span> Tạo file tháng hiện tại
+    </button>
+    <button class="mobile-action-btn" id="mobileSaveMonth">
+      <span class="icon">💾</span> Lưu tháng
+    </button>
+  </div>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>📊 Test Hiển Thị JSON Data - Editor Fixed</h1>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-container">
+      <div class="tabs" id="tabsContainer" role="tablist" aria-label="Bảng dữ liệu">
+        <!-- KHÔNG dùng onclick; JS sẽ bind qua EventBus -->
+        <button class="tab active"  data-tab="logchuyen" aria-selected="true"  role="tab">Log chuyến <small>(3)</small></button>
+        <button class="tab"         data-tab="chamcong"   aria-selected="false" role="tab">Chấm công <small>(2)</small></button>
+        <button class="tab"         data-tab="congno"     aria-selected="false" role="tab">Công nợ <small>(2)</small></button>
+      </div>
+    </div>
+
+    <!-- Sheet info + Month navigator -->
+    <div class="sheet-info-bar">
+      <div class="sheet-info" id="sheetInfo">Log chuyến: 3 bản ghi, 13 cột</div>
+      <div class="month-navigator">
+        <!-- KHÔNG onclick; JS bắt #btnMonthPrev/#btnMonthNext -->
+        <button class="nav-btn" id="btnMonthPrev" aria-label="Tháng trước"><span>‹</span></button>
+        <div class="month-display" id="monthDisplay" role="button" tabindex="0" title="Nhấn để chọn tháng (MM/YYYY)">08/2025</div>
+        <button class="nav-btn" id="btnMonthNext" aria-label="Tháng sau"><span>›</span></button>
+      </div>
+    </div>
+
+    <!-- Content area -->
+    <div id="contentContainer">
+      <div class="table-wrapper" id="tableWrapper" role="region" aria-label="Bảng dữ liệu">
+        <!-- Bảng sẽ render vào đây bởi dom-manager/template-renderer -->
+      </div>
+    </div>
+
+    <!-- Bottom controls (sẽ ẩn trên mobile và thay bằng dropdown) -->
+    <div class="editor-controls editor-controls-bottom">
+      <!-- KHÔNG onclick; JS lắng nghe qua id -->
+      <button class="editor-btn" id="btnAddRows50"   title="Thêm 50 dòng">⏬ +50 dòng</button>
+      <button class="editor-btn" id="btnSyncDrivers" title="Đồng bộ tài xế">🔄 Đồng bộ</button>
+      <button class="editor-btn" id="btnDeleteRow"   title="Xóa dòng đang chọn">🗑️ Xóa dòng</button>
+      <button class="editor-btn" id="createFileBtn"  title="Tạo file tháng hiện tại">📄 Tạo file</button>
+      <button id="saveBtn" onclick="handleSaveClick()">💾 Lưu tháng</button>
+
+      <div class="selection-info" id="selectionInfo">No selection</div>
+      <div class="editor-help">
+        💡 Shortcuts: Ctrl+D (Add Row) | Ctrl+R (Add Column) | F2 (Edit) | Arrows (Navigate)
+      </div>
+    </div>
+
+    <!-- Bảng input ẩn (nếu logic cũ cần) -->
+    <table id="inputTable" style="display:none" aria-hidden="true"></table>
+  </div>
+
+  <!-- Dropdown gợi ý autocomplete -->
+  <div id="autocompleteDropdown" style="display:none"></div>
+
+  <!-- ===== JS (toàn bộ hành vi ở file ngoài; KHÔNG có inline script) ===== -->
+  <!-- Thứ tự nạp giữ nguyên tinh thần bản gốc để không vỡ dependency -->
+  
+<!--//////////////////////////////////////////////////////////////////////////////// Core systems -->
+<script src="event-bus.js" defer></script>
+<script src="cacheone.js" defer></script>
+<script src="DataAccessLayer.js" defer></script>
+<script src="template-renderer.js" defer></script>
+<script src="dom-manager.js" defer></script>
+<script src="model-layer.js" defer></script>
+<script src="view-layer.js" defer></script>
+<script src="controller.js" defer></script>
+
+<script src="url.js" defer></script>
+<script src="reader.js" defer></script>
+<script src="main.js" defer></script>
+
+  <!--////////////////////////////////////////////////////////// Mobile menu & actions functionality -->
+  <script>
+    // Wait for DOM to load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get mobile menu toggle button
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const tabsContainer = document.getElementById('tabsContainer');
+      
+      // Get mobile actions toggle button
+      const mobileActionsToggle = document.getElementById('mobileActionsToggle');
+      const mobileActionsDropdown = document.getElementById('mobileActionsDropdown');
+      
+      // Toggle menu when button is clicked
+      if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', function() {
+          if (tabsContainer) {
+            tabsContainer.classList.toggle('mobile-open');
+            // Close actions dropdown if open
+            mobileActionsDropdown.classList.remove('mobile-open');
+          }
+        });
+      }
+      
+      // Toggle actions dropdown when button is clicked
+      if (mobileActionsToggle) {
+        mobileActionsToggle.addEventListener('click', function() {
+          if (mobileActionsDropdown) {
+            mobileActionsDropdown.classList.toggle('mobile-open');
+            // Close tabs menu if open
+            tabsContainer.classList.remove('mobile-open');
+          }
+        });
+      }
+      
+      // Hide menu when a tab is clicked
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          if (tabsContainer) {
+            tabsContainer.classList.remove('mobile-open');
+          }
+        });
+      });
+      
+      // Connect mobile action buttons to desktop counterparts
+      document.getElementById('mobileAddRows50').addEventListener('click', function() {
+        document.getElementById('btnAddRows50').click();
+        mobileActionsDropdown.classList.remove('mobile-open');
+      });
+      
+      document.getElementById('mobileSyncDrivers').addEventListener('click', function() {
+        document.getElementById('btnSyncDrivers').click();
+        mobileActionsDropdown.classList.remove('mobile-open');
+      });
+      
+      document.getElementById('mobileDeleteRow').addEventListener('click', function() {
+        document.getElementById('btnDeleteRow').click();
+        mobileActionsDropdown.classList.remove('mobile-open');
+      });
+      
+      document.getElementById('mobileCreateFile').addEventListener('click', function() {
+        document.getElementById('createFileBtn').click();
+        mobileActionsDropdown.classList.remove('mobile-open');
+      });
+      
+      document.getElementById('mobileSaveMonth').addEventListener('click', function() {
+        document.getElementById('saveBtn').click();
+        mobileActionsDropdown.classList.remove('mobile-open');
+      });
+      
+      // Close dropdowns when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.mobile-menu-toggle') && 
+            !event.target.closest('.tabs') && 
+            !event.target.closest('.mobile-actions-toggle') && 
+            !event.target.closest('.mobile-actions-dropdown')) {
+          tabsContainer.classList.remove('mobile-open');
+          mobileActionsDropdown.classList.remove('mobile-open');
+        }
+      });
+    });
+  </script>
+
+  <!-- Entry: gắn event cho HTML qua EventBus, không để hàm trong HTML -->
+  <script src="main.js" defer></script>
+</body>
+</html>
